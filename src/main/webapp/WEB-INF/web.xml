@@ -1,0 +1,105 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  
+  <servlet>
+  	<servlet-name>_WelcomeEvents</servlet-name>
+  	<display-name>_WelcomeEvents</display-name>
+  	<description></description>
+  	<servlet-class>com.ubaid.app.controller.servlets._WelcomeEvents</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>_OnStart</servlet-name>
+  	<display-name>_OnStart</display-name>
+  	<description></description>
+  	<servlet-class>com.ubaid.app.controller.servlets._OnStart</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>_Sport</servlet-name>
+  	<display-name>_Sport</display-name>
+  	<description></description>
+  	<servlet-class>com.ubaid.app.controller.servlets._Sport</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>_Events</servlet-name>
+  	<display-name>_Events</display-name>
+  	<description></description>
+  	<servlet-class>com.ubaid.app.controller.servlets._Events</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>_SubEvent</servlet-name>
+  	<display-name>_SubEvent</display-name>
+  	<description></description>
+  	<servlet-class>com.ubaid.app.controller.servlets._SubEvent</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>_track</servlet-name>
+  	<display-name>_track</display-name>
+  	<description></description>
+  	<servlet-class>com.ubaid.app.controller.servlets._track</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>notification</servlet-name>
+  	<display-name>notification</display-name>
+  	<description></description>
+  	<servlet-class>com.ubaid.app.controller.servlets.notification</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>_notification</servlet-name>
+  	<display-name>_notification</display-name>
+  	<description></description>
+  	<servlet-class>com.ubaid.app.controller.servlets._notification</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>TrackPage</servlet-name>
+  	<display-name>TrackPage</display-name>
+  	<description></description>
+  	<servlet-class>com.ubaid.app.controller.servlets.TrackPage</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>_WelcomeEvents</servlet-name>
+  	<url-pattern>/start</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>_OnStart</servlet-name>
+  	<url-pattern>/_OnStart</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>_Sport</servlet-name>
+  	<url-pattern>/_Sport</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>_Events</servlet-name>
+  	<url-pattern>/_Events</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>_SubEvent</servlet-name>
+  	<url-pattern>/_SubEvent</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>_track</servlet-name>
+  	<url-pattern>/_track</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>notification</servlet-name>
+  	<url-pattern>/notification</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>_notification</servlet-name>
+  	<url-pattern>/_notification</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>TrackPage</servlet-name>
+  	<url-pattern>/TrackPage</url-pattern>
+  </servlet-mapping>
+  
+  <welcome-file-list>
+  	  <welcome-file>src/index.jsp</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
