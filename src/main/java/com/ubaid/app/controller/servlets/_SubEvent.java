@@ -36,6 +36,7 @@ public class _SubEvent extends HttpServlet
 
 			
 			String attribute = request.getParameter("id");
+			String eventName = request.getParameter("eventName");
 			
 			System.out.println("In Sub Events Servlet");
 			logic  = new SubEventsLogic();
@@ -59,6 +60,7 @@ public class _SubEvent extends HttpServlet
 			System.out.println("Coversion completed");
 			
 			request.getSession().setAttribute("list_subEvent", matchs);
+			request.getSession().setAttribute("eventName", eventName);
 			
 			response.getWriter().write("200");
 		}

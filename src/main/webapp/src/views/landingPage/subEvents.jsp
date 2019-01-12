@@ -24,6 +24,7 @@
 		@SuppressWarnings("unchecked")
 		List<Match> list = (List<Match>) session.getAttribute("list_subEvent");
 		int size = list.size();
+		String eventName = (String) session.getAttribute("eventName");
 		for(int i = 0; i < size; i++) {
  %>
     <tr>
@@ -38,8 +39,8 @@
       <td scope="row"><%= list.get(i).getHomeTeamOdds() %></td>
       <td scope="row"><%= list.get(i).getDrawOdds() %></td>
       <td scope="row"><%= list.get(i).getAwayTeamOdds() %></td>
-      <td scope="row"><button type="button" class="btn btn-secondary btn-sm del_tracked_event" value=<%=list.get(i).getId() %> onclick="handleOdds(<%=list.get(i).getId() %>, '<%= list.get(i).getHomeTeam() %>', '<%= list.get(i).getAwayTeam() %>', 'OU')">view</button></td>
-      <td scope="row"><button type="button" class="btn btn-secondary btn-sm del_tracked_event" value=<%=list.get(i).getId() %> onclick="handleOdds(<%=list.get(i).getId() %>, '<%= list.get(i).getHomeTeam() %>', '<%= list.get(i).getAwayTeam() %>', 'AH')">view</button></td>
+      <td scope="row"><button type="button" class="btn btn-secondary btn-sm del_tracked_event" value=<%=list.get(i).getId() %> onclick="handleOdds(<%=list.get(i).getId() %>, '<%= list.get(i).getHomeTeam() %>', '<%= list.get(i).getAwayTeam() %>', 'OU', '<%= eventName%>')">view</button></td>
+      <td scope="row"><button type="button" class="btn btn-secondary btn-sm del_tracked_event" value=<%=list.get(i).getId() %> onclick="handleOdds(<%=list.get(i).getId() %>, '<%= list.get(i).getHomeTeam() %>', '<%= list.get(i).getAwayTeam() %>', 'AH', '<%= eventName%>')">view</button></td>
 
     </tr>
     

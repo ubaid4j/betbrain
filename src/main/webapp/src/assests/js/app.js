@@ -230,7 +230,7 @@ function trackedEventsDisplay()
 }
 
 //getting subevents
-function handlerForShowingSubEvents(id)
+function handlerForShowingSubEvents(id, eventName)
 {
 	
 	var targetedButton = $("button[aria-controls='" + id + "']");
@@ -259,7 +259,8 @@ function handlerForShowingSubEvents(id)
 			  type: "get", 
 			  data:
 			  { 
-			    id: id
+			    id: id,
+			    eventName: eventName
 			  },
 			  success: function(response)
 			  {
@@ -430,7 +431,7 @@ function search()
 	});
 }
 
-function handleOdds(eventId, homeTeam, awayTeam, bettingType)
+function handleOdds(eventId, homeTeam, awayTeam, bettingType, eventName)
 {
 /*
 	console.log("Event ID is: " + eventId);
@@ -469,7 +470,7 @@ function handleOdds(eventId, homeTeam, awayTeam, bettingType)
 					$.when($("#s_w").load("/app1/src/views/tables/AHtable.html")).done(function()
 					{						
 						var querySelector = "#AHtable tbody";
-						var teams = [homeTeam, awayTeam, 'Assian Handicap'];
+						var teams = [homeTeam, awayTeam, 'Assian Handicap', eventName];
 						waitForElementToDisplay(querySelector, 100, object, teams);
 					});
 	
@@ -504,13 +505,12 @@ function handleOdds(eventId, homeTeam, awayTeam, bettingType)
 			success: function(data)
 			{
 				var object = JSON.parse(data);
-				console.log(object);
 				$.when(sw.empty()).done(function()
 				{
 					$.when($("#s_w").load("/app1/src/views/tables/AHtable.html")).done(function()
 					{						
 						var querySelector = "#AHtable tbody";
-						var teams = [homeTeam, awayTeam, 'Over/Under'];
+						var teams = [homeTeam, awayTeam, 'Over/Under', eventName];
 						waitForElementToDisplay(querySelector, 100, object, teams);
 					});
 	
@@ -560,7 +560,7 @@ function appendValues(object, teams)
 
 function appendInAssianHandicapTable(header, table, object, teams)
 {
-	$.each(object, function(index, event)
+	$.when($.each(object, function(index, event)
 	{
 		if(index == 0)
 		{
@@ -574,7 +574,15 @@ function appendInAssianHandicapTable(header, table, object, teams)
 		var row = "<tr>" +
 						"<td scope='row'>" + 
 							"<div class='form-check'>" + 
-								"<input class='form-check-input' type='checkbox' value='" + event.outcome1 + "' id=''>" +
+								"<input class='form-check-input ahoucheckbox' type='checkbox' name='outcomeId' value='" + event.outcome1 + "' id=''>" +
+								"<input type='hidden' name='homeTeam' value='" + teams[0] + "' >"  +
+								"<input type='hidden' name='awayTeam' value='"+ teams[1] + "' >"  +
+								"<input type='hidden' name='participant' value='" + teams[0] + "' >"  +
+								"<input type='hidden' name='leagueName' value='" + teams[3] + "' >"  +
+								"<input type='hidden' name='matchName' value='" + teams[0] + " VS " + teams[1] + "' >"  +
+								"<input type='hidden' name='threshold' value='"+ event.homeTeamThreshold + "' >"  +
+								"<input type='hidden' name='odds' value='"+ event.homeTeamOdds + "' >"  +
+
 							"</div>" +
 						"</td>" +
 
@@ -585,7 +593,15 @@ function appendInAssianHandicapTable(header, table, object, teams)
 						
 						"<td scope='row'>" + 
 							"<div class='form-check'>" + 
-								"<input class='form-check-input' type='checkbox' value='" + event.outcome2 + "' id=''>" +
+								"<input class='form-check-input ahoucheckbox' name='outcomeId' type='checkbox' value='" + event.outcome2 + "' id=''>" +
+								"<input type='hidden' name='homeTeam' value='" + teams[0] + "' >"  +
+								"<input type='hidden' name='awayTeam' value='"+ teams[1] + "' >"  +
+								"<input type='hidden' name='participant' value='" + teams[1] + "' >"  +
+								"<input type='hidden' name='leagueName' value='" + teams[3] + "' >"  +
+								"<input type='hidden' name='matchName' value='" + teams[0] + " VS " + teams[1] + "' >"  +
+								"<input type='hidden' name='threshold' value='"+ event.awayTeamThreshold + "' >"  +
+								"<input type='hidden' name='odds' value='"+ event.awayTeamOdds + "' >"  +
+
 							"</div>" +
 						"</td>" +
 	
@@ -594,10 +610,105 @@ function appendInAssianHandicapTable(header, table, object, teams)
 						"</td>" +
 					
 					"</tr>";
-					table.append(row).hide().fadeIn(index*700);
+		
+					table.append(row).hide().fadeIn(index*700);		
+					
+					
+	})).done(function()
+	{
+		onChangeOfAHOUCheckbox();
 	});
 	
 }
+
+function onChangeOfAHOUCheckbox()
+{
+	$(".ahoucheckbox").change(function(event)
+	{
+
+		
+			$this = $(this);	
+
+			
+			
+			if(this.checked)
+			{
+				var id = $this.attr("value");
+				
+				var form = $this.parent();
+				
+				var inputs = form.children();
+				
+
+				var map = {};
+				
+		
+				
+				
+				$.when(inputs.each(function(){map[$(this).attr("name")] = $(this).val()})).done(function()
+				{						
+
+					var data =JSON.stringify(map);
+					console.log(data);
+					
+					$.ajax(
+		    	    {
+		    	    	  url: "/app1/_AHOURegisterar",
+		    	    	  type: "get", 
+		    	    	  data:
+		    	    	  { 
+		    	    	    data: data,
+		    	    	    checked: true
+		    	    	  },
+		    	    	  success: function(response)
+		    	    	  {
+//								$("#s_w").load("/app1/src/views/tracked/events.jsp")
+		    	    	  },
+		    	    	  error: function(xhr)
+		    	    	  {
+		    	    		  console.log(xhr);
+		    	    		  var response = $.parseHTML(xhr.responseText);
+		    	    		  alert($(response).filter( 'h1' ).text());
+		    	    	  }
+		    	    });
+					
+				});
+
+				
+			}
+				
+				
+							
+/*
+			else
+			{
+				$.ajax(
+	    	    {
+	    	    	  url: "/app1/_track",
+	    	    	  type: "get", 
+	    	    	  data:
+	    	    	  { 
+	    	    	    id: value,
+	    	    	    checked: false
+	    	    	  },
+	    	    	  success: function(response)
+	    	    	  {
+			    		  $("#s_w").load("/app1/src/views/tracked/events.jsp")
+	    	    	  },
+	    	    	  error: function(xhr)
+	    	    	  {
+	    	    		  console.log(xhr);
+	    	    		  var response = $.parseHTML(xhr.responseText);
+	    	    		  alert($(response).filter( 'h1' ).text());
+	    	    	  }
+	    	    });
+			}
+*/			
+		});
+	
+}
+
+
 
 function appendInOverUnder(header, table, object)
 {

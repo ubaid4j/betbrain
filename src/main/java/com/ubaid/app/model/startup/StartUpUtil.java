@@ -7,6 +7,7 @@ import java.util.concurrent.Executors;
 
 import com.ubaid.app.controller.Controller;
 import com.ubaid.app.model.logic.Logic;
+import com.ubaid.app.model.logic.RegisteredOutcomeLogic;
 import com.ubaid.app.model.logic.TrackLogic;
 import com.ubaid.app.model.logic.matchLogic.MatchLogic;
 import com.ubaid.app.model.objects.Entity;
@@ -42,9 +43,27 @@ public class StartUpUtil
 			TrackedMatchList.hashtable.put(match_id, Checked.Checked);
 		}
 		
+		//an another thread which will 
+		//fill the outcome tracked list
+		//and we wait for this thread to complete and then 
+		//in the service we can execute outcome schedule
+		ExecutorService innerThread1 = Executors.newFixedThreadPool(1);
+		innerThread1.execute(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				//staring from here
+				Logic logic = new RegisteredOutcomeLogic();
+				
+			}
+		});
+		
+		
 		Controller controller = Controller.getController();		
 		ExecutorService service = Executors.newCachedThreadPool();
-		service.execute(new TrackedMatchList());
+//		service.execute(new TrackedMatchList());
+		service.shutdown();
 		controller.setSevice(service);
 		
 	}

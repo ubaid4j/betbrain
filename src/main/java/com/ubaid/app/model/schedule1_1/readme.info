@@ -1,0 +1,9 @@
+detail about schedule1_1
+Here I decide to make independent another looper to loop the registered outcomes 
+the outcomes will be saved in the hash table 
+all the id's from the hash table will be taken and then sent to the server
+server will response with all outcomes
+
+Now, here will be comparing odds and threshold of the same outcome
+so, this the simple logic
+
