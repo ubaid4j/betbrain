@@ -20,6 +20,7 @@ public class AssianHandicapBuilder extends AbstractBuilder
 					.odds(resultSet.getFloat(1))
 					.participant(resultSet.getString(2))
 					.threshold(resultSet.getFloat(3))
+					.outcomeId(resultSet.getLong(4))
 					.build();
 	}
 

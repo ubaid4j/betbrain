@@ -22,8 +22,62 @@ public class Match {
 	private Timestamp timestamp;
 	private long tournamentId;
 	private String tournamentName;
-	private float thresHold;
+	private float homeTeamThreshold1;
+	private float awayTeamThreshold1;
+	private float homeTeamThreshold2;
+	private float awayTeamThreshold2;
+	private float overOdds;
+	public long getOutcome1() {
+		return outcome1;
+	}
 
+	public void setOutcome1(long outcome1) {
+		this.outcome1 = outcome1;
+	}
+
+	public long getOutcome2() {
+		return outcome2;
+	}
+
+	public void setOutcome2(long outcome2) {
+		this.outcome2 = outcome2;
+	}
+
+	private float underOdds;
+	private long outcome1;
+	private long outcome2;
+	
+	public float getHomeTeamThreshold1() {
+		return homeTeamThreshold1;
+	}
+
+	public void setHomeTeamThreshold1(float homeTeamThreshold1) {
+		this.homeTeamThreshold1 = homeTeamThreshold1;
+	}
+
+	public float getAwayTeamThreshold1() {
+		return awayTeamThreshold1;
+	}
+
+	public void setAwayTeamThreshold1(float awayTeamThreshold1) {
+		this.awayTeamThreshold1 = awayTeamThreshold1;
+	}
+
+	public float getHomeTeamThreshold2() {
+		return homeTeamThreshold2;
+	}
+
+	public void setHomeTeamThreshold2(float homeTeamThreshold2) {
+		this.homeTeamThreshold2 = homeTeamThreshold2;
+	}
+
+	public float getAwayTeamThreshold2() {
+		return awayTeamThreshold2;
+	}
+
+	public void setAwayTeamThreshold2(float awayTeamThreshold2) {
+		this.awayTeamThreshold2 = awayTeamThreshold2;
+	}
 
 	public float getHomeTeamOdds() {
 		return homeTeamOdds;
@@ -115,15 +169,12 @@ public class Match {
 			for (int i = 0; i < size; i++) {
 				odds.add((Odds) odds_.get(i));
 			}
-
 			Hashtable<String, Float> localHash = new Hashtable<>();
-
 			for (int i = 0; i < 3; i++) {
 				String key = odds.get(i).getName();
 				key = key == null ? "NULL" : key;
 				localHash.put(key, odds.get(i).getOdds());
 			}
-
 			setAwayTeamOdds(localHash.get(hash.get(2)));
 			setHomeTeamOdds(localHash.get(hash.get(1)));
 			setDrawOdds(localHash.get("NULL"));
@@ -142,55 +193,41 @@ public class Match {
 		private float homeTeamOdds;
 		private float awayTeamOdds;
 		private float drawOdds;
-
-		
 		public Builder homeTeamOdds(float odds)
 		{
 			this.homeTeamOdds = odds;
 			return this;
 		}
-		
 		public Builder awayTeamOdds(float odds)
 		{
 			this.awayTeamOdds = odds;
 			return this;
 		}
-
-		
 		public Builder drawOdds(float odds)
 		{
 			this.homeTeamOdds = odds;
 			return this;
 		}
-
-		
-		
-		
 		public Builder id(long id) {
 			this.id = id;
 			return this;
 		}
-
 		public Builder homeTeam(String homeTeam) {
 			this.homeTeam = homeTeam;
 			return this;
 		}
-
 		public Builder awayTeam(String awayTeam) {
 			this.awayTeam = awayTeam;
 			return this;
 		}
-
 		public Builder startTime(Timestamp startTime) {
 			this.startTime = startTime;
 			return this;
 		}
-
 		public Match build() {
 			return new Match(this);
 		}
 	}
-
 	private Match(Builder builder) {
 		this.id = builder.id;
 		this.homeTeam = builder.homeTeam;
@@ -200,18 +237,15 @@ public class Match {
 		this.homeTeamOdds = builder.homeTeamOdds;
 		this.drawOdds = builder.drawOdds;
 	}
-	
 	public Match getMatch(long match_id)
 	{
 		MatchLogic logic = new MatchLogic();
 		return logic.getMatch(match_id);
 	}
-
 	public boolean compare()
 	{
 		return isChanged(getMatch(getId()));
 	}
-	
 	public boolean isChanged(Match newMatch)
 	{
 		if(
@@ -228,45 +262,44 @@ public class Match {
 		
 		return false;
 	}
-
 	public Match getCurrentMatch() {
 		return currentMatch;
 	}
-
 	public void setCurrentMatch(Match currentMatch) {
 		this.currentMatch = currentMatch;
 	}
-
 	public Timestamp getTimestamp() {
 		return timestamp;
 	}
-
 	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
 	}
-
 	public long getTournamentId() {
 		return tournamentId;
 	}
-
 	public void setTournamentId(long tournamentId) {
 		this.tournamentId = tournamentId;
 	}
-
 	public String getTournamentName() {
 		return tournamentName;
 	}
-
 	public void setTournamentName(String tournamentName) {
 		this.tournamentName = tournamentName;
 	}
 
-	public float getThresHold() {
-		return thresHold;
+	public float getUnderOdds() {
+		return underOdds;
 	}
 
-	public void setThresHold(float thresHold) {
-		this.thresHold = thresHold;
+	public void setUnderOdds(float underOdds) {
+		this.underOdds = underOdds;
 	}
-	
+
+	public float getOverOdds() {
+		return overOdds;
+	}
+
+	public void setOverOdds(float overOdds) {
+		this.overOdds = overOdds;
+	}
 }

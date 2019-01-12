@@ -1,16 +1,22 @@
-package com.ubaid.app.model.asianhandicap;
+package com.ubaid.app.model.overunder;
 
 import com.ubaid.app.model.objects.Entity;
 
-public class AssianHandicapRawData extends Entity
-{
+public class OverUnderRawData extends Entity {
+	private long key;
 	private float odds;
 	private float threshold;
-	private String participant;
 	private long outcomeId;
 
-	public AssianHandicapRawData() {
+	public OverUnderRawData() {
+	}
 
+	public long getKey() {
+		return key;
+	}
+
+	public void setKey(long key) {
+		this.key = key;
 	}
 
 	public float getOdds() {
@@ -29,19 +35,16 @@ public class AssianHandicapRawData extends Entity
 		this.threshold = threshold;
 	}
 
-	public String getParticipant() {
-		return participant;
-	}
-
-	public void setParticipant(String participant) {
-		this.participant = participant;
-	}
-
 	public static class Builder {
+		private long key;
 		private float odds;
 		private float threshold;
-		private String participant;
 		private long outcomeId;
+
+		public Builder key(long key) {
+			this.key = key;
+			return this;
+		}
 
 		public Builder odds(float odds) {
 			this.odds = odds;
@@ -53,26 +56,23 @@ public class AssianHandicapRawData extends Entity
 			return this;
 		}
 
-		public Builder participant(String participant) {
-			this.participant = participant;
-			return this;
-		}
-		
 		public Builder outcomeId(long outcomeId)
 		{
 			this.outcomeId = outcomeId;
 			return this;
 		}
-
-		public AssianHandicapRawData build() {
-			return new AssianHandicapRawData(this);
+		
+		public OverUnderRawData build() {
+			return new OverUnderRawData(this);
 		}
+		
+	
 	}
 
-	private AssianHandicapRawData(Builder builder) {
+	private OverUnderRawData(Builder builder) {
+		this.key = builder.key;
 		this.odds = builder.odds;
 		this.threshold = builder.threshold;
-		this.participant = builder.participant;
 		this.outcomeId = builder.outcomeId;
 	}
 

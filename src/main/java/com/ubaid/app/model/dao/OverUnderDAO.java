@@ -3,17 +3,17 @@ package com.ubaid.app.model.dao;
 import java.util.LinkedList;
 
 import com.ubaid.app.model.abstractFactory.AbstractFactory;
-import com.ubaid.app.model.abstractFactory.AsianHandicapFactory;
+import com.ubaid.app.model.abstractFactory.OverUnderFactory;
 import com.ubaid.app.model.objects.Entity;
 
-public class AsianHandicapDAO extends AbstractDAO
+public class OverUnderDAO extends AbstractDAO
 {
 
 	private static final String query = "select " +
 										"odds, " +
-										"p.name as `Participant Name`, " +
+										"bo.couponKey `key`, " +
 										"o.paramFloat1 `Thres Hold`, " +
-										"o.id `outcomeId` " + 
+										"o.id `oucomeId` " +
 										"from " +
 										"BettingOffer bo left join " +
 										"Source s on bo.sourceId = s.id left join " +
@@ -27,19 +27,31 @@ public class AsianHandicapDAO extends AbstractDAO
 										"where " +
 										"spt.id in (1) " +
 										"and " +
-										"bo.bettingTypeId in (48) " +
+										"bo.bettingTypeId in (47) " +
 										"and " +
 										"o.eventPartId = 3 " +
 										"and " +
 										"date(e.startTime) between date(curdate()) and date(date_add(date(curdate()), interval 3 day)) " +
 										"and " +
 										"e.id = ? " +
-										"order by s.lastCollectedTime desc; ";
+										"order by `key` asc " +
+										";" ;
 	
-	public AsianHandicapDAO()
+	public OverUnderDAO()
 	{
-
 	}
+
+	
+	
+	
+	@Override
+	public LinkedList<Entity> getAll(long id)
+	{
+		return super.getAll(id);
+	}
+
+
+
 
 	@Override
 	String getQuery(QT type)
@@ -50,13 +62,7 @@ public class AsianHandicapDAO extends AbstractDAO
 	@Override
 	AbstractFactory getFactory()
 	{
-		return new AsianHandicapFactory();
-	}
-
-	@Override
-	public LinkedList<Entity> getAll(long id)
-	{
-		return super.getAll(id);
+		return new OverUnderFactory();
 	}
 
 }

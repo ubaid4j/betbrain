@@ -20,7 +20,7 @@
     <tr class="<%= list.get(i).getHash() %>">
       <th scope="row"><%= i + 1 %></th>
       <td scope="row">
-      	<button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="<%= "#" + list.get(i).getHash() %>" aria-expanded="false" aria-controls="<%=list.get(i).getId()%>">
+      	<button onclick="handlerForShowingSubEvents(<%=list.get(i).getId()%>)" class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="<%= "#" + list.get(i).getHash() %>" aria-expanded="false" aria-controls="<%=list.get(i).getId()%>">
 	      	<%= list.get(i).getEventName() %>
 		</button>
 				
@@ -37,7 +37,6 @@
 	  				<div id="<%= "_" + list.get(i).getId()%>">
 	  				
 	  				</div>
-					.....................................................................
 					<input type="hidden" value="<%= i + 1 %>"> 
 					<input type="hidden" value="<%= list.get(i).getEventName() %>"> 
 					<input type="hidden" value="<%= list.get(i).getLocationName() %>"> 

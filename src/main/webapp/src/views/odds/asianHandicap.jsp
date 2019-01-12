@@ -21,7 +21,7 @@
 			for(int i = 0; i < size; i++) {
 	 %>
 	    <tr>
-	      <td scope="row"><%= list.get(i).getThresHold() %></td>
+	      <td scope="row">Not Implemented</td>
 	      <td scope="row"><%= list.get(i).getHomeTeamOdds() %></td>
 	      <td scope="row"><%= list.get(i).getAwayTeamOdds() %></td>
 	    </tr>

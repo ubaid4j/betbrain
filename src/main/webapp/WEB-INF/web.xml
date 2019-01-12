@@ -59,6 +59,18 @@
   	<description></description>
   	<servlet-class>com.ubaid.app.controller.servlets.TrackPage</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>_AssianHandicap</servlet-name>
+  	<display-name>_AssianHandicap</display-name>
+  	<description></description>
+  	<servlet-class>com.ubaid.app.controller.servlets._AssianHandicap</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>_OverUnder</servlet-name>
+  	<display-name>_OverUnder</display-name>
+  	<description></description>
+  	<servlet-class>com.ubaid.app.controller.servlets._OverUnder</servlet-class>
+  </servlet>
   
   <servlet-mapping>
   	<servlet-name>_WelcomeEvents</servlet-name>
@@ -96,6 +108,14 @@
   <servlet-mapping>
   	<servlet-name>TrackPage</servlet-name>
   	<url-pattern>/TrackPage</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>_AssianHandicap</servlet-name>
+  	<url-pattern>/_AssianHandicap</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>_OverUnder</servlet-name>
+  	<url-pattern>/_OverUnder</url-pattern>
   </servlet-mapping>
   
   <welcome-file-list>

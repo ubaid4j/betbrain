@@ -38,8 +38,8 @@
       <td scope="row"><%= list.get(i).getHomeTeamOdds() %></td>
       <td scope="row"><%= list.get(i).getDrawOdds() %></td>
       <td scope="row"><%= list.get(i).getAwayTeamOdds() %></td>
-      <td scope="row"><button type="button" class="btn btn-secondary btn-sm del_tracked_event" value=<%=list.get(i).getId() %> onclick="handleOdds()">view</button></td>
-      <td scope="row"><button type="button" class="btn btn-secondary btn-sm del_tracked_event" value=<%=list.get(i).getId() %> onclick="handleOdds()">view</button></td>
+      <td scope="row"><button type="button" class="btn btn-secondary btn-sm del_tracked_event" value=<%=list.get(i).getId() %> onclick="handleOdds(<%=list.get(i).getId() %>, '<%= list.get(i).getHomeTeam() %>', '<%= list.get(i).getAwayTeam() %>', 'OU')">view</button></td>
+      <td scope="row"><button type="button" class="btn btn-secondary btn-sm del_tracked_event" value=<%=list.get(i).getId() %> onclick="handleOdds(<%=list.get(i).getId() %>, '<%= list.get(i).getHomeTeam() %>', '<%= list.get(i).getAwayTeam() %>', 'AH')">view</button></td>
 
     </tr>
     

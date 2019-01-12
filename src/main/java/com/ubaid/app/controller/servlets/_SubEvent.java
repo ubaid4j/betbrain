@@ -32,7 +32,12 @@ public class _SubEvent extends HttpServlet
 	{
 		try
 		{
+			System.out.println("In Sub Events Servlet");
+
+			
 			String attribute = request.getParameter("id");
+			
+			System.out.println("In Sub Events Servlet");
 			logic  = new SubEventsLogic();
 			
 			long id = Long.parseLong(attribute);
@@ -46,8 +51,12 @@ public class _SubEvent extends HttpServlet
 			{
 				list.add((SubEvents) events.get(i));
 			}
+
+			System.out.println("Converting these sub events to matches");
 			
 			List<Match> matchs = converter.convert(list);
+			
+			System.out.println("Coversion completed");
 			
 			request.getSession().setAttribute("list_subEvent", matchs);
 			

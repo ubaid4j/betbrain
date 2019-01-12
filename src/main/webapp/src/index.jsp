@@ -16,13 +16,21 @@
 				</div>
 			</div>
   		</form> 
+
+		<div style="float:right; margin-top:10px; margin-right:50px;" id="status_bar">
+		</div>
+
  		<div style="clear:both"></div>
  			
  
      	<div class="force-overflow scrollbar style-1 app" id="app"></div>
  
  
-		<div class="force-overflow scrollbar style-1 app" id="tracked_event" style="margin-bottom:50px; width:600px"></div>
+		<div class="force-overflow scrollbar style-1 app" id="s_w" style="margin-bottom:50px; width:600px">
+			
+		</div>
+
+
 		
 		
 	</div>
