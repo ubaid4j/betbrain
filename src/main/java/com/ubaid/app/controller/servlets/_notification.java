@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import com.ubaid.app.model.notification.INotification;
-import com.ubaid.app.model.notification.Notification;
+import com.ubaid.app.model.schedule1_1.Notification;
+import com.ubaid.app.model.schedule1_1.OutcomeNotificationi;
 
 public class _notification extends HttpServlet
 {
@@ -27,7 +27,7 @@ public class _notification extends HttpServlet
 		try
 		{
 			System.out.println("In _notification servlets");
-			final INotification notification = new Notification();
+			final Notification notification = new OutcomeNotificationi();
 					
 	    	response.setContentType("text/event-stream");
 	    	response.setCharacterEncoding("utf-8");
@@ -59,7 +59,6 @@ public class _notification extends HttpServlet
 //					writer.print(object.toString());
 //					response.flushBuffer();
 
-					Thread.sleep(200);
 	    			    			
 	    		}
 	    		catch(IOException exp)

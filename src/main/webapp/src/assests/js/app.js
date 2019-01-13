@@ -14,7 +14,7 @@ function notificationButtonHandler()
 		console.log(data);
 		$.when($("#app").load("/app1/src/views/notifications/notifications.jsp")).done(function()
 		{
-//			start();
+			start();
 		});
 		
 	});
