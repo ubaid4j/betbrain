@@ -27,6 +27,8 @@ public class Match {
 	private float homeTeamThreshold2;
 	private float awayTeamThreshold2;
 	private float overOdds;
+	
+	
 	public long getOutcome1() {
 		return outcome1;
 	}
@@ -46,6 +48,9 @@ public class Match {
 	private float underOdds;
 	private long outcome1;
 	private long outcome2;
+	private boolean outcome1Cheked;
+	private boolean outcome2Cheked;
+	
 	
 	public float getHomeTeamThreshold1() {
 		return homeTeamThreshold1;
@@ -301,5 +306,21 @@ public class Match {
 
 	public void setOverOdds(float overOdds) {
 		this.overOdds = overOdds;
+	}
+
+	public boolean isOutcome1Cheked() {
+		return outcome1Cheked;
+	}
+
+	public void setOutcome1Cheked(boolean outcome1Cheked) {
+		this.outcome1Cheked = outcome1Cheked;
+	}
+
+	public boolean isOutcome2Cheked() {
+		return outcome2Cheked;
+	}
+
+	public void setOutcome2Cheked(boolean outcome2Cheked) {
+		this.outcome2Cheked = outcome2Cheked;
 	}
 }

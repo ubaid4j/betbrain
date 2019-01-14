@@ -17,8 +17,14 @@
 			</div>
   		</form> 
 
+		<div id="flash_message" class="shadow p-3 mb-5 bg-white rounded">
+				Notification
+		</div>
+
 		<div style="float:right; margin-top:10px; margin-right:50px;" id="status_bar">
 		</div>
+
+
 
  		<div style="clear:both"></div>
  			
@@ -29,6 +35,7 @@
 		<div class="force-overflow scrollbar style-1 app" id="s_w" style="margin-bottom:50px; width:600px">
 			
 		</div>
+		
 
 
 		

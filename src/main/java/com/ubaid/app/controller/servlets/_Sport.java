@@ -59,6 +59,8 @@ public class _Sport extends HttpServlet
 		jsonObject.put("url", "/app1/src/views/landingPage/navigator.jsp");
 		
 		response.getWriter().write(jsonObject.toString());
+	
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

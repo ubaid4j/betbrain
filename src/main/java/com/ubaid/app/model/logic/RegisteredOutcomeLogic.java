@@ -9,6 +9,12 @@ public class RegisteredOutcomeLogic extends AbstractLogic
 {
 
 	@Override
+	public boolean delete(long id)
+	{
+		return dao.deleteById(id);
+	}
+
+	@Override
 	public boolean add(Entity entity) throws ServletException
 	{
 		return dao.add(entity);

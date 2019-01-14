@@ -53,16 +53,16 @@ function start()
 
 
 		var data = event.data;
-		var outcome = JSON.parse(data);
+		var match = JSON.parse(data);
 		
-		console.log(outcome);
+		console.log(match);
 		
 		console.log(match);
 		var row = "<tr>" +"<td scope='row'>" + match['lastUpdateTime'] + "</td>"
 							+"<td scope='row'>" + match['leagueName'] + "</td>"
 							+"<td scope='row'>" + match['matchName'] + "</td>"
 							+"<td scope='row'>" + match['participant'] + "</td>"
-							+"<td scope='row'>" + match['oldOdds'] + " -> " + match['Odds']+ "</td>"
+							+"<td scope='row'>" + match['oldOdds'] + " -> " + match['odds']+ "</td>"
 							+"<td scope='row'>" + match['threshold'] + " -> " + match['oldThreshold'] + "</td>"
 				+ "</tr>";
 		
@@ -572,10 +572,14 @@ function appendInAssianHandicapTable(header, table, object, teams)
 			
 		}
 
+		var condition1 = event.outcome1Checked;
+		var condition2 = event.outcome2Checked;
+
+		
 		var row = "<tr>" +
 						"<td scope='row'>" + 
 							"<div class='form-check'>" + 
-								"<input class='form-check-input ahoucheckbox' type='checkbox' name='outcomeId' value='" + event.outcome1 + "' id=''>" +
+								"<input class='form-check-input ahoucheckbox' type='checkbox' name='outcomeId'" + (condition1 ? 'Checked' : '') + " value='" + event.outcome1 + "' id=''>" +
 								"<input type='hidden' name='homeTeam' value='" + teams[0] + "' >"  +
 								"<input type='hidden' name='awayTeam' value='"+ teams[1] + "' >"  +
 								"<input type='hidden' name='participant' value='" + teams[0] + "' >"  +
@@ -594,7 +598,7 @@ function appendInAssianHandicapTable(header, table, object, teams)
 						
 						"<td scope='row'>" + 
 							"<div class='form-check'>" + 
-								"<input class='form-check-input ahoucheckbox' name='outcomeId' type='checkbox' value='" + event.outcome2 + "' id=''>" +
+								"<input class='form-check-input ahoucheckbox' name='outcomeId' type='checkbox'" + (condition2 ? 'Checked' : '') + " value='" + event.outcome2 + "' id=''>" +
 								"<input type='hidden' name='homeTeam' value='" + teams[0] + "' >"  +
 								"<input type='hidden' name='awayTeam' value='"+ teams[1] + "' >"  +
 								"<input type='hidden' name='participant' value='" + teams[1] + "' >"  +
@@ -626,86 +630,55 @@ function onChangeOfAHOUCheckbox()
 {
 	$(".ahoucheckbox").change(function(event)
 	{
-
+		$this = $(this);	
 		
-			$this = $(this);	
+		var checked = this.checked;
+		var id = $this.attr("value");
+		var form = $this.parent();
+		var inputs = form.children();
+		var map = {};
+				
+		$.when(inputs.each(function(){map[$(this).attr("name")] = $(this).val()})).done(function()
+		{						
 
+			var data =JSON.stringify(map);
 			
-			
-			if(this.checked)
-			{
-				var id = $this.attr("value");
-				
-				var form = $this.parent();
-				
-				var inputs = form.children();
-				
-
-				var map = {};
-				
-		
-				
-				
-				$.when(inputs.each(function(){map[$(this).attr("name")] = $(this).val()})).done(function()
-				{						
-
-					var data =JSON.stringify(map);
-					console.log(data);
-					
-					$.ajax(
-		    	    {
-		    	    	  url: "/app1/_AHOURegisterar",
-		    	    	  type: "get", 
-		    	    	  data:
-		    	    	  { 
-		    	    	    data: data,
-		    	    	    checked: true
-		    	    	  },
-		    	    	  success: function(response)
-		    	    	  {
+			$.ajax(
+    	    {
+    	    	  url: "/app1/_AHOURegisterar",
+    	    	  type: "get", 
+    	    	  data:
+    	    	  { 
+    	    	    data: data,
+    	    	    checked: checked
+    	    	  },
+    	    	  success: function(response)
+    	    	  {
+    	    		  if(checked)
+    	    			  console.log(data + " added");
+    	    		  else
+    	    			  console.log(data + " removed");
 //								$("#s_w").load("/app1/src/views/tracked/events.jsp")
-		    	    	  },
-		    	    	  error: function(xhr)
-		    	    	  {
-		    	    		  console.log(xhr);
-		    	    		  var response = $.parseHTML(xhr.responseText);
-		    	    		  alert($(response).filter( 'h1' ).text());
-		    	    	  }
-		    	    });
-					
-				});
-
-				
-			}
-				
-				
-							
-/*
-			else
-			{
-				$.ajax(
-	    	    {
-	    	    	  url: "/app1/_track",
-	    	    	  type: "get", 
-	    	    	  data:
-	    	    	  { 
-	    	    	    id: value,
-	    	    	    checked: false
-	    	    	  },
-	    	    	  success: function(response)
-	    	    	  {
-			    		  $("#s_w").load("/app1/src/views/tracked/events.jsp")
-	    	    	  },
-	    	    	  error: function(xhr)
-	    	    	  {
-	    	    		  console.log(xhr);
-	    	    		  var response = $.parseHTML(xhr.responseText);
-	    	    		  alert($(response).filter( 'h1' ).text());
-	    	    	  }
-	    	    });
-			}
-*/			
-		});
+    	    		  
+    	    		  
+    	    		  $("#flash_message").show('slow', function()
+    	    		  {
+    	    			 setTimeout(function()
+    	    			 {
+    	    				$("#flash_message").hide('slow'); 
+    	    			 }, 1000);
+    	    		  });	
+    	    		  
+    	    	  },
+    	    	  error: function(xhr)
+    	    	  {
+    	    		  console.log(xhr);
+    	    		  var response = $.parseHTML(xhr.responseText);
+    	    		  alert($(response).filter( 'h1' ).text());
+    	    	  }
+    	    });				
+		});				
+	});
 	
 }
 

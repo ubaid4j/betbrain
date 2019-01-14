@@ -19,6 +19,7 @@ public class RegisteredOutcomeDAO extends AbstractDAO
 
 	private static final String query = "INSERT INTO registeredOutcome VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String query1 = "SELECT * FROM registeredOutcome";
+	private static final String delQuery = "DELETE FROM registeredOutcome WHERE id = ?";
 	
 	public RegisteredOutcomeDAO()
 	{
@@ -52,6 +53,25 @@ public class RegisteredOutcomeDAO extends AbstractDAO
 			st.setTimestamp(11, outcome.getChangedTime());
 			st.executeUpdate();
 			
+			return true;
+		}
+		catch(SQLException exp)
+		{
+			exp.printStackTrace();
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean deleteById(long id)
+	{
+		try
+		{
+			Connection con = DataSource.getConnection();
+			PreparedStatement st = con.prepareStatement(delQuery);
+			st.setLong(1, id);
+			st.executeUpdate();
 			return true;
 		}
 		catch(SQLException exp)

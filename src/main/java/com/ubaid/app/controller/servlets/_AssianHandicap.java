@@ -2,6 +2,7 @@ package com.ubaid.app.controller.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Hashtable;
 import java.util.LinkedList;
 
 import javax.servlet.ServletException;
@@ -18,6 +19,8 @@ import com.ubaid.app.model.logic.AssianHandicapLogic;
 import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.objects.Entity;
 import com.ubaid.app.model.objects.Match;
+import com.ubaid.app.model.schedule1_1.Outcome;
+import com.ubaid.app.model.schedule1_1.Scheduler;
 
 public class _AssianHandicap extends HttpServlet
 {
@@ -48,6 +51,8 @@ public class _AssianHandicap extends HttpServlet
 			JSONArray array = new JSONArray();
 			JSONObject object;
 			
+			Hashtable<Long, Outcome> hash = Scheduler.getTrackedNotification();
+			
 			for (Match match : events)
 			{
 				object = new JSONObject();
@@ -57,6 +62,10 @@ public class _AssianHandicap extends HttpServlet
 				object.put("awayTeamOdds", match.getAwayTeamOdds());
 				object.put("outcome1", match.getOutcome1());
 				object.put("outcome2", match.getOutcome2());
+				object.put("outcome1Checked", hash.get(match.getOutcome1()) == null ? false : true);
+				object.put("outcome2Checked", hash.get(match.getOutcome2()) == null ? false : true);
+				
+				
 				array.put(object);
 			}
 			

@@ -1,11 +1,17 @@
 package com.ubaid.app.model.schedule1_1;
 
 import java.sql.Timestamp;
+import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.ubaid.app.model.logic.OutcomeLogic;
 import com.ubaid.app.model.logic.OutcomeLogici;
+import com.ubaid.app.model.logic.UpdateRegisteredOCLogic;
+import com.ubaid.app.model.logic.UpdateRegisteredOCLogici;
 import com.ubaid.app.model.objects.Entity;
 
 public class Scheduler implements Schedule
@@ -20,6 +26,7 @@ public class Scheduler implements Schedule
 	public void schedule()
 	{
 		OutcomeLogic logic = new OutcomeLogici();
+		UpdateRegisteredOCLogic updateLogic = new UpdateRegisteredOCLogici();
 		
 		while(true)
 		{
@@ -32,6 +39,9 @@ public class Scheduler implements Schedule
 				_ids[index++] = id;
 			}
 
+			
+			List<Outcome> list = new LinkedList<>();
+			
 			//get the response from the database as list of Outcome
 			if(_ids.length < 1)
 			{
@@ -72,7 +82,9 @@ public class Scheduler implements Schedule
 					outcome.setChangedTime(new Timestamp(System.currentTimeMillis()));
 					outcome.setOldOdds(oldOutcome.getOdds());
 					outcome.setOldThreshold(oldOutcome.getThreshold());
+					outcome.setMatchName(oldOutcome.getMatchName());
 					Scheduler.trackedOutcomes.put(outcome.getId(), outcome);
+					list.add(outcome);
 					Schedule.notificationQueue.add(outcome);
 					
 				}
@@ -81,7 +93,19 @@ public class Scheduler implements Schedule
 			try
 			{
 				//update the changed odds
-				Thread.sleep(60000);
+				ExecutorService updateService = Executors.newFixedThreadPool(1);
+				updateService.execute(new Runnable()
+				{
+					
+					@Override
+					public void run()
+					{
+						if(list.size() > 0)
+							updateLogic.updateOC(list);
+					}
+				});
+				updateService.shutdown();
+				Thread.sleep(30000);
 			}
 			catch(InterruptedException exp)
 			{
@@ -101,5 +125,13 @@ public class Scheduler implements Schedule
 		Schedule.trackedOutcomes.put(key, outcome);
 	}
 	
+	public static void removeFromTrackedEvents(long key)
+	{
+		Scheduler.trackedOutcomes.remove(key);
+	}
 	
+	public static Hashtable<Long, Outcome> getTrackedNotification()
+	{
+		return Schedule.trackedOutcomes;
+	}
 }

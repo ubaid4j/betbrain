@@ -30,8 +30,11 @@ public class _AHOURegisterar extends HttpServlet
 	{
 		try
 		{
-			String _map = request.getParameter("data");			
+			String _map = request.getParameter("data");		
+			String _isAdd = request.getParameter("checked");
+			boolean isAdd = Boolean.parseBoolean(_isAdd);
 			JSONObject map = new JSONObject(_map);
+			Logic logic = new RegisteredOutcomeLogic();
 			
 			Outcome outcome = new Outcome.Builder()
 									.id(map.getLong(Helper.OUTCOMEID.toString()))
@@ -45,16 +48,28 @@ public class _AHOURegisterar extends HttpServlet
 									.registerTime(new Timestamp(System.currentTimeMillis()))
 									.changedTime(new Timestamp(System.currentTimeMillis()))
 									.build();
-			
-			Logic logic = new RegisteredOutcomeLogic();
-			if(logic.add(outcome));
-				Scheduler.putInTrackeEvents(outcome.getId(), outcome);
-			
+			if(isAdd)
+				add(logic, outcome);
+			else
+				remove(logic, outcome);			
 		}
 		catch(Exception exp)
 		{
 			exp.printStackTrace();
 		}
+	}
+	
+	private void remove(Logic logic, Outcome outcome)
+	{
+		if(logic.delete(outcome.getId()))
+			Scheduler.removeFromTrackedEvents(outcome.getId());
+	}
+	
+	private void add(Logic logic, Outcome outcome) throws ServletException
+	{
+		if(logic.add(outcome));
+			Scheduler.putInTrackeEvents(outcome.getId(), outcome);
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
