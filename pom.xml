@@ -32,8 +32,8 @@
                 <url>http://68.183.98.59:8080/manager/text</url>
                 <server>TomcatServer</server>
                 <path>/app1</path>
-                <username>root</username>
-                <password>toor</password>
+                <username>admin</username>
+                <password>dc777vb1234</password>
                 <update>true</update>
             </configuration>
            </plugin> 
