@@ -9,7 +9,6 @@ import com.ubaid.app.model.schedule1_1.Outcome;
 public class RegisteredOutcomeBuilder extends AbstractBuilder {
 
 	public RegisteredOutcomeBuilder() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -24,6 +23,8 @@ public class RegisteredOutcomeBuilder extends AbstractBuilder {
 					.participant(resultSet.getString(7))
 					.homeTeam(resultSet.getString(8))
 					.awayTeam(resultSet.getString(9))
+					.registerTime(resultSet.getTimestamp(10))
+					.changedTime(resultSet.getTimestamp(11))
 					.build();
 	}
 

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import com.ubaid.app.controller.Controller;
 import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.SportsLogic;
 import com.ubaid.app.model.objects.Entity;
@@ -38,6 +39,8 @@ public class _Sport extends HttpServlet
 		{
 			StartUpUtil.isFirst = false;
 			startUpUtil.onStart();
+			Controller controller = Controller.getController();
+			controller.startSchedular();
 		}
 
 		

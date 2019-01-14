@@ -36,6 +36,7 @@ public abstract class AbstractDAO implements DAO
 		}
 		catch(Exception exp)
 		{
+			exp.printStackTrace();
 			throw new IllegalArgumentException();
 		}
 		

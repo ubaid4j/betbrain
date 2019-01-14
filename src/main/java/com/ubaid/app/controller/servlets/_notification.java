@@ -49,7 +49,7 @@ public class _notification extends HttpServlet
 	    			writer.print("data: "  + object.toString());
 	    			writer.print("\n\n");
 
-	    			
+	    			System.out.println("\n\n" + object + "\n\n");
 	    			
 	    			response.flushBuffer();
 

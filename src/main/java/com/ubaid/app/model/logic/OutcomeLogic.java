@@ -9,6 +9,6 @@ import com.ubaid.app.model.objects.Entity;
 public interface OutcomeLogic
 {
 	OutcomeDAO dao = new DAOOutcome();
-	LinkedList<Entity> getAll(Object[] ids);
+	LinkedList<Entity> getAll(long[] ids);
 	
 }

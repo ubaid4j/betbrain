@@ -9,11 +9,11 @@
   <thead>
     <tr>
       <th scope="col">Update Time</th>
-      <th scope="col">Home Team</th>
-      <th scope="col">Away Team</th>
-      <th scope="col">1</th>
-      <th scope="col">X</th>
-      <th scope="col">2</th>
+      <th scope="col">League</th>
+      <th scope="col">Match</th>
+      <th scope="col">Affected Team</th>
+      <th scope="col">Odds Changed</th>
+      <th scope="col">Threshold Changed</th>
     </tr>
   </thead>
   <tbody>

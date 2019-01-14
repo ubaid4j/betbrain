@@ -13,7 +13,7 @@ public class OutcomeLogici implements OutcomeLogic
 	}
 
 	@Override
-	public LinkedList<Entity> getAll(Object[] ids)
+	public LinkedList<Entity> getAll(long[] ids)
 	{		
 		return dao.getAll(ids);
 	}

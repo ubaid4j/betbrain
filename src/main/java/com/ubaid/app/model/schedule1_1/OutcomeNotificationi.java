@@ -45,7 +45,10 @@ public class OutcomeNotificationi implements OutcomeNotification
 		notification.put(Helper.ODDS.toString(), outcome.getOdds());
 		notification.put(Helper.OUTCOMEID.toString(), outcome.getId());
 		notification.put(Helper.PARTICIPANT.toString(), outcome.getParticipant());
-		notification.put(Helper.THRESHOLD.toString(), outcome.getThreshold());		
+		notification.put(Helper.THRESHOLD.toString(), outcome.getThreshold());	
+		notification.put(Helper.LASTUPDATETIME.toString(), outcome.getChangedTime());
+		notification.put(Helper.OLDODDS.toString(), outcome.getOldOdds());
+		notification.put(Helper.OLDThresHOLD.toString(), outcome.getOldThreshold());
 
 		return notification;
 	}

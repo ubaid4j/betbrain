@@ -1,5 +1,6 @@
 package com.ubaid.app.model.schedule1_1;
 
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ public class Scheduler implements Schedule
 		{
 			//let retrieve the ids of outcomes
 			Set<Long> ids = Schedule.trackedOutcomes.keySet();
-			Object[] _ids = new Object[ids.size()];
+			long[] _ids = new long[ids.size()];
 			int index = 0;
 			for(long id : ids)
 			{
@@ -32,6 +33,21 @@ public class Scheduler implements Schedule
 			}
 
 			//get the response from the database as list of Outcome
+			if(_ids.length < 1)
+			{
+				try
+				{
+					Thread.sleep(200);
+				}
+				catch(InterruptedException exp)
+				{
+					exp.printStackTrace();
+				}
+				
+				continue;
+			}
+			
+			
 			LinkedList<Entity> _outcomes =  logic.getAll(_ids);
 			LinkedList<Outcome> outcomes = new LinkedList<>();
 			for(Entity outcome : _outcomes)
@@ -43,18 +59,28 @@ public class Scheduler implements Schedule
 			for(Outcome outcome: outcomes)
 			{
 				Outcome oldOutcome = Schedule.trackedOutcomes.get(outcome.getId());
+				System.out.println("New Outcome: " + outcome);
+				System.out.println("Old Outcome: " + oldOutcome + "\n\n");
+				
 				if(outcome.getOdds() != oldOutcome.getOdds() || outcome.getThreshold() != oldOutcome.getThreshold())
 				{
 					outcome.setAwayTeam(oldOutcome.getAwayTeam());
 					outcome.setHomeTeam(oldOutcome.getHomeTeam());
 					outcome.setLeagueName(oldOutcome.getLeagueName());
 					outcome.setParticipant(oldOutcome.getParticipant());
+					outcome.setRegisterTime(oldOutcome.getRegisterTime());
+					outcome.setChangedTime(new Timestamp(System.currentTimeMillis()));
+					outcome.setOldOdds(oldOutcome.getOdds());
+					outcome.setOldThreshold(oldOutcome.getThreshold());
+					Scheduler.trackedOutcomes.put(outcome.getId(), outcome);
 					Schedule.notificationQueue.add(outcome);
+					
 				}
 			}
 			
 			try
 			{
+				//update the changed odds
 				Thread.sleep(60000);
 			}
 			catch(InterruptedException exp)

@@ -12,7 +12,7 @@ function notificationButtonHandler()
 	$.get("/app1/notification", function(data)
 	{
 		console.log(data);
-		$.when($("#app").load("/app1/src/views/notifications/notifications.jsp")).done(function()
+		$.when($("#s_w").load("/app1/src/views/notifications/notifications.jsp")).done(function()
 		{
 			start();
 		});
@@ -51,26 +51,27 @@ function start()
 	source.onmessage = function(event)
 	{
 
-		console.log(event);
 
 		var data = event.data;
-		var match = JSON.parse(data);
+		var outcome = JSON.parse(data);
+		
+		console.log(outcome);
 		
 		console.log(match);
-		var row = "<tr>" +"<td>" + match['changeTime']
-		+"<td>" + match['homeTeam'] + "</td>"
-		+"<td>" + match['awayTeam'] + "</td>"
-		+"<td>" + match['homeTeamOdds'] + "</td>"
-		+"<td>" + match['drawOdds'] + "</td>"
-		+"<td>" + match['awayTeamOdds'] + "</td>"
-		+"</td>" + "</tr>";
+		var row = "<tr>" +"<td scope='row'>" + match['lastUpdateTime'] + "</td>"
+							+"<td scope='row'>" + match['leagueName'] + "</td>"
+							+"<td scope='row'>" + match['matchName'] + "</td>"
+							+"<td scope='row'>" + match['participant'] + "</td>"
+							+"<td scope='row'>" + match['oldOdds'] + " -> " + match['Odds']+ "</td>"
+							+"<td scope='row'>" + match['threshold'] + " -> " + match['oldThreshold'] + "</td>"
+				+ "</tr>";
 		
 		console.log(row);
 		
 		$.playSound("http://www.noiseaddicts.com/samples_1w72b820/3724.mp3");		
 		
 		var table = $("#notification_table");
-		table.prepend(row);
+		table.prepend(row).hide().fadeIn('slow');
 	
 	};
 

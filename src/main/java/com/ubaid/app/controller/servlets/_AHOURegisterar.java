@@ -1,6 +1,8 @@
 package com.ubaid.app.controller.servlets;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +42,8 @@ public class _AHOURegisterar extends HttpServlet
 									.matchName(map.getString(Helper.MATCHNAME.toString()))
 									.threshold(map.getFloat(Helper.THRESHOLD.toString()))
 									.odds(map.getFloat(Helper.ODDS.toString()))
+									.registerTime(new Timestamp(System.currentTimeMillis()))
+									.changedTime(new Timestamp(System.currentTimeMillis()))
 									.build();
 			
 			Logic logic = new RegisteredOutcomeLogic();

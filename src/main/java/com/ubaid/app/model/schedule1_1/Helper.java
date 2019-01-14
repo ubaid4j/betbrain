@@ -57,6 +57,28 @@ public enum Helper
 		public String toString() {
 			return "odds";
 		}
+	},
+	
+	LASTUPDATETIME {
+		@Override
+		public String toString() {
+			return "lastUpdateTime";
+		}
+	},
+	
+	OLDODDS {
+		@Override
+		public String toString() {
+			return "oldOdds";
+		}
+	},
+	
+	OLDThresHOLD{
+		@Override
+		public String toString() {
+			// TODO Auto-generated method stub
+			return "oldThreshold";
+		}
 	}
 
 }

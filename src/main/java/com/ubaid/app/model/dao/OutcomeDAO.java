@@ -11,6 +11,6 @@ public interface OutcomeDAO
 {
 	AbstractFactory factory = new OutcomeBuilderFactory();
 	ResultSetBuilder builder = (ResultSetBuilder) factory.getBuilder();
-	LinkedList<Entity> getAll(Object[] ids);
+	LinkedList<Entity> getAll(long[] ids);
 }
 

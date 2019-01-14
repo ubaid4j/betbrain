@@ -17,8 +17,8 @@ public class RegisteredOutcomeDAO extends AbstractDAO
 {
 
 
-	private static final String query = "INSERT INTO registeredOutcome VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	
+	private static final String query = "INSERT INTO registeredOutcome VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String query1 = "SELECT * FROM registeredOutcome";
 	
 	public RegisteredOutcomeDAO()
 	{
@@ -27,7 +27,7 @@ public class RegisteredOutcomeDAO extends AbstractDAO
 	@Override
 	String getQuery(QT type)
 	{
-		return query;
+		return query1;
 	}
 
 	@Override
@@ -48,6 +48,8 @@ public class RegisteredOutcomeDAO extends AbstractDAO
 			st.setString(7, outcome.getParticipant());
 			st.setString(8, outcome.getHomeTeam());
 			st.setString(9, outcome.getAwayTeam());
+			st.setTimestamp(10, outcome.getRegisterTime());
+			st.setTimestamp(11, outcome.getChangedTime());
 			st.executeUpdate();
 			
 			return true;

@@ -98,14 +98,6 @@ public class StartUpUtil
 		{
 			if(innerThread1.isTerminated())
 				break;
-			try
-			{
-				Thread.sleep(100);
-			}
-			catch(InterruptedException exp)
-			{
-				System.out.println(exp.getMessage() + " at Start Up Util line number 104");
-			}
 		}
 
 /*		
