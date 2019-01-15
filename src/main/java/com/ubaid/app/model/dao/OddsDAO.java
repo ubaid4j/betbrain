@@ -14,7 +14,8 @@ public class OddsDAO extends AbstractDAO
 	private static final String  query = "select " +
 											"odds, " +
 											"p.name as `Participant Name`, " +
-											"o.paramFloat1 `Thres Hold` " +
+											"o.paramFloat1 `Thres Hold`, " +
+											"o.id `outcome id`" +
 											"from " +
 											"BettingOffer bo inner join " +
 											"Source s on bo.sourceId = s.id inner join " +

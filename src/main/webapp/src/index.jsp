@@ -17,8 +17,13 @@
 			</div>
   		</form> 
 
+		<div>
+			<button type="button" class="btn btn-secondary front_page_button" id="start" onclick="" style="float:left">Main Page</button>
+		</div>
+
+
 		<div id="flash_message" class="shadow p-3 mb-5 bg-white rounded">
-				Notification
+				
 		</div>
 
 		<div style="float:right; margin-top:10px; margin-right:50px;" id="status_bar">

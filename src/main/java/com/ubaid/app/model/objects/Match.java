@@ -3,6 +3,7 @@ package com.ubaid.app.model.objects;
 import java.sql.Timestamp;
 import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.Map;
 
 import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.OddsLogic;
@@ -17,6 +18,9 @@ public class Match {
 	private float homeTeamOdds;
 	private float awayTeamOdds;
 	private float drawOdds;
+	private long homeTeamOutcomeId;
+	private long awayTeamOutcomeId;
+	private long drawOutcomeId;
 	private Hashtable<Integer, String> hash = new Hashtable<>();
 	private Match currentMatch;
 	private Timestamp timestamp;
@@ -175,14 +179,19 @@ public class Match {
 				odds.add((Odds) odds_.get(i));
 			}
 			Hashtable<String, Float> localHash = new Hashtable<>();
+			Hashtable<String, Long> outcomeHash = new Hashtable<>();
 			for (int i = 0; i < 3; i++) {
 				String key = odds.get(i).getName();
 				key = key == null ? "NULL" : key;
 				localHash.put(key, odds.get(i).getOdds());
+				outcomeHash.put(key, odds.get(i).getOutcomeId());
 			}
 			setAwayTeamOdds(localHash.get(hash.get(2)));
 			setHomeTeamOdds(localHash.get(hash.get(1)));
 			setDrawOdds(localHash.get("NULL"));
+			setAwayTeamOutcomeId(outcomeHash.get(hash.get(2)));
+			setHomeTeamOutcomeId(outcomeHash.get(hash.get(1)));
+			setDrawOutcomeId(outcomeHash.get("NULL"));
 
 		} catch (NullPointerException exp) {
 
@@ -323,4 +332,30 @@ public class Match {
 	public void setOutcome2Cheked(boolean outcome2Cheked) {
 		this.outcome2Cheked = outcome2Cheked;
 	}
+
+	public long getHomeTeamOutcomeId() {
+		return homeTeamOutcomeId;
+	}
+
+	public void setHomeTeamOutcomeId(long homeTeamOutcomeId) {
+		this.homeTeamOutcomeId = homeTeamOutcomeId;
+	}
+
+	public long getAwayTeamOutcomeId() {
+		return awayTeamOutcomeId;
+	}
+
+	public void setAwayTeamOutcomeId(long awayTeamOutcomeId) {
+		this.awayTeamOutcomeId = awayTeamOutcomeId;
+	}
+
+	public long getDrawOutcomeId() {
+		return drawOutcomeId;
+	}
+
+	public void setDrawOutcomeId(long drawOutcomeId) {
+		this.drawOutcomeId = drawOutcomeId;
+	}
+	
+	
 }

@@ -19,7 +19,7 @@ public class OverUnderBuilder extends AbstractBuilder
 	{
 		return new OverUnderRawData.Builder()
 					.odds(resultSet.getFloat(1))
-					.key(convert(resultSet.getString(2)))
+					.key(resultSet.getLong(4))
 					.threshold(resultSet.getFloat(3))
 					.outcomeId(resultSet.getLong(4))
 					.build();
@@ -27,6 +27,10 @@ public class OverUnderBuilder extends AbstractBuilder
 	
 	
 	
+
+	
+	
+	@SuppressWarnings("unused")
 	private long convert(String str)
 	{
 		if(str.contains("?coupon"))

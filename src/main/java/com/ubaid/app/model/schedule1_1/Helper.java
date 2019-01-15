@@ -59,6 +59,48 @@ public enum Helper
 		}
 	},
 	
+	HOMETEAMODDS {
+		@Override
+		public String toString() {
+			return "homeTeamOdds";
+		}
+	},
+	
+	AWAYTEAMODDS {
+		@Override
+		public String toString() {
+			return "awayTeamOdds";
+		}
+	},
+	
+	DRAWODDS {
+		@Override
+		public String toString() {
+			return "drawOdds";
+		}
+	},
+	
+	HOMETEAMOUTCOMEID {
+		@Override
+		public String toString() {
+			return "homeTeamOutcomeId";
+		}
+	},
+	
+	AWAYTEAMOUTCOMEID {
+		@Override
+		public String toString() {
+			return "awayTeamOutcomeId";
+		}
+	},
+	
+	DRAWOUTCOMEID {
+		@Override
+		public String toString() {
+			return "drawOutcomeId";
+		}
+	},
+	
 	LASTUPDATETIME {
 		@Override
 		public String toString() {
@@ -76,8 +118,14 @@ public enum Helper
 	OLDThresHOLD{
 		@Override
 		public String toString() {
-			// TODO Auto-generated method stub
 			return "oldThreshold";
+		}
+	},
+	
+	BETTINGTYPE{
+		@Override
+		public String toString() {
+			return "bettingType";
 		}
 	}
 

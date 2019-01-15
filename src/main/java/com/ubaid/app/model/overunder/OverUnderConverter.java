@@ -66,9 +66,11 @@ public class OverUnderConverter implements Converter
 						if(threshold == rawData2.getThreshold())
 						{
 							//finding the over odd and under odd
-							//smaller coupon number will be under
-							//larger coupon number will be over
-
+							//larger coupon number will be under
+							//under will have outcome1
+							//smaller coupon number will be over
+							//over will have outcome2
+							
 							if(rawData.getKey() < rawData2.getKey())
 							{
 								//setting over odds to match of rawData (having smaller key)
@@ -76,6 +78,8 @@ public class OverUnderConverter implements Converter
 								match.setUnderOdds(rawData2.getOdds());
 								match.setAwayTeamThreshold1(rawData.getThreshold());
 								match.setHomeTeamThreshold1(rawData.getThreshold());
+								match.setOutcome1(rawData2.getOutcomeId());
+								match.setOutcome2(rawData.getOutcomeId());
 								matches.add(match);
 								break;
 							}
@@ -86,6 +90,8 @@ public class OverUnderConverter implements Converter
 								match.setUnderOdds(rawData.getOdds());
 								match.setAwayTeamThreshold1(rawData.getThreshold());
 								match.setHomeTeamThreshold1(rawData.getThreshold());
+								match.setOutcome1(rawData.getOutcomeId());
+								match.setOutcome2(rawData2.getOutcomeId());
 								matches.add(match);
 								break;
 							}								

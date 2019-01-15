@@ -1,12 +1,12 @@
 /*Notification */
 #flash_message{
   height: 50px;
-  width: 200px;
+  width: 300px;
   position: absolute;
-  left: 43%;
-  top: 14%;
+  left: 40%;
   text-align: center;	
   display:none;
+  font-size: 10px;
 }
 
 

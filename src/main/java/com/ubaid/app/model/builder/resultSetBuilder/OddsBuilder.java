@@ -14,49 +14,7 @@ public class OddsBuilder extends AbstractBuilder
 	{
 
 	}
-/*
-	@Override
-	public LinkedList<Entity> build(ResultSet resultSet)
-	{
-		LinkedList<Entity> entities = new LinkedList<Entity>();
-		try
-		{
-	
-			while(resultSet.next())
-			{
-				try
-				{
-					Entity entity = new Odds.Builder()
-							.odds(resultSet.getFloat(1))
-							.name(resultSet.getString(2))
-							.threshold(resultSet.getFloat(3))
-							.build();
-					entities.add(entity);
-				}
-				catch(SQLException exp)
-				{
-					exp.printStackTrace();
-				}
-				catch(Exception exp)
-				{
-					exp.printStackTrace();
-				}
-			}
-		}
-		catch(SQLException exp)
-		{
-			exp.printStackTrace();
-		}
-		catch(Exception exp)
-		{
-			exp.printStackTrace();
-		}
-		
-		
-		return entities;
-	}
-*/
-	
+
 	@Override
 	Entity _buildEntity(ResultSet resultSet) throws SQLException
 	{
@@ -64,6 +22,7 @@ public class OddsBuilder extends AbstractBuilder
 				.odds(resultSet.getFloat(1))
 				.name(resultSet.getString(2))
 				.threshold(resultSet.getFloat(3))
+				.outcomeId(resultSet.getLong(4))
 				.build();
 	}
 

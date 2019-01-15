@@ -17,7 +17,7 @@ public class RegisteredOutcomeDAO extends AbstractDAO
 {
 
 
-	private static final String query = "INSERT INTO registeredOutcome VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String query = "INSERT INTO registeredOutcome VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String query1 = "SELECT * FROM registeredOutcome";
 	private static final String delQuery = "DELETE FROM registeredOutcome WHERE id = ?";
 	
@@ -51,6 +51,7 @@ public class RegisteredOutcomeDAO extends AbstractDAO
 			st.setString(9, outcome.getAwayTeam());
 			st.setTimestamp(10, outcome.getRegisterTime());
 			st.setTimestamp(11, outcome.getChangedTime());
+			st.setString(12, outcome.getBettingType().toString());
 			st.executeUpdate();
 			
 			return true;

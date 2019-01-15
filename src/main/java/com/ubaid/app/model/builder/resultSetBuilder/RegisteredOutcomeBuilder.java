@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.ubaid.app.model.objects.Entity;
+import com.ubaid.app.model.schedule1_1.BettingType;
 import com.ubaid.app.model.schedule1_1.Outcome;
 
 public class RegisteredOutcomeBuilder extends AbstractBuilder {
@@ -25,6 +26,7 @@ public class RegisteredOutcomeBuilder extends AbstractBuilder {
 					.awayTeam(resultSet.getString(9))
 					.registerTime(resultSet.getTimestamp(10))
 					.changedTime(resultSet.getTimestamp(11))
+					.bettingType(BettingType.valueOf(resultSet.getString(12)))
 					.build();
 	}
 

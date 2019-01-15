@@ -18,6 +18,7 @@ public final class Outcome extends Entity {
 	private String matchName;
 	private Timestamp changedTime;
 	private Timestamp registerTime;
+	private BettingType bettingType;
 
 	public float getThreshold() {
 		return threshold;
@@ -115,23 +116,13 @@ public final class Outcome extends Entity {
 		this.registerTime = registerTime;
 	}
 
-	
-	
-	
-	@Override
-	public String toString() {
-		return "Outcome [threshold=" + threshold + ", oldThreshold=" + oldThreshold + ", odds=" + odds + ", oldOdds="
-				+ oldOdds + ", id=" + id + ", " + (leagueName != null ? "leagueName=" + leagueName + ", " : "")
-				+ (participant != null ? "participant=" + participant + ", " : "")
-				+ (homeTeam != null ? "homeTeam=" + homeTeam + ", " : "")
-				+ (awayTeam != null ? "awayTeam=" + awayTeam + ", " : "")
-				+ (matchName != null ? "matchName=" + matchName + ", " : "")
-				+ (changedTime != null ? "changedTime=" + changedTime + ", " : "")
-				+ (registerTime != null ? "registerTime=" + registerTime : "") + "]";
+	public BettingType getBettingType() {
+		return bettingType;
 	}
 
-
-
+	public void setBettingType(BettingType bettingType) {
+		this.bettingType = bettingType;
+	}
 
 	public static class Builder {
 		private float threshold;
@@ -146,6 +137,7 @@ public final class Outcome extends Entity {
 		private String matchName;
 		private Timestamp changedTime;
 		private Timestamp registerTime;
+		private BettingType bettingType;
 
 		public Builder threshold(float threshold) {
 			this.threshold = threshold;
@@ -207,6 +199,11 @@ public final class Outcome extends Entity {
 			return this;
 		}
 
+		public Builder bettingType(BettingType bettingType) {
+			this.bettingType = bettingType;
+			return this;
+		}
+
 		public Outcome build() {
 			return new Outcome(this);
 		}
@@ -225,5 +222,21 @@ public final class Outcome extends Entity {
 		this.matchName = builder.matchName;
 		this.changedTime = builder.changedTime;
 		this.registerTime = builder.registerTime;
+		this.bettingType = builder.bettingType;
 	}
+
+	@Override
+	public String toString() {
+		return "Outcome [threshold=" + threshold + ", oldThreshold=" + oldThreshold + ", odds=" + odds + ", oldOdds="
+				+ oldOdds + ", id=" + id + ", " + (leagueName != null ? "leagueName=" + leagueName + ", " : "")
+				+ (participant != null ? "participant=" + participant + ", " : "")
+				+ (homeTeam != null ? "homeTeam=" + homeTeam + ", " : "")
+				+ (awayTeam != null ? "awayTeam=" + awayTeam + ", " : "")
+				+ (matchName != null ? "matchName=" + matchName + ", " : "")
+				+ (changedTime != null ? "changedTime=" + changedTime + ", " : "")
+				+ (registerTime != null ? "registerTime=" + registerTime + ", " : "")
+				+ (bettingType != null ? "bettingType=" + bettingType : "") + "]";
+	}
+	
+	
 }

@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.ubaid.app.model.dao.RegisteredOutcomeDAO;
 import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.RegisteredOutcomeLogic;
+import com.ubaid.app.model.schedule1_1.BettingType;
 import com.ubaid.app.model.schedule1_1.Helper;
 import com.ubaid.app.model.schedule1_1.Outcome;
 import com.ubaid.app.model.schedule1_1.Scheduler;
@@ -47,6 +48,7 @@ public class _AHOURegisterar extends HttpServlet
 									.odds(map.getFloat(Helper.ODDS.toString()))
 									.registerTime(new Timestamp(System.currentTimeMillis()))
 									.changedTime(new Timestamp(System.currentTimeMillis()))
+									.bettingType(BettingType.valueOf(map.getString(Helper.BETTINGTYPE.toString())))
 									.build();
 			if(isAdd)
 				add(logic, outcome);
