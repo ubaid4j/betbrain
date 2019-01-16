@@ -3,11 +3,9 @@ package com.ubaid.app.model.objects;
 import java.sql.Timestamp;
 import java.util.Hashtable;
 import java.util.LinkedList;
-import java.util.Map;
 
 import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.OddsLogic;
-import com.ubaid.app.model.logic.matchLogic.MatchLogic;
 import com.ubaid.app.model.singleton.HashFunction;
 
 public class Match {
@@ -251,31 +249,8 @@ public class Match {
 		this.homeTeamOdds = builder.homeTeamOdds;
 		this.drawOdds = builder.drawOdds;
 	}
-	public Match getMatch(long match_id)
-	{
-		MatchLogic logic = new MatchLogic();
-		return logic.getMatch(match_id);
-	}
-	public boolean compare()
-	{
-		return isChanged(getMatch(getId()));
-	}
-	public boolean isChanged(Match newMatch)
-	{
-		if(
-					(Math.abs(newMatch.getAwayTeamOdds() - getAwayTeamOdds()) > 0.000001)
-				||
-					(Math.abs(newMatch.getDrawOdds() - getDrawOdds()) > 0.000001)
-				|| 
-					(Math.abs(newMatch.getHomeTeamOdds() - getHomeTeamOdds()) > 0.000001)
-		  )
-		{
-			setCurrentMatch(newMatch);
-			return true;
-		}
-		
-		return false;
-	}
+
+	
 	public Match getCurrentMatch() {
 		return currentMatch;
 	}

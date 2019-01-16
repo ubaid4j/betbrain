@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import com.ubaid.app.model.dao.RegisteredOutcomeDAO;
 import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.RegisteredOutcomeLogic;
 import com.ubaid.app.model.schedule1_1.BettingType;

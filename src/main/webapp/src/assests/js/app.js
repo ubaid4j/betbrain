@@ -479,7 +479,7 @@ function appendValues(object, teams)
 			header.append("<th scope='col'>#</th>");
 			header.append("<th scope='col' class='l432' data-defaultsign='_19'>Over</th>");
 			header.append("<th scope='col'>#</th>");
-			header.append("<th scope='col' class='l432' data-defaultsign='_19'>2 (" + teams[1] + ")</th>");
+			header.append("<th scope='col' class='l432' data-defaultsign='_19'>Under</th>");
 
 			$.bootstrapSortable({ applyLast: true });
 		});

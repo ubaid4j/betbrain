@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ubaid.app.controller.Controller;
 import com.ubaid.app.model.SportType;
 import com.ubaid.app.model.logic.EventsLogic;
 import com.ubaid.app.model.logic.Logic;
@@ -28,11 +27,6 @@ public class _Events extends HttpServlet
 	{
 		try
 		{
-//			Controller controller = Controller.getController();
-//			controller.setTerminate(true);
-//			controller.getService().shutdownNow();
-
-//			Controller.pauseNotificationSystem();
 			
 			String attribute = request.getParameter("name");
 			logic  = new EventsLogic();
@@ -71,14 +65,7 @@ public class _Events extends HttpServlet
 			}
 			
 			request.getSession().setAttribute("list", list);
-			
-//			ExecutorService service = Executors.newFixedThreadPool(1);
-//			service.execute(new TrackedMatchList());
-//			controller.setSevice(service);
-//			controller.setTerminate(false);
-
-//			Controller.resumeNotificationSystem();
-			
+						
 			response.getWriter().write("200");
 		}
 		catch(Exception exp)

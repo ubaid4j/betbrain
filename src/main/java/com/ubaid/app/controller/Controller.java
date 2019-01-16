@@ -11,21 +11,7 @@ public class Controller
 	private boolean terminate = false;
 	
 	
-	public static void pauseNotificationSystem()
-	{
-//		Controller controller = Controller.getController();
-//		controller.setTerminate(true);
-//		controller.getService().shutdownNow();
-	}
 	
-	public static void resumeNotificationSystem()
-	{
-//		Controller controller = Controller.getController();
-//		ExecutorService service = Executors.newFixedThreadPool(1);
-//		service.execute(new TrackedMatchList());
-//		controller.setSevice(service);
-//		controller.setTerminate(false);
-	}
 	
 	private ExecutorService checkNullity(ExecutorService service)
 	{
