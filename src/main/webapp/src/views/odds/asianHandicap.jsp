@@ -1,8 +1,6 @@
 <%@page import="java.util.List"%>
 <%@page import="com.ubaid.app.model.objects.SubEvents"%>
 <%@page import="com.ubaid.app.model.objects.Match"%>
-<%@page import="com.ubaid.app.model.schedule.TrackedMatchList"%>
-<%@page import="com.ubaid.app.model.schedule.Checked"%>
 
 
 	<table class="table table-dark bg-dark" id="trackedEvents">

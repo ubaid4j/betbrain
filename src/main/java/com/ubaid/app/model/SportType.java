@@ -6,7 +6,8 @@ public enum SportType
 	HandBall(7),
 	BasketBall(8),
 	VolleyBall(20),
-	ESports(90);
+	ESports(90),
+	IceHokey(6);
 	
 	private int id;
     SportType(int id) { this.id = id; }

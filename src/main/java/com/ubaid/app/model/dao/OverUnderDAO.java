@@ -34,7 +34,6 @@ public class OverUnderDAO extends AbstractDAO
 										"date(e.startTime) between date(curdate()) and date(date_add(date(curdate()), interval 3 day)) " +
 										"and " +
 										"e.id = ? " +
-										"order by `key` asc " +
 										";" ;
 	
 	public OverUnderDAO()

@@ -14,7 +14,7 @@ import com.ubaid.app.model.singleton.DataSource;
 public class SportDAO extends AbstractDAO
 {
 
-	private static final String query = "select id, name from Sport where id in (1, 7, 8, 20, 90);";
+	private static final String query = "select id, name from Sport where id in (1, 7, 8, 20, 90, 6);";
 
 	@Override
 	public LinkedList<Entity> getAll()

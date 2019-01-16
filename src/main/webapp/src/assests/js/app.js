@@ -4,6 +4,162 @@ $(function()
 	get();
 });
 
+function get()
+{
+	$.get("/app1/_Sport", function(data)
+	{
+		var object = JSON.parse(data);
+		var url  = object.url;
+		$("#app").load(url, function(e)
+		{
+			setToggling();
+		});
+	});
+}
+
+function setToggling()
+{
+
+	$('[data-toggle="tab"]').click(function(e)
+	{
+		//setting $this to this
+	    var $this = $(this),
+	    
+	    //getting loadURL
+	    loadurl = $this.attr('href'),
+	    
+	    //getting target element
+	    targ = $this.attr("aria-controls");
+
+	    //targeted tab
+	    var tab = $("#"+targ);
+	    
+	    $.ajax(
+	    {
+	    	  url: "/app1/_Events",
+	    	  type: "get", 
+	    	  data:
+	    	  { 
+	    	    name: targ
+	    	  },
+	    	  success: function(response)
+	    	  {
+	    		  //loading all the events
+	    		  $("#" +targ).load("/app1/src/views/landingPage/events.jsp");
+	    		  
+	    		  //showing the events
+	    		  $.when($(targ + "_tab").tab("show")).done(function()
+	    		  {
+	    			  window.setTimeout(search, 1000);
+	    		  });
+
+	    	  },
+	    	  error: function(xhr)
+	    	  {
+	    		  console.log(xhr);
+	    	  }
+	    });
+	});
+}
+
+function search()
+{
+
+	$("#search").on("keyup", function()
+	{
+	    var value = $(this).val().toLowerCase();
+	    var _class = null;
+	    
+	    $("#events tr").filter(function()
+	    {
+	    	var text = $(this).text();
+	    
+	    	var display = $(this).text().toLowerCase().indexOf(value) > -1;
+	    	var display2 = $(this).val();
+	    	console.log(display2);
+	    	
+	    	if(display == true)
+    		{
+	    		_class = $(this).attr("class");
+	    		$("." + _class).show();
+
+    		}
+	    	else
+	    	{
+	    		if(!($(this).attr("class") == _class))
+	    			$(this).hide();
+	    	}
+	    	
+	    });
+	});
+}
+
+
+//getting match of the league
+function handlerForShowingSubEvents(id, eventName)
+{
+	//getting the button
+	var targetedButton = $("button[aria-controls='" + id + "']");
+	
+	//getting the state of button [if expanded or not]
+	var ae = targetedButton.attr("aria-expanded");
+	
+	//getting the boolean [if button is expanded then decision will false, otherwise true]
+	var decision = (ae == 'false');
+	
+	//if true
+	if(decision)
+	{
+
+		//w = window
+		var collapse_w = $("#_" + id);
+				
+		//here data will be disappeared from the second [the expanded area]
+		$.when(collapse_w.empty()).done(function()
+		{
+			collapse_w.load("/app1/src/views/animation/spinner.html");			
+		});
+
+
+		//creating a request to _SubEvents
+		//we are sending the id of event [match] and match name 
+		$.ajax(
+	    {
+			  url: "/app1/_SubEvent",
+			  type: "get", 
+			  data:
+			  { 
+			    id: id,
+			    eventName: eventName
+			  },
+			  success: function(response)
+			  {
+				    //on success response, first empty the spinner 
+				    //then load the subEvents .jsp file 
+				    //and then set Handler on the check boxes
+					$.when(collapse_w.empty()).done(function()
+					{
+						  $.when(collapse_w.load("/app1/src/views/landingPage/subEvents.jsp").hide().fadeIn(1000)).done(function()
+						  {
+				    		  window.setTimeout(setHandlerOnCheckBox, 500);				  	   
+						  });					
+					});				  
+			  },
+			  error: function(xhr)
+			  {
+					$.when(collapse_w.empty()).done(function()
+					{
+						  $.when(collapse_w.load("<h3>Unknown Error</h3>").hide().fadeIn(1000)).done(function()
+						  {
+							  console.log("Error");
+						  });					
+					});				  
+
+			  }
+		});			
+	}
+}
+
 
 
 function notificationButtonHandler()
@@ -12,14 +168,17 @@ function notificationButtonHandler()
 	$.get("/app1/notification", function(data)
 	{
 		console.log(data);
-		$.when($("#s_w").load("/app1/src/views/notifications/notifications.jsp")).done(function()
-		{
-			start();
+		$.when($("#s_w").fadeOut('slow').empty()).done(function(){
+			$.when($("#s_w").load("/app1/src/views/notifications/notifications.jsp").fadeIn('slow')).done(function()
+			{
+				start();									
+			});
 		});
-		
 	});
-
 }
+
+//global notification row
+var notification_row = new Array();
 
 function mainPage()
 {
@@ -34,6 +193,7 @@ function mainPage()
 
 	});
 }
+
 
 
 
@@ -66,13 +226,14 @@ function start()
 							+"<td scope='row'>" + match['threshold'] + " -> " + match['oldThreshold'] + "</td>"
 				+ "</tr>";
 		
-		console.log(row);
+		
+		notification_row.push(row);
 		
 		$.playSound("http://www.noiseaddicts.com/samples_1w72b820/3724.mp3");		
 		
 		var table = $("#notification_table");
 		table.prepend(row).hide().fadeIn('slow');
-	
+		
 	};
 
 	source.onopen = function(){console.log("Connected....");};
@@ -92,15 +253,13 @@ function trackedEventDeleteButtonHandler()
 
 		console.log(targetRow);
 
-		
 		$.ajax(
 	    {
-	    	  url: "/app1/_track",
+	    	  url: "/app1/_deleteRegisteredOutcome",
 	    	  type: "get", 
 	    	  data:
 	    	  { 
 	    	    id: id,
-	    	    checked: false
 	    	  },
 	    	  success: function(response)
 	    	  {
@@ -121,72 +280,10 @@ function trackedEventDeleteButtonHandler()
 
 
 
-function setToggling()
-{
-	console.log("Toggling");
-	$('[data-toggle="tab"]').click(function(e)
-	{
-		//setting $this to this
-	    var $this = $(this),
-	    
-	    //getting loadURL
-	    loadurl = $this.attr('href'),
-	    
-	    //getting target element
-	    targ = $this.attr("aria-controls");
-
-	    
-	    var tab = $("#"+targ);
-	    
-	    
-
-	    $.ajax(
-	    {
-	    	  url: "/app1/_Events",
-	    	  type: "get", 
-	    	  data:
-	    	  { 
-	    	    name: targ
-	    	  },
-	    	  success: function(response)
-	    	  {
-	    		  //loading all the events
-	    		  $("#" +targ).load("/app1/src/views/landingPage/events.jsp");
-	    		  
-	    		  //showing the events
-	    		  $.when($(targ + "_tab").tab("show")).done(function()
-	    		  {
-	    			  window.setTimeout(search, 1000);
-//		    		  window.setTimeout(getDataFromButtonForOdds, 6000);
-
-	    		  });
-//	    		  waitForElementToDisplay('[data-toggle="collapse"]', 200);
-
-	    	  },
-	    	  error: function(xhr)
-	    	  {
-	    		  console.log(xhr);
-	    	  }
-	    });
-	});
-
-}
 
 
 
 
-function get()
-{
-	$.get("/app1/_Sport", function(data)
-	{
-		var object = JSON.parse(data);
-		var url  = object.url;
-		$("#app").load(url, function(e)
-		{
-			setToggling();
-		});
-	});
-}
 
 $("#refresh1").click(function()
 {
@@ -215,10 +312,19 @@ function trackedEventsDisplay()
 		  },
 		  success: function(response)
 		  {
-			  $.when($("#s_w").load("/app1/src/views/tracked/events.jsp")).done(function()
-			  {
-	    		  window.setTimeout(trackedEventDeleteButtonHandler, 1000);
-			  });
+			 var array = JSON.parse(response);
+			 console.log(array);
+
+			 $.when(appendTrackedEvents(array)).done(function()
+			 {
+				var head = $("#trackedEvents thead tr");
+				head.append("<th scope='col'>Del</th>");
+				head.append("<th scope='col' data-defaultsign='az' data-sortcolumn='true'>League</th>");
+				head.append("<th scope='col' data-defaultsign='az'>Match</th>");
+				head.append("<th scope='col' data-defaultsign='az'>BettingType</th>");
+				head.append("<th scope='col' data-defaultsign='az'>Affected Team</th>");
+				$.bootstrapSortable({ applyLast: true });	
+			 });			 
 		  },
 		  error: function(xhr)
 		  {
@@ -230,166 +336,60 @@ function trackedEventsDisplay()
 
 }
 
-//getting subevents
-function handlerForShowingSubEvents(id, eventName)
+function appendTrackedEvents(array)
 {
-	
-	var targetedButton = $("button[aria-controls='" + id + "']");
-	var ae = targetedButton.attr("aria-expanded");
-	
-	var decision = (ae == 'false');
-	
-	
-	if(decision)
-	{
-		console.log("Creating get request for subevents");
+	 var _table = "<table class='table table-dark bg-dark table-hover sortable' id='trackedEvents'>" +
+	 					"<thead>" +
+	 						"<tr></tr>" +
+	 					"</thead>" +
+	 					"<tbody>" +
+	 					"</tbody>" +
+	 			  "</table>"
+	 var ss = $("#s_w");
 
-		//w = window
-		var collapse_w = $("#_" + id);
-				
-		//here data will be disappeared from the second div
-		$.when(collapse_w.empty()).done(function()
-		{
-			collapse_w.load("/app1/src/views/animation/spinner.html");			
-		});
+	 $.when(ss.fadeIn('slow').empty()).done(function()
+	 {
+		 $.when(ss.append(_table)).done(function()
+	     {
+			 var table = $("#trackedEvents tbody");
+			 
+			 $.when($.each(array, function(index, event)
+		     {
+				 var row = "<tr>" +
+								"<td scope='row'>" + 
+									"<button type='button' class='btn btn-secondary btn-sm del_tracked_event' value=" + event.outcomeId + ">del</button>" +
+								"</td>" +
+								"<td scope='row'>" + event.leagueName + "</td>" +
+								"<td scope='row'>" + event.matchName + "</td>" +
+								"<td scope='row'>" + event.bettingType + "</td>" +
+								"<td scope='row'>" + event.participant + "</td>" +
+							"</tr>";
+				 table.append(row).hide().fadeIn(index*700);		
+		     })).done(function()
+		     {
+		    	 trackedEventDeleteButtonHandler();
+		     });
 
-		
-		$.ajax(
-	    {
-			  url: "/app1/_SubEvent",
-			  type: "get", 
-			  data:
-			  { 
-			    id: id,
-			    eventName: eventName
-			  },
-			  success: function(response)
-			  {
-					$.when(collapse_w.empty()).done(function()
-					{
-						  $.when(collapse_w.load("/app1/src/views/landingPage/subEvents.jsp").hide().fadeIn(1000)).done(function()
-						  {
-				    		  window.setTimeout(setHandlerOnCheckBox, 500);				  	   
-						  });					
-					});				  
-			  },
-			  error: function(xhr)
-			  {
-					$.when(collapse_w.empty()).done(function()
-					{
-						  $.when(collapse_w.load("<h3>Unknown Error</h3>").hide().fadeIn(1000)).done(function()
-						  {
-							  console.log("Error");
-						  });					
-					});				  
-
-			  }
-		});			
-	}
+	     });
+	
+	 });
 }
 
-
-/*
-function getDataFromButtonForOdds()
-{
-	
-	console.log("Registering Buttons");
-	
-	var buttons = $('[data-toggle="collapse"]');
-	
-	$('[data-toggle="collapse"]').click(function(e)
-	{
-		var $this = $(this);
-		var id = $this.attr("aria-controls");
-
-		console.log("Creating get request for /app1/_SubEvent");
-
-	    $.ajax(
-	    {
-	    	  url: "/app1/_SubEvent",
-	    	  type: "get", 
-	    	  data:
-	    	  { 
-	    	    id: id
-	    	  },
-	    	  success: function(response)
-	    	  {
-	    		  $.when($("#_" + id).load("/app1/src/views/landingPage/subEvents.jsp")).done(function()
-	    		  {
-	    			  console.log("Loading done");
-		    		  window.setTimeout(setHandlerOnCheckBox, 1000);
-	    			  	   
-	    		  });
-	    	  },
-	    	  error: function(xhr)
-	    	  {
-	    		  console.log(xhr);
-	    	  }
-	    });
-		
-	});
-}
-*/
-
-
-
-
-function search()
-{
-
-	$("#search").on("keyup", function()
-	{
-	    var value = $(this).val().toLowerCase();
-	    var _class = null;
-	    
-	    $("#events tr").filter(function()
-	    {
-	    	var text = $(this).text();
-	    
-	    	var display = $(this).text().toLowerCase().indexOf(value) > -1;
-	    	var display2 = $(this).val();
-	    	console.log(display2);
-	    	
-	    	if(display == true)
-    		{
-	    		_class = $(this).attr("class");
-	    		$("." + _class).show();
-
-    		}
-	    	else
-	    	{
-	    		if(!($(this).attr("class") == _class))
-	    			$(this).hide();
-	    	}
-	    	
-	    });
-	    
-
-	});
-}
+/*--------------------------------------------------------handling odds-------------------------------------------------*/
 
 function handleOdds(eventId, homeTeam, awayTeam, bettingType, eventName)
 {
-/*
-	console.log("Event ID is: " + eventId);
-	console.log("Home Team is: " + homeTeam);
-	console.log("away Team is: " + awayTeam);
-	console.log("betting type is: " + bettingType);
-*/
-	
-	
 	//secondary window = sw
 	var sw = $("#s_w");
 	if(bettingType == "AH")
-	{
-			
+	{			
 		//here data will be disappeared from the second div
 		$.when(sw.empty()).done(function()
 		{
 			sw.load("/app1/src/views/animation/wait.html");			
 		});
 		
-	
+		//creating get request for /_AssianHandicap
 		$.ajax(
 		{
 			url: "/app1/_AssianHandicap",
@@ -401,19 +401,21 @@ function handleOdds(eventId, homeTeam, awayTeam, bettingType, eventName)
 			},
 			success: function(data)
 			{
+				//on success, getting data [arrays of assian handicap odds]
 				var object = JSON.parse(data);
 				$.when(sw.empty()).done(function()
 				{
 					$.when($("#s_w").load("/app1/src/views/tables/AHtable.html")).done(function()
 					{						
 						var querySelector = "#AHtable tbody";
+						//creating teams variable to store some info
 						var teams = [homeTeam, awayTeam, 'Assian Handicap', eventName];
-						waitForElementToDisplay(querySelector, 100, object, teams);
+						//passing them a method which wait for AHtable to dispaly and then 
+						//pass this data according to requirement
+						append(querySelector, 100, object, teams);
 					});
 	
 				});
-
-				
 			},
 			error: function(data)
 			{
@@ -429,7 +431,7 @@ function handleOdds(eventId, homeTeam, awayTeam, bettingType, eventName)
 			sw.load("/app1/src/views/animation/wait.html");			
 		});
 		
-	
+		//creating request for _OverUnder
 		$.ajax(
 		{
 			url: "/app1/_OverUnder",
@@ -441,30 +443,47 @@ function handleOdds(eventId, homeTeam, awayTeam, bettingType, eventName)
 			},
 			success: function(data)
 			{
+				//on success: parsing data [array of over under odds]
 				var object = JSON.parse(data);
-				console.log(object);
 				$.when(sw.empty()).done(function()
 				{
 					$.when($("#s_w").load("/app1/src/views/tables/AHtable.html")).done(function()
 					{						
 						var querySelector = "#AHtable tbody";
+						//creating teams array to store important info
 						var teams = [homeTeam, awayTeam, 'Over/Under', eventName];
-						waitForElementToDisplay(querySelector, 100, object, teams);
+						//passing to method which will wait until AHtable fully loaded 
+						//and pass next according to odds type
+						append(querySelector, 100, object, teams);
 					});
 	
 				});
-
-				
 			},
 			error: function(data)
 			{
 				alert(data);
 			}
 		});
-		
 	}
-	
 }
+
+function append(selector, time, object, teams)
+{
+    if(document.querySelector(selector)!=null)
+    {
+    	appendValues(object, teams);
+        return;
+    }
+    else
+    {
+        setTimeout(function()
+        {
+        	append(selector, time, object, teams);
+        }, time);
+    }
+}
+
+
 
 //this function will append values in the tables
 function appendValues(object, teams)
@@ -472,6 +491,7 @@ function appendValues(object, teams)
 	var table = $("#AHtable tbody");
 	var header = $("#AHtable thead tr");
 	
+	//checking Odds type
 	if(teams[2] == 'Over/Under')
 	{
 		$.when(appendInOverUnder(header, table, object, teams)).done(function()
@@ -499,7 +519,6 @@ function appendValues(object, teams)
 		
 	}
 	
-	
 	$("#status_bar").empty();
 	$("#status_bar").append("<h3>"+ teams[2] +"</h3>")
 }
@@ -511,8 +530,7 @@ function appendInAssianHandicapTable(header, table, object, teams)
 
 		var condition1 = event.outcome1Checked;
 		var condition2 = event.outcome2Checked;
-
-		
+	
 		var row = "<tr>" +
 						"<td scope='row'>" + 
 							"<div class='form-check'>" + 
@@ -556,14 +574,73 @@ function appendInAssianHandicapTable(header, table, object, teams)
 					"</tr>";
 		
 					table.append(row).hide().fadeIn(index*700);		
+										
+	})).done(function()
+	{
+		onChangeOfAHOUCheckbox();
+	});	
+}
+
+function appendInOverUnder(header, table, object, teams)
+{
+	$.when($.each(object, function(index, event)
+	{
+
+		var condition1 = event.outcome1Checked;
+		var condition2 = event.outcome2Checked;
+
+		
+		var row = "<tr>" +
+						"<td scope='row'>" + 
+							"<div class='form-check'>" + 
+								"<input class='form-check-input ahoucheckbox' type='checkbox' name='outcomeId'" + (condition1 ? 'Checked' : '') + " value='" + event.outcome1 + "' id=''>" +
+								"<input type='hidden' name='homeTeam' value='" + teams[0] + "' >"  +
+								"<input type='hidden' name='awayTeam' value='"+ teams[1] + "' >"  +
+								"<input type='hidden' name='participant' value='" + "Under" + "' >"  +
+								"<input type='hidden' name='leagueName' value='" + teams[3] + "' >"  +
+								"<input type='hidden' name='matchName' value='" + teams[0] + " VS " + teams[1] + "' >"  +
+								"<input type='hidden' name='threshold' value='"+ event.threshold + "' >"  +
+								"<input type='hidden' name='odds' value='"+ event.underTeamOdds + "' >"  +
+								"<input type='hidden' name='bettingType' value='"+ "OverUnder" + "' >"  +
+
+							"</div>" +
+						"</td>" +
+
+						"<td scope='row' class='l432'>" +
+							"<span>" + event.threshold + "</span>&nbsp;&nbsp; <span class='odds'>" + event.underTeamOdds + "</span>" +
+						"</td>" +
+
+						
+						"<td scope='row'>" + 
+							"<div class='form-check'>" + 
+								"<input class='form-check-input ahoucheckbox' type='checkbox' name='outcomeId'" + (condition2 ? 'Checked' : '') + " value='" + event.outcome2 + "' id=''>" +
+								"<input type='hidden' name='homeTeam' value='" + teams[0] + "' >"  +
+								"<input type='hidden' name='awayTeam' value='"+ teams[1] + "' >"  +
+								"<input type='hidden' name='participant' value='" + "Over" + "' >"  +
+								"<input type='hidden' name='leagueName' value='" + teams[3] + "' >"  +
+								"<input type='hidden' name='matchName' value='" + teams[0] + " VS " + teams[1] + "' >"  +
+								"<input type='hidden' name='threshold' value='"+ event.threshold + "' >"  +
+								"<input type='hidden' name='odds' value='"+ event.overTeamOdds + "' >"  +
+								"<input type='hidden' name='bettingType' value='"+ "OverUnder" + "' >"  +
+	
+							"</div>" +
+						"</td>" +
+
+						"<td scope='row' class='l432'>" +
+							"<span>" + event.threshold + "</span>&nbsp;&nbsp; <span class='odds'>" + event.overTeamOdds + "</span>" +
+						"</td>" +
+					
+					"</tr>";
+		
+					table.append(row).hide().fadeIn(index*700);		
 					
 					
 	})).done(function()
 	{
 		onChangeOfAHOUCheckbox();
 	});
-	
 }
+
 
 
 /*Handler on check boxes*/
@@ -572,8 +649,6 @@ function setHandlerOnCheckBox()
 {
 	console.log("setting check box handler");
 
-	
-	
 	$(".check303").change(function(event)
 	{
 		$this = $(this);	
@@ -697,82 +772,9 @@ function onChangeOfAHOUCheckbox()
 
 /*------------------------------------------------------------------------------------*/
 
-function appendInOverUnder(header, table, object, teams)
-{
-	$.when($.each(object, function(index, event)
-	{
-
-		var condition1 = event.outcome1Checked;
-		var condition2 = event.outcome2Checked;
-
-		
-		var row = "<tr>" +
-						"<td scope='row'>" + 
-							"<div class='form-check'>" + 
-								"<input class='form-check-input ahoucheckbox' type='checkbox' name='outcomeId'" + (condition1 ? 'Checked' : '') + " value='" + event.outcome1 + "' id=''>" +
-								"<input type='hidden' name='homeTeam' value='" + teams[0] + "' >"  +
-								"<input type='hidden' name='awayTeam' value='"+ teams[1] + "' >"  +
-								"<input type='hidden' name='participant' value='" + "Under" + "' >"  +
-								"<input type='hidden' name='leagueName' value='" + teams[3] + "' >"  +
-								"<input type='hidden' name='matchName' value='" + teams[0] + " VS " + teams[1] + "' >"  +
-								"<input type='hidden' name='threshold' value='"+ event.threshold + "' >"  +
-								"<input type='hidden' name='odds' value='"+ event.underTeamOdds + "' >"  +
-								"<input type='hidden' name='bettingType' value='"+ "OverUnder" + "' >"  +
-
-							"</div>" +
-						"</td>" +
-
-						"<td scope='row' class='l432'>" +
-							"<span>" + event.threshold + "</span>&nbsp;&nbsp; <span class='odds'>" + event.underTeamOdds + "</span>" +
-						"</td>" +
-
-						
-						"<td scope='row'>" + 
-							"<div class='form-check'>" + 
-								"<input class='form-check-input ahoucheckbox' type='checkbox' name='outcomeId'" + (condition2 ? 'Checked' : '') + " value='" + event.outcome2 + "' id=''>" +
-								"<input type='hidden' name='homeTeam' value='" + teams[0] + "' >"  +
-								"<input type='hidden' name='awayTeam' value='"+ teams[1] + "' >"  +
-								"<input type='hidden' name='participant' value='" + "Over" + "' >"  +
-								"<input type='hidden' name='leagueName' value='" + teams[3] + "' >"  +
-								"<input type='hidden' name='matchName' value='" + teams[0] + " VS " + teams[1] + "' >"  +
-								"<input type='hidden' name='threshold' value='"+ event.threshold + "' >"  +
-								"<input type='hidden' name='odds' value='"+ event.overTeamOdds + "' >"  +
-								"<input type='hidden' name='bettingType' value='"+ "OverUnder" + "' >"  +
-	
-							"</div>" +
-						"</td>" +
-
-						"<td scope='row' class='l432'>" +
-							"<span>" + event.threshold + "</span>&nbsp;&nbsp; <span class='odds'>" + event.overTeamOdds + "</span>" +
-						"</td>" +
-					
-					"</tr>";
-		
-					table.append(row).hide().fadeIn(index*700);		
-					
-					
-	})).done(function()
-	{
-		onChangeOfAHOUCheckbox();
-	});
-}
 
 
-function waitForElementToDisplay(selector, time, object, teams)
-{
-    if(document.querySelector(selector)!=null)
-    {
-    	appendValues(object, teams);
-        return;
-    }
-    else
-    {
-        setTimeout(function()
-        {
-            waitForElementToDisplay(selector, time, object, teams);
-        }, time);
-    }
-}
+
 
 
 

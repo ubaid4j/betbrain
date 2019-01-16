@@ -38,9 +38,9 @@ public class _Sport extends HttpServlet
 		if(StartUpUtil.isFirst)
 		{
 			StartUpUtil.isFirst = false;
-			startUpUtil.onStart();
+//			startUpUtil.onStart();
 			Controller controller = Controller.getController();
-			controller.startSchedular();
+//			controller.startSchedular();
 		}
 
 		

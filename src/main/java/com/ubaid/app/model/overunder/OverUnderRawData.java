@@ -3,20 +3,19 @@ package com.ubaid.app.model.overunder;
 import com.ubaid.app.model.objects.Entity;
 
 public class OverUnderRawData extends Entity {
-	private long key;
+	//13 Over
+	//14 Under
+	private long typeId;
 	private float odds;
 	private float threshold;
 	private long outcomeId;
 
-	public OverUnderRawData() {
+	public long getTypeId() {
+		return typeId;
 	}
 
-	public long getKey() {
-		return key;
-	}
-
-	public void setKey(long key) {
-		this.key = key;
+	public void setTypeId(long typeId) {
+		this.typeId = typeId;
 	}
 
 	public float getOdds() {
@@ -35,14 +34,22 @@ public class OverUnderRawData extends Entity {
 		this.threshold = threshold;
 	}
 
+	public long getOutcomeId() {
+		return outcomeId;
+	}
+
+	public void setOutcomeId(long outcomeId) {
+		this.outcomeId = outcomeId;
+	}
+
 	public static class Builder {
-		private long key;
+		private long typeId;
 		private float odds;
 		private float threshold;
 		private long outcomeId;
 
-		public Builder key(long key) {
-			this.key = key;
+		public Builder typeId(long typeId) {
+			this.typeId = typeId;
 			return this;
 		}
 
@@ -56,31 +63,20 @@ public class OverUnderRawData extends Entity {
 			return this;
 		}
 
-		public Builder outcomeId(long outcomeId)
-		{
+		public Builder outcomeId(long outcomeId) {
 			this.outcomeId = outcomeId;
 			return this;
 		}
-		
+
 		public OverUnderRawData build() {
 			return new OverUnderRawData(this);
 		}
-		
-	
 	}
 
 	private OverUnderRawData(Builder builder) {
-		this.key = builder.key;
+		this.typeId = builder.typeId;
 		this.odds = builder.odds;
 		this.threshold = builder.threshold;
 		this.outcomeId = builder.outcomeId;
-	}
-
-	public long getOutcomeId() {
-		return outcomeId;
-	}
-
-	public void setOutcomeId(long outcomeId) {
-		this.outcomeId = outcomeId;
 	}
 }

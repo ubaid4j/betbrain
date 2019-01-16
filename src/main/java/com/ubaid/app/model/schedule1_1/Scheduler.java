@@ -105,7 +105,7 @@ public class Scheduler implements Schedule
 					}
 				});
 				updateService.shutdown();
-				Thread.sleep(30000);
+				Thread.sleep(60000);
 			}
 			catch(InterruptedException exp)
 			{

@@ -167,8 +167,10 @@ public class Match {
 	}
 
 	//only for home/draw/away <69> betting type
-	public void execute() {
-		try {
+	public void execute()
+	{
+		try
+		{
 			Logic oddsLogic = new OddsLogic();
 			LinkedList<Entity> odds_ = oddsLogic.getAll(id);
 			int size = odds_.size();

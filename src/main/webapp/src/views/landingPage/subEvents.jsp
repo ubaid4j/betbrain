@@ -2,8 +2,6 @@
 <%@page import="java.util.List"%>
 <%@page import="com.ubaid.app.model.objects.SubEvents"%>
 <%@page import="com.ubaid.app.model.objects.Match"%>
-<%@page import="com.ubaid.app.model.schedule.TrackedMatchList"%>
-<%@page import="com.ubaid.app.model.schedule.Checked"%>
 
 
 <table class="table table-dark bg-dark">
@@ -55,8 +53,8 @@
       <td scope="row"><%= list.get(i).getHomeTeamOdds() %></td>
       <td scope="row"><%= list.get(i).getDrawOdds() %></td>
       <td scope="row"><%= list.get(i).getAwayTeamOdds() %></td>
-      <td scope="row"><button type="button" class="btn btn-secondary btn-sm del_tracked_event" value=<%=list.get(i).getId() %> onclick="handleOdds(<%=list.get(i).getId() %>, '<%= list.get(i).getHomeTeam() %>', '<%= list.get(i).getAwayTeam() %>', 'OU', '<%= eventName%>')">view</button></td>
-      <td scope="row"><button type="button" class="btn btn-secondary btn-sm del_tracked_event" value=<%=list.get(i).getId() %> onclick="handleOdds(<%=list.get(i).getId() %>, '<%= list.get(i).getHomeTeam() %>', '<%= list.get(i).getAwayTeam() %>', 'AH', '<%= eventName%>')">view</button></td>
+      <td scope="row"><button type="button" class="btn btn-secondary btn-sm" value=<%=list.get(i).getId() %> onclick="handleOdds(<%=list.get(i).getId() %>, '<%= list.get(i).getHomeTeam() %>', '<%= list.get(i).getAwayTeam() %>', 'OU', '<%= eventName%>')">view</button></td>
+      <td scope="row"><button type="button" class="btn btn-secondary btn-sm" value=<%=list.get(i).getId() %> onclick="handleOdds(<%=list.get(i).getId() %>, '<%= list.get(i).getHomeTeam() %>', '<%= list.get(i).getAwayTeam() %>', 'AH', '<%= eventName%>')">view</button></td>
 
     </tr>
     

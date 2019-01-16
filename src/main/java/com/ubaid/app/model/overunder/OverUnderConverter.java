@@ -65,36 +65,38 @@ public class OverUnderConverter implements Converter
 						//checking if threshold of first element is equal to the threshold of second element
 						if(threshold == rawData2.getThreshold())
 						{
-							//finding the over odd and under odd
-							//larger coupon number will be under
-							//under will have outcome1
-							//smaller coupon number will be over
-							//over will have outcome2
-							
-							if(rawData.getKey() < rawData2.getKey())
+							//outcome1 is for under
+							//outcome2 is for over
+							if(rawData.getTypeId() == OVERUNDER.OVER.getValue())
 							{
-								//setting over odds to match of rawData (having smaller key)
 								match.setOverOdds(rawData.getOdds());
+								match.setOutcome2(rawData.getOutcomeId());
+
 								match.setUnderOdds(rawData2.getOdds());
+								match.setOutcome1(rawData2.getOutcomeId());
+
 								match.setAwayTeamThreshold1(rawData.getThreshold());
 								match.setHomeTeamThreshold1(rawData.getThreshold());
-								match.setOutcome1(rawData2.getOutcomeId());
-								match.setOutcome2(rawData.getOutcomeId());
+								
 								matches.add(match);
 								break;
+								
 							}
 							else
 							{
-								//setting over odds to match of rawData2 (having smaller key)
 								match.setOverOdds(rawData2.getOdds());
+								match.setOutcome2(rawData2.getOutcomeId());
+
+								
 								match.setUnderOdds(rawData.getOdds());
+								match.setOutcome1(rawData.getOutcomeId());
+
 								match.setAwayTeamThreshold1(rawData.getThreshold());
 								match.setHomeTeamThreshold1(rawData.getThreshold());
-								match.setOutcome1(rawData.getOutcomeId());
-								match.setOutcome2(rawData2.getOutcomeId());
+
 								matches.add(match);
 								break;
-							}								
+							}
 						}
 					}
 					

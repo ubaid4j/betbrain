@@ -18,7 +18,7 @@
   		</form> 
 
 		<div>
-			<button type="button" class="btn btn-secondary front_page_button" onclick="" style="float:left">Tracked Events</button>
+			<button type="button" class="btn btn-secondary front_page_button" onclick="trackedEventsDisplay()" style="float:left">Tracked Events</button>
 		</div>
 
 
