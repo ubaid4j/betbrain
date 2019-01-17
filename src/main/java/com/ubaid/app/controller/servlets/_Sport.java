@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.ubaid.app.controller.Controller;
@@ -38,13 +39,14 @@ public class _Sport extends HttpServlet
 		if(StartUpUtil.isFirst)
 		{
 			StartUpUtil.isFirst = false;
-//			startUpUtil.onStart();
+			startUpUtil.onStart();
 			Controller controller = Controller.getController();
-//			controller.startSchedular();
+			controller.startSchedular();
 		}
 
 		
 		List<Entity> entities = sportLogic.getAll();
+		
 		List<Sport> sports = new ArrayList<>();
 		
 		for(int i = 0; i < entities.size(); i++)
@@ -53,14 +55,17 @@ public class _Sport extends HttpServlet
 		}
 				
 		
+		JSONArray array = new JSONArray();
+		JSONObject object;
 		
-		request.getSession().setAttribute("sportList", sports);
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("url", "/app1/src/views/landingPage/navigator.jsp");
+		for(Sport sport : sports)
+		{
+			object = new JSONObject();
+			object.put("name", sport.getName());
+			array.put(object);
+		}
 		
-		response.getWriter().write(jsonObject.toString());
-	
-		
+		response.getWriter().write(array.toString());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

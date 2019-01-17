@@ -127,6 +127,13 @@ public enum Helper
 		public String toString() {
 			return "bettingType";
 		}
+	},
+	
+	ISCHECKED {
+		@Override
+		public String toString() {
+			return "isChecked";
+		}
 	}
 
 }

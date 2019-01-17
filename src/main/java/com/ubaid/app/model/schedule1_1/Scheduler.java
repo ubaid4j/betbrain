@@ -17,6 +17,8 @@ import com.ubaid.app.model.objects.Entity;
 public class Scheduler implements Schedule
 {
 
+	int index = 0;
+	
 	public Scheduler()
 	{
 		
@@ -30,6 +32,8 @@ public class Scheduler implements Schedule
 		
 		while(true)
 		{
+			System.out.println("Running again: " + index);
+			
 			//let retrieve the ids of outcomes
 			Set<Long> ids = Schedule.trackedOutcomes.keySet();
 			long[] _ids = new long[ids.size()];
@@ -69,8 +73,6 @@ public class Scheduler implements Schedule
 			for(Outcome outcome: outcomes)
 			{
 				Outcome oldOutcome = Schedule.trackedOutcomes.get(outcome.getId());
-				System.out.println("New Outcome: " + outcome);
-				System.out.println("Old Outcome: " + oldOutcome + "\n\n");
 				
 				if(outcome.getOdds() != oldOutcome.getOdds() || outcome.getThreshold() != oldOutcome.getThreshold())
 				{
@@ -105,6 +107,8 @@ public class Scheduler implements Schedule
 					}
 				});
 				updateService.shutdown();
+				System.out.println("There are total tracked events: " + Scheduler.trackedOutcomes.size());
+				System.out.println("Sleeping for 1 minute: " + index);
 				Thread.sleep(60000);
 			}
 			catch(InterruptedException exp)

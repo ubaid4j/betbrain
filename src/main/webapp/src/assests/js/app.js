@@ -7,13 +7,35 @@ $(function()
 function get()
 {
 	$.get("/app1/_Sport", function(data)
-	{
-		var object = JSON.parse(data);
-		var url  = object.url;
-		$("#app").load(url, function(e)
+	{		
+		var sports = JSON.parse(data);
+				
+		var ul = '<ul class="nav nav-tabs" id="myTab" role="tablist" style="cursor: pointer;"></ul>';
+		var tab_content = '<div class="tab-content" id="myTabContent"></div>';
+		var app = $("#app");
+		
+		$.when($.when($.when(app.children().fadeOut('fast').remove()).done(function()
 		{
-			setToggling();
-		});
+			app.append(ul);
+			app.append(tab_content);
+		})).done(function()
+			{
+				ul = $("#myTab");
+				tab_content = $("#myTabContent");
+				var li;
+				var tab_pane;
+				$.each(sports, function(index, sport)
+				{
+					li = '<li class="nav-item"><a class="nav-link" id="' + sport.name + "_tab"   + '"data-toggle="tab"  data-target="' + "#" + sport.name + '" role="tab" aria-controls="' + sport.name + '" aria-selected="false">' + sport.name + '</a></li>';
+					ul.append(li).hide().fadeIn(index * 700);
+					
+					tab_pane = '<div class="tab-pane fade" id="' + sport.name + '" role="tabpanel" aria-labelledby="' + sport.name +  "-tab" + '" ></div>';
+					tab_content.append(tab_pane);
+				});
+		})).done(function()
+			{
+				setToggling();
+			});		
 	});
 }
 
@@ -29,10 +51,10 @@ function setToggling()
 	    loadurl = $this.attr('href'),
 	    
 	    //getting target element
-	    targ = $this.attr("aria-controls");
+	    sportName = $this.attr("aria-controls");
 
-	    //targeted tab
-	    var tab = $("#"+targ);
+	    //targeted pane
+	    var pane = $("#"+sportName);
 	    
 	    $.ajax(
 	    {
@@ -40,18 +62,26 @@ function setToggling()
 	    	  type: "get", 
 	    	  data:
 	    	  { 
-	    	    name: targ
+	    	    name: sportName
 	    	  },
 	    	  success: function(response)
 	    	  {
-	    		  //loading all the events
-	    		  $("#" +targ).load("/app1/src/views/landingPage/events.jsp");
-	    		  
-	    		  //showing the events
-	    		  $.when($(targ + "_tab").tab("show")).done(function()
+
+	    		  $.when($.when(showEvents(response, pane, sportName)).done(function()
 	    		  {
-	    			  window.setTimeout(search, 1000);
+	    			  var header = '<tr><th scope="col">#</th><th scope="col">Event Name</th><th scope="col">Location</th></tr>';
+	    			  $("#" + sportName + " thead").append(header);
+	    			  
+	    		  })).done(function()
+	    		  {
+		    		  //showing the events
+		    		  $.when($(sportName + "_tab").tab("show")).done(function()
+		    		  {
+		    			  window.setTimeout(search, 1000);
+		    		  });
+	    			  
 	    		  });
+	    		  
 
 	    	  },
 	    	  error: function(xhr)
@@ -62,6 +92,71 @@ function setToggling()
 	});
 }
 
+//showing the events
+function showEvents(data, pane, sportName)
+{
+	
+	//let data is in the form data = [{id, name, location}{}{}];
+	var openTable = '<table class="table table-dark leagues" id="' + sportName  + '">';
+	var thead = '<thead></thead>';
+	var tbody = '<tbody></tbody>';
+	var closeTable = '</table>'
+		
+	//creating a table
+	var table = openTable + thead + tbody + closeTable;
+	
+	//parsing the data
+	data = JSON.parse(data);
+
+	//removing the previous table from the pane
+	$.when(pane.children().remove()).done(function()
+	{
+		//appending new table
+		$.when(pane.append(table)).done(function()
+		{
+			var openRow, closeRow, td1, td2, td3, td4, row;
+			closeRow = '</tr>';
+
+			var row2, td21, div1, div2, input1, input2, input3, close;
+			var table = $("#" + sportName + " tbody");
+			
+			//loop the JSON object
+			$.when($.each(data, function(index, event)
+			{
+			
+				openRow = '<tr class="' + event.hash + '">';
+				td1 = '<th scope="row">'+ (index + 1) + '</th>';
+				td2 = '<td scope="row">' + 
+			      		'<button onclick="handlerForShowingSubEvents(' + event.id + ',\'' + event.name + '\')" class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="' +  "#" + event.hash + '" aria-expanded="false" aria-controls="' + event.id + '">' + event.name + '</button>' +
+			      	  '</td>';
+				td3 = '<td scope="row">' + event.location + '</td>';
+
+				//creating first row
+				row = openRow + td1 + td2 + td3 + closeRow;
+
+				td21 = '<td scope="row" colspan="5">';
+				
+				div1 = '<div class="collapse" id="' + event.hash + '">';
+				div2 = '<div class="card card-body bg-dark">';
+				div3 = '<div id="' + "_" + event.id +  '"></div>'
+				
+				input1 = '<input type="hidden" value="' + (index + 1 )+ '">';
+				input2 = '<input type="hidden" value="' + event.name + '">';
+				input3 = '<input type="hidden" value="' + event.location +  '">';
+				close = '</div></div></td></tr>';
+				
+				//creating second row
+				row2 = openRow + td21 + div1 + div2 + div3 + input1 + input2 + input3 + close;
+			
+				//appending in the table
+				table.append(row).append(row2);
+				
+			})).done(function(){});
+		});
+	});
+}
+
+//search the events
 function search()
 {
 
@@ -70,7 +165,7 @@ function search()
 	    var value = $(this).val().toLowerCase();
 	    var _class = null;
 	    
-	    $("#events tr").filter(function()
+	    $(".leagues tr").filter(function()
 	    {
 	    	var text = $(this).text();
 	    
@@ -130,7 +225,6 @@ function handlerForShowingSubEvents(id, eventName)
 			  data:
 			  { 
 			    id: id,
-			    eventName: eventName
 			  },
 			  success: function(response)
 			  {
@@ -138,11 +232,8 @@ function handlerForShowingSubEvents(id, eventName)
 				    //then load the subEvents .jsp file 
 				    //and then set Handler on the check boxes
 					$.when(collapse_w.empty()).done(function()
-					{
-						  $.when(collapse_w.load("/app1/src/views/landingPage/subEvents.jsp").hide().fadeIn(1000)).done(function()
-						  {
-				    		  window.setTimeout(setHandlerOnCheckBox, 500);				  	   
-						  });					
+					{						
+						  showSubEvents(response, collapse_w, eventName);
 					});				  
 			  },
 			  error: function(xhr)
@@ -159,6 +250,82 @@ function handlerForShowingSubEvents(id, eventName)
 		});			
 	}
 }
+
+//this function is used to show the matches of leagues
+function showSubEvents(response, collapse_w, eventName)
+{
+	let openTable = '<table class="table table-dark bg-dark table-hover">',
+		thead = '<thead></thead>',
+		tbody = '<tbody></tbody>',
+		closeTable = '</table>'
+		table = openTable + thead + tbody + closeTable;
+	
+	let header = '<tr><th scope="col">#</th><th scope="col">Home Team</th><th scope="col">Away Team</th><th scope="col">Start Time</th><th scope="col">1</th><th scope="col">X</th><th scope="col">2</th><th scope="col">O/U</th><th scope="col">A/H</th></tr>';
+	
+	let data = JSON.parse(response);
+	
+	//[{isChecked, homeTeam, awayTeam, leagueName, matchName, homeTeamOdds, awayTeamOdds, drawOdds,
+	//homeTeamOutcomeId, awayTeamOutcomeId, drawOutcomeId, bettingType}, {}, {}]
+	
+	let openRow = "<tr>", closeRow = "</tr>",
+		checkBox, td1, td2, td3, td4, td5, td6, td7, td8, td9;
+	
+	if(data.length > 0)
+	{
+		$.when($.when(collapse_w.append(table)).done(function()
+		{
+			table = collapse_w.find("table");
+			
+			$.when($.each(data, function(index, match)
+			{
+				checkbox = '<th scope="row">' +
+							  '<div class="form-check form-check-inline">' + 
+							     '<input class="form-check-input check303" ' + match.isChecked + ' type="checkbox" id="' + ("_" + match.id) + '">' + 
+							     "<input type='hidden' name='homeTeam' value='" + match.homeTeam +  "' >" + 
+							     "<input type='hidden' name='awayTeam' value='" + match.awayTeam +  "' >" +
+							     "<input type='hidden' name='leagueName' value='" + eventName + "' >" + 
+							     "<input type='hidden' name='matchName' value='" + match.homeTeam + ' vs ' + match.awayTeam + "' >" + 
+							     "<input type='hidden' name='homeTeamOdds' value='" + match.homeTeamOdds + "' >" + 
+							     "<input type='hidden' name='awayTeamOdds' value='" + match.awayTeamOdds + "' >" + 
+							     "<input type='hidden' name='drawOdds' value='" + match.drawOdds + "' >" + 
+							     "<input type='hidden' name='homeTeamOutcomeId' value='" + match.homeTeamOutcomeId + "' >" + 
+							     "<input type='hidden' name='awayTeamOutcomeId' value='" + match.awayTeamOutcomeId + "' >" + 
+							     "<input type='hidden' name='drawOutcomeId' value='" + match.drawOutcomeId + "' >" + 
+							     "<input type='hidden' name='bettingType' value='" + 'HomeDrawAway' + "' >" + 
+						       '</div>' +
+							'</th>';
+				
+				td1 = '<td scope="row">' + match.homeTeam + '</td>';
+				td2 = '<td scope="row">' + match.awayTeam + '</td>';
+				td3 = '<td scope="row">' + match.startTime + '</td>';
+				td4 = '<td scope="row">' + match.homeTeamOdds + '</td>';
+				td5 = '<td scope="row">' + match.drawOdds + '</td>';
+				td6 = '<td scope="row">' + match.awayTeamOdds + '</td>';
+
+				td7 = '<td scope="row"><button type="button" class="btn btn-secondary btn-sm" value="' + match.id + '"onclick="handleOdds(' + match.id + ', \'' + match.homeTeam + '\', \'' + match.awayTeam +  '\' , \'OU\', \'' + eventName + '\')">view</button></td>';
+				td8 = '<td scope="row"><button type="button" class="btn btn-secondary btn-sm" value="' + match.id + '"onclick="handleOdds(' + match.id + ', \'' + match.homeTeam + '\', \'' + match.awayTeam +  '\' , \'AH\', \'' + eventName + '\')">view</button></td>';
+							 
+				row = openRow + checkbox + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + closeRow;
+				
+				table.append(row).hide().fadeIn(index * 700);
+			})).done(function()
+			{
+				table.find("thead").append(header).hide().fadeIn('slow');
+			});			
+						
+		})).done(function()
+		{
+			
+		});
+		
+	}
+	else
+	{
+		collapse_w.append("<h6>Oooops! " + eventName + " league contain no match in 3 day interval</h6>")
+	}
+	
+}
+
 
 
 

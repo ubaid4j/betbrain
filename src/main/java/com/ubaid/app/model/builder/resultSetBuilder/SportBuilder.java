@@ -15,8 +15,13 @@ public class SportBuilder extends AbstractBuilder
 	{
 		return new Sport.Builder()
 				.id(resultSet.getLong(1))
-				.name(resultSet.getString(2))
+				.name(removeSpaces(resultSet.getString(2)))
 				.build();
+	}
+	
+	private String removeSpaces(String name)
+	{
+		return name.replaceAll("\\s+", "");
 	}
 	
 }

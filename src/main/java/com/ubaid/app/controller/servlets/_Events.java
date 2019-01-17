@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.ubaid.app.model.SportType;
 import com.ubaid.app.model.logic.EventsLogic;
 import com.ubaid.app.model.logic.Logic;
@@ -50,6 +53,9 @@ public class _Events extends HttpServlet
 				case "E-Sports":
 					type = SportType.ESports;
 					break;
+				case "IceHockey":
+					type = SportType.IceHokey;
+					break;
 				default:
 					type = SportType.FootBall;
 					break;
@@ -64,9 +70,20 @@ public class _Events extends HttpServlet
 				list.add((Events) events.get(i));
 			}
 			
-			request.getSession().setAttribute("list", list);
-						
-			response.getWriter().write("200");
+			JSONArray array = new JSONArray();
+			JSONObject object;
+			
+			for(Events event : list)
+			{
+				object = new JSONObject();
+				object.put("id", event.getId());
+				object.put("name", event.getEventName());
+				object.put("hash", event.getHash());
+				object.put("location", event.getLocationName());
+				array.put(object);
+			}
+									
+			response.getWriter().write(array.toString());
 		}
 		catch(Exception exp)
 		{
