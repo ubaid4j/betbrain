@@ -350,12 +350,34 @@ function showSubEvents(response, collapse_w, eventName)
 
 function notificationButtonHandler()
 {
-	$.when($("#s_w").fadeOut('slow').empty()).done(function(){
-		$.when($("#s_w").load("/app1/src/views/notifications/notifications.jsp").fadeIn('slow')).done(function()
+	$.ajax(
+	{
+		url: "/app1/AppRequestHandler",
+		type: "get",
+		data: {
+			className: "notificationPermission"
+		},
+		success: function(response)
 		{
-			start();									
-		});
+			response = JSON.parse(response);
+			console.log(response);
+			
+			$.when($("#s_w").fadeOut('slow').empty()).done(function()
+			{
+				$.when($("#s_w").load("/app1/src/views/notifications/notifications.jsp").fadeIn('slow')).done(function()
+				{
+					if(response[0].action)
+						start();									
+				});
+			});
+			
+		},
+		error: function(xhr)
+		{
+			
+		}
 	});
+	
 }
 
 
@@ -382,7 +404,7 @@ function start()
 	
 	var source = null;
 	
-	source = new EventSource("/app1/_notification");
+	source = new EventSource("/app1/AppRequestHandler");
 
 	source.onopen = function(){console.log("Connected....");};
 
@@ -413,8 +435,7 @@ function start()
 		
 	};
 
-	source.onopen = function(){console.log("Connected....");};
-	source.onerror = function(){console.log("Error occured");};
+	source.onerror = function(response){console.log(response);};
 }
 
 

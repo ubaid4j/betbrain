@@ -14,6 +14,7 @@ public interface DAO
 	LinkedList<Entity> getAll();
 	LinkedList<Entity> getAll(SportType type);
 	LinkedList<Entity> getAll(long id);
+	LinkedList<Entity> getAll(long id, int eventPartId);
 	boolean deleteById(long id);
 	boolean add(Entity entity) throws ServletException;
 	Entity get(Entity entity);

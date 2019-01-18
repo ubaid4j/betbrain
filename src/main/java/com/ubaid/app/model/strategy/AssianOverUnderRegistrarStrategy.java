@@ -14,7 +14,7 @@ import com.ubaid.app.model.schedule1_1.Helper;
 import com.ubaid.app.model.schedule1_1.Outcome;
 import com.ubaid.app.model.schedule1_1.Scheduler;
 
-public class AssianOverUnderRegistrarStrategy implements RequestHandler
+public class AssianOverUnderRegistrarStrategy extends AbstractRequestHandler
 {
 
 	public AssianOverUnderRegistrarStrategy()

@@ -20,6 +20,8 @@ import com.ubaid.app.model.strategy.AssianOverUnderRegistrarStrategy;
 import com.ubaid.app.model.strategy.DeleteRegisteredEventsStrategy;
 import com.ubaid.app.model.strategy.EventsStrategy;
 import com.ubaid.app.model.strategy.HomeAwayDrawRegisterarStrategy;
+import com.ubaid.app.model.strategy.NotificationPermissionStrategy;
+import com.ubaid.app.model.strategy.NotificationStrategy;
 import com.ubaid.app.model.strategy.OverUnderStrategy;
 import com.ubaid.app.model.strategy.RequestHandler;
 import com.ubaid.app.model.strategy.SportStrategy;
@@ -39,16 +41,15 @@ public class AppRequestHandler extends HttpServlet
         super();
     }
 
-	@SuppressWarnings("unused")
 	@Override
 	public void init() throws ServletException
 	{
 		super.init();
 
 		StartUpUtil startUpUtil = new StartUpUtil();
-//		startUpUtil.onStart();
+		startUpUtil.onStart();
 		Controller controller = Controller.getController();
-//		controller.startSchedular();
+		controller.startSchedular();
 		
 		classHash = new Hashtable<>();
 		classHash.put("sport", new SportStrategy());		
@@ -60,6 +61,8 @@ public class AppRequestHandler extends HttpServlet
 		classHash.put("overUnder", new OverUnderStrategy());
 		classHash.put("hodRegistrar", new HomeAwayDrawRegisterarStrategy());
 		classHash.put("AHOURegistrar", new AssianOverUnderRegistrarStrategy());
+		classHash.put("notification", new NotificationStrategy());
+		classHash.put("notificationPermission", new NotificationPermissionStrategy());
 	}
 		
 	@Override
@@ -80,17 +83,34 @@ public class AppRequestHandler extends HttpServlet
 	}
 
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException
 	{
 				
-		String className = request.getParameter("className");
-		Map<String, String[]> map = request.getParameterMap();
-		RequestHandler handler = classHash.get(className);
-		JSONArray array = handler.get(map);
-		
-		Writer writer = response.getWriter();
-		writer.write(array.toString());
-		writer.flush();
+		try
+		{
+			String className = request.getParameter("className");
+			JSONArray array = null;
+			try
+			{
+				Map<String, String[]> map = request.getParameterMap();
+				RequestHandler handler = classHash.get(className);
+				array = handler.get(map);			
+			}
+			catch(NullPointerException exp)
+			{
+				RequestHandler handler = classHash.get("notification");
+				array = handler.get(response);						
+			}
+			
+			Writer writer = response.getWriter();
+			writer.write(array.toString());
+			writer.flush();
+			
+		}
+		catch(IOException exp)
+		{
+			exp.printStackTrace();
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

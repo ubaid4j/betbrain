@@ -1,7 +1,7 @@
 package com.ubaid.app.model.objects;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -14,10 +14,18 @@ public class Convert_ implements Converter
 	}
 
 	@Override
-	public List<Match> convert(List<SubEvents> events)
+	public List<Match> convert(List<SubEvents> events_l)
 	{
-		int size = events.size();
-		List<Match> matchs = new LinkedList<Match>();
+		int size = events_l.size();
+		List<Match> matchs = new Vector<Match>();
+
+		Vector<SubEvents> events = new Vector<>();
+		
+		for(SubEvents subEvent: events_l)
+		{
+			events.add(subEvent);
+		}
+		
 		ExecutorService service = Executors.newFixedThreadPool(size);
 		
 		for(int i = 0; i < size; i++)

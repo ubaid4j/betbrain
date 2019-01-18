@@ -8,7 +8,7 @@ import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.RegisteredOutcomeLogic;
 import com.ubaid.app.model.schedule1_1.Scheduler;
 
-public class DeleteRegisteredEventsStrategy implements RequestHandler
+public class DeleteRegisteredEventsStrategy extends AbstractRequestHandler
 {
 
 	public DeleteRegisteredEventsStrategy()

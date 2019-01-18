@@ -104,6 +104,14 @@ public abstract class AbstractDAO implements DAO
 		throw new IllegalAccessError("Method not supported");
 	}
 	
+	
+	
+	@Override
+	public LinkedList<Entity> getAll(long id, int eventPartId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	abstract AbstractFactory getFactory();
 	
 	

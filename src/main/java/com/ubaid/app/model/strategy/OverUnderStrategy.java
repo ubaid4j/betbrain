@@ -16,7 +16,7 @@ import com.ubaid.app.model.overunder.OverUnderConverter;
 import com.ubaid.app.model.schedule1_1.Outcome;
 import com.ubaid.app.model.schedule1_1.Scheduler;
 
-public class OverUnderStrategy implements RequestHandler
+public class OverUnderStrategy extends AbstractRequestHandler
 {
 
 	public OverUnderStrategy()

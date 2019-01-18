@@ -12,6 +12,7 @@ public interface Logic
 	LinkedList<Entity> getAll();
 	LinkedList<Entity> getAll(SportType type);
 	LinkedList<Entity> getAll(long id);
+	LinkedList<Entity> getAll(long id, int eventPartId);
 	boolean add(Entity entity) throws ServletException;
 	boolean delete(long id);
 	Entity get(Entity entity);

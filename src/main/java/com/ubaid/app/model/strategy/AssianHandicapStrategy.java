@@ -16,7 +16,7 @@ import com.ubaid.app.model.objects.Match;
 import com.ubaid.app.model.schedule1_1.Outcome;
 import com.ubaid.app.model.schedule1_1.Scheduler;
 
-public class AssianHandicapStrategy implements RequestHandler {
+public class AssianHandicapStrategy extends AbstractRequestHandler {
 
 	public AssianHandicapStrategy()
 	{

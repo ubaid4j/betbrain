@@ -12,7 +12,7 @@ import com.ubaid.app.model.logic.SportsLogic;
 import com.ubaid.app.model.objects.Entity;
 import com.ubaid.app.model.objects.Sport;
 
-public class SportStrategy implements RequestHandler
+public class SportStrategy extends AbstractRequestHandler
 {
 
 	public SportStrategy()

@@ -17,7 +17,7 @@ import com.ubaid.app.model.objects.SubEvents;
 import com.ubaid.app.model.schedule1_1.Helper;
 import com.ubaid.app.model.schedule1_1.Scheduler;
 
-public class SubEventsStrategy implements RequestHandler
+public class SubEventsStrategy extends AbstractRequestHandler
 {
 
 	public SubEventsStrategy()

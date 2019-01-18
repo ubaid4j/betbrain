@@ -12,7 +12,7 @@ import com.ubaid.app.model.objects.Entity;
 import com.ubaid.app.model.schedule1_1.Helper;
 import com.ubaid.app.model.schedule1_1.Outcome;
 
-public class TrackedEventsDisplayStrategy implements RequestHandler
+public class TrackedEventsDisplayStrategy extends AbstractRequestHandler
 {
 
 	public TrackedEventsDisplayStrategy()

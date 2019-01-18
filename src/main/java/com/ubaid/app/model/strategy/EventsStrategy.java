@@ -12,7 +12,7 @@ import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.objects.Entity;
 import com.ubaid.app.model.objects.Events;
 
-public class EventsStrategy implements RequestHandler
+public class EventsStrategy extends AbstractRequestHandler
 {
 
 	public EventsStrategy()
