@@ -53,7 +53,7 @@ public class Controller
 	{
 		try
 		{
-			
+			service.shutdownNow();
 		}
 		catch(Exception exp)
 		{

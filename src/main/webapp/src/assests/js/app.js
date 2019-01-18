@@ -6,19 +6,27 @@ $(function()
 
 function get()
 {
-	$.get("/app1/_Sport", function(data)
-	{		
-		var sports = JSON.parse(data);
-				
-		var ul = '<ul class="nav nav-tabs" id="myTab" role="tablist" style="cursor: pointer;"></ul>';
-		var tab_content = '<div class="tab-content" id="myTabContent"></div>';
-		var app = $("#app");
-		
-		$.when($.when($.when(app.children().fadeOut('fast').remove()).done(function()
+	
+	$.ajax(
+	{
+		url: "/app1/AppRequestHandler", 
+		type: "get",
+		data : {
+			className:"sport"
+		},
+		success: function(data)
 		{
-			app.append(ul);
-			app.append(tab_content);
-		})).done(function()
+			var sports = JSON.parse(data);
+			
+			var ul = '<ul class="nav nav-tabs" id="myTab" role="tablist" style="cursor: pointer;"></ul>';
+			var tab_content = '<div class="tab-content" id="myTabContent"></div>';
+			var app = $("#app");
+			
+			$.when($.when($.when(app.children().fadeOut('fast').remove()).done(function()
+			{
+				app.append(ul);
+				app.append(tab_content);
+			})).done(function()
 			{
 				ul = $("#myTab");
 				tab_content = $("#myTabContent");
@@ -32,11 +40,19 @@ function get()
 					tab_pane = '<div class="tab-pane fade" id="' + sport.name + '" role="tabpanel" aria-labelledby="' + sport.name +  "-tab" + '" ></div>';
 					tab_content.append(tab_pane);
 				});
-		})).done(function()
+			})).done(function()
 			{
 				setToggling();
-			});		
+			});					
+		},
+		error: function(xhr)
+		{
+			console.log(xhr);
+		}
+		
 	});
+	
+	
 }
 
 function setToggling()
@@ -58,11 +74,12 @@ function setToggling()
 	    
 	    $.ajax(
 	    {
-	    	  url: "/app1/_Events",
+	    	  url: "/app1/AppRequestHandler",
 	    	  type: "get", 
 	    	  data:
 	    	  { 
-	    	    name: sportName
+	    	    name: sportName,
+	    	    className : 'events'
 	    	  },
 	    	  success: function(response)
 	    	  {
@@ -220,11 +237,12 @@ function handlerForShowingSubEvents(id, eventName)
 		//we are sending the id of event [match] and match name 
 		$.ajax(
 	    {
-			  url: "/app1/_SubEvent",
+			  url: "/app1/AppRequestHandler",
 			  type: "get", 
 			  data:
 			  { 
-			    id: id,
+				className: 'subEvents',
+			    id: id
 			  },
 			  success: function(response)
 			  {
@@ -311,6 +329,7 @@ function showSubEvents(response, collapse_w, eventName)
 			})).done(function()
 			{
 				table.find("thead").append(header).hide().fadeIn('slow');
+				setHandlerOnCheckBox();
 			});			
 						
 		})).done(function()
@@ -331,25 +350,18 @@ function showSubEvents(response, collapse_w, eventName)
 
 function notificationButtonHandler()
 {
-	console.log("Button Handling");
-	$.get("/app1/notification", function(data)
-	{
-		console.log(data);
-		$.when($("#s_w").fadeOut('slow').empty()).done(function(){
-			$.when($("#s_w").load("/app1/src/views/notifications/notifications.jsp").fadeIn('slow')).done(function()
-			{
-				start();									
-			});
+	$.when($("#s_w").fadeOut('slow').empty()).done(function(){
+		$.when($("#s_w").load("/app1/src/views/notifications/notifications.jsp").fadeIn('slow')).done(function()
+		{
+			start();									
 		});
 	});
 }
 
-//global notification row
-var notification_row = new Array();
 
 function mainPage()
 {
-	$.get("/app1/_Sport", function(data)
+	$.get("/app1/AppRequestHandler", function(data)
 	{
 		var object = JSON.parse(data);
 		var url  = object.url;
@@ -363,7 +375,7 @@ function mainPage()
 
 
 
-
+//how to implement this: will discuss later
 function start()
 {
 	console.log("So, we are in the push notification method");
@@ -382,7 +394,6 @@ function start()
 		var data = event.data;
 		var match = JSON.parse(data);
 		
-		console.log(match);
 		
 		console.log(match);
 		var row = "<tr>" +"<td scope='row'>" + match['lastUpdateTime'] + "</td>"
@@ -394,7 +405,6 @@ function start()
 				+ "</tr>";
 		
 		
-		notification_row.push(row);
 		
 		$.playSound("http://www.noiseaddicts.com/samples_1w72b820/3724.mp3");		
 		
@@ -418,19 +428,23 @@ function trackedEventDeleteButtonHandler()
 		
 		var targetRow = $this.closest('tr');
 
-		console.log(targetRow);
 
 		$.ajax(
 	    {
-	    	  url: "/app1/_deleteRegisteredOutcome",
+	    	  url: "/app1/AppRequestHandler",
 	    	  type: "get", 
 	    	  data:
 	    	  { 
-	    	    id: id,
+	    		className: 'deleteRegisteredEvents',
+	    	    id: id
 	    	  },
 	    	  success: function(response)
 	    	  {
-	    		  targetRow.fadeOut("slow");
+	    		  let data = JSON.parse(response);
+	    		  if(data[0].action == 'deleted')
+	    	      {
+		    		  targetRow.fadeOut("slow");	    			  
+	    	      }
 	    	  },
 	    	  error: function(xhr)
 	    	  {
@@ -439,19 +453,10 @@ function trackedEventDeleteButtonHandler()
 	    		  alert($(response).filter( 'h1' ).text());
 	    	  }
 	    });
-
-		
-		
 	});
 }
 
-
-
-
-
-
-
-
+/*
 $("#refresh1").click(function()
 {
 	console.log("wait");
@@ -464,6 +469,7 @@ $("#refresh1").click(function()
 		$("#app").load(url);
 	});	
 });
+*/
 
 
 //this function is responsible to show trackedEvent page
@@ -471,16 +477,16 @@ function trackedEventsDisplay()
 {
 	$.ajax(
     {
-		  url: "/app1/_track",
+		  url: "/app1/AppRequestHandler",
 		  type: "get", 
 		  data:
-		  { 
+		  {
+			className: 'trackedEventsDisplay',
 		    checked: null
 		  },
 		  success: function(response)
 		  {
 			 var array = JSON.parse(response);
-			 console.log(array);
 
 			 $.when(appendTrackedEvents(array)).done(function()
 			 {
@@ -559,9 +565,10 @@ function handleOdds(eventId, homeTeam, awayTeam, bettingType, eventName)
 		//creating get request for /_AssianHandicap
 		$.ajax(
 		{
-			url: "/app1/_AssianHandicap",
+			url: "/app1/AppRequestHandler",
 			type: "get",
 			data: {
+				className: 'assianHandicap',
 				id: eventId,
 				homeTeam: homeTeam,
 				awayTeam: awayTeam,
@@ -601,9 +608,10 @@ function handleOdds(eventId, homeTeam, awayTeam, bettingType, eventName)
 		//creating request for _OverUnder
 		$.ajax(
 		{
-			url: "/app1/_OverUnder",
+			url: "/app1/AppRequestHandler",
 			type: "get",
 			data: {
+				className: 'overUnder',
 				id: eventId,
 				homeTeam: homeTeam,
 				awayTeam: awayTeam,
@@ -832,36 +840,41 @@ function setHandlerOnCheckBox()
 
 			var data =JSON.stringify(map);
 			
-			console.log(map);
 			
 			$.ajax(
     	    {
-    	    	  url: "/app1/HADRegistrar",
+    	    	  url: "/app1/AppRequestHandler",
     	    	  type: "get", 
     	    	  data:
     	    	  { 
+    	    		className: 'hodRegistrar',
     	    	    data: data,
     	    	    checked: checked
     	    	  },
     	    	  success: function(response)
     	    	  {
     	    		  var notification;
-    	    		  
-    	    		  if(checked)
-    	    			  notification = map.leagueName + " odds added";
-    	    		  else
-    	    			  notification = map.leagueName + " odds removed";
-    	    			  
-    	    		  $("#flash_message").text(notification); 
-    	    			 
-    	    		  
-    	    		  $("#flash_message").show('slow', function()
+    	    		  response = JSON.parse(response);
+
+    	    		  if(response[0].action = 'y')
     	    		  {
-    	    			 setTimeout(function()
-    	    			 {
-    	    				$("#flash_message").hide('slow'); 
-    	    			 }, 1000);
-    	    		  });	
+        	    		  if(checked)
+        	    			  notification = map.leagueName + " odds added";
+        	    		  else
+        	    			  notification = map.leagueName + " odds removed";
+        	    			  
+        	    		  $("#flash_message").text(notification); 
+        	    			 
+        	    		  
+        	    		  $("#flash_message").show('slow', function()
+        	    		  {
+        	    			 setTimeout(function()
+        	    			 {
+        	    				$("#flash_message").hide('slow'); 
+        	    			 }, 1000);
+        	    		  });	
+    	    			  
+    	    		  }
     	    		  
     	    	  },
     	    	  error: function(xhr)
@@ -896,10 +909,11 @@ function onChangeOfAHOUCheckbox()
 			
 			$.ajax(
     	    {
-    	    	  url: "/app1/_AHOURegisterar",
+    	    	  url: "/app1/AppRequestHandler",
     	    	  type: "get", 
     	    	  data:
     	    	  { 
+    	    		className : 'AHOURegistrar',
     	    	    data: data,
     	    	    checked: checked,
     	    	    isAH : isAH
@@ -907,22 +921,28 @@ function onChangeOfAHOUCheckbox()
     	    	  success: function(response)
     	    	  {
     	    		  var notification;
+    	    		  response = JSON.parse(response);
+    	    		  console.log(response);
     	    		  
-    	    		  if(checked)
-    	    			  notification = map.leagueName + " odds added";
-    	    		  else
-    	    			  notification = map.leagueName + " odds removed";
-    	    			  
-    	    		  $("#flash_message").text(notification); 
-    	    			 
-    	    		  
-    	    		  $("#flash_message").show('slow', function()
+    	    		  if(response[0].action == 'y')
     	    		  {
-    	    			 setTimeout(function()
-    	    			 {
-    	    				$("#flash_message").hide('slow'); 
-    	    			 }, 1000);
-    	    		  });	
+        	    		  if(checked)
+        	    			  notification = map.leagueName + " odds added";
+        	    		  else
+        	    			  notification = map.leagueName + " odds removed";
+        	    			  
+        	    		  $("#flash_message").text(notification); 
+        	    			 
+        	    		  
+        	    		  $("#flash_message").show('slow', function()
+        	    		  {
+        	    			 setTimeout(function()
+        	    			 {
+        	    				$("#flash_message").hide('slow'); 
+        	    			 }, 1000);
+        	    		  });	
+    	    			  
+    	    		  }
     	    		  
     	    	  },
     	    	  error: function(xhr)

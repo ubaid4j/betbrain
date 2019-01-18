@@ -50,6 +50,8 @@ public class OutcomeNotificationi implements OutcomeNotification
 		notification.put(Helper.OLDODDS.toString(), outcome.getOldOdds());
 		notification.put(Helper.OLDThresHOLD.toString(), outcome.getOldThreshold());
 
+		System.out.println(notification + "\n\n");
+		
 		return notification;
 	}
 

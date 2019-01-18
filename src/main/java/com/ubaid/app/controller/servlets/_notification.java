@@ -40,31 +40,14 @@ public class _notification extends HttpServlet
 
 	    		try
 	    		{
-//	    			double randomNumber = Math.random() * 1000;
 	    			writer = response.getWriter();
-//	    			writer.print("data: " + object.toString());
-//	    			writer.print("data: " + "Time: " + Calendar.getInstance().getTime() + "\n\n");
-
-	    			
 	    			writer.print("data: "  + object.toString());
-	    			writer.print("\n\n");
-
-	    			System.out.println("\n\n" + object + "\n\n");
-	    			
+	    			writer.print("\n\n");	    			
 	    			response.flushBuffer();
-
-//	    			writer = response.getWriter();
-//	    			
-//					System.out.println(object.toString() + "_notification servlets");
-//					writer.print(object.toString());
-//					response.flushBuffer();
-
-	    			    			
 	    		}
 	    		catch(IOException exp)
 	    		{
 	    			writer.close();
-	    			exp.printStackTrace();
 	    			break;
 	    		}
 	    	}

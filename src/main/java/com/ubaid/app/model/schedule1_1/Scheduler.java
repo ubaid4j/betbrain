@@ -32,7 +32,7 @@ public class Scheduler implements Schedule
 		
 		while(true)
 		{
-			System.out.println("Running again: " + index);
+			System.out.println("Running again: " + index++);
 			
 			//let retrieve the ids of outcomes
 			Set<Long> ids = Schedule.trackedOutcomes.keySet();
@@ -76,6 +76,8 @@ public class Scheduler implements Schedule
 				
 				if(outcome.getOdds() != oldOutcome.getOdds() || outcome.getThreshold() != oldOutcome.getThreshold())
 				{
+					
+					System.out.println("outcome changed detected");
 					outcome.setAwayTeam(oldOutcome.getAwayTeam());
 					outcome.setHomeTeam(oldOutcome.getHomeTeam());
 					outcome.setLeagueName(oldOutcome.getLeagueName());
@@ -108,8 +110,7 @@ public class Scheduler implements Schedule
 				});
 				updateService.shutdown();
 				System.out.println("There are total tracked events: " + Scheduler.trackedOutcomes.size());
-				System.out.println("Sleeping for 1 minute: " + index);
-				Thread.sleep(60000);
+				Thread.sleep(30000);
 			}
 			catch(InterruptedException exp)
 			{
