@@ -6,7 +6,7 @@ import org.json.JSONArray;
 
 import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.RegisteredOutcomeLogic;
-import com.ubaid.app.model.schedule1_1.Scheduler;
+import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
 
 /**
  * this class is responsible to delete a registered outcome from the database as well as from the hashtable
@@ -34,7 +34,7 @@ public class DeleteRegisteredEventsStrategy extends AbstractRequestHandler
 			
 			//if from database, it deleted then it will delete from the hashtable
 			if(logic.delete(id))
-				Scheduler.removeFromTrackedEvents(id);			
+				OddsDetection.removeFromTrackedEvents(id);			
 		}
 		catch(Exception exp)
 		{

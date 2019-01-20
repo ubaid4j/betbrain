@@ -47,7 +47,7 @@ function get()
 		},
 		error: function(xhr)
 		{
-			console.log(xhr);
+			alert(xhr);
 		}
 		
 	});
@@ -103,7 +103,7 @@ function setToggling()
 	    	  },
 	    	  error: function(xhr)
 	    	  {
-	    		  console.log(xhr);
+	    		  alert(xhr);
 	    	  }
 	    });
 	});
@@ -188,7 +188,6 @@ function search()
 	    
 	    	var display = $(this).text().toLowerCase().indexOf(value) > -1;
 	    	var display2 = $(this).val();
-	    	console.log(display2);
 	    	
 	    	if(display == true)
     		{
@@ -261,7 +260,6 @@ function handlerForShowingSubEvents(id, eventName, sportName)
 					{
 						  $.when(collapse_w.load("<h3>Unknown Error</h3>").hide().fadeIn(1000)).done(function()
 						  {
-							  console.log("Error");
 						  });					
 					});				  
 
@@ -282,6 +280,7 @@ function showSubEvents(response, collapse_w, eventName, sportName)
 	let header = '<tr><th scope="col">#</th><th scope="col">Home Team</th><th scope="col">Away Team</th><th scope="col">Start Time</th><th scope="col">1</th><th scope="col">X</th><th scope="col">2</th><th scope="col">O/U</th><th scope="col">A/H</th></tr>';
 	
 	let data = JSON.parse(response);
+	
 	
 	//[{isChecked, homeTeam, awayTeam, leagueName, matchName, homeTeamOdds, awayTeamOdds, drawOdds,
 	//homeTeamOutcomeId, awayTeamOutcomeId, drawOutcomeId, bettingType}, {}, {}]
@@ -310,6 +309,8 @@ function showSubEvents(response, collapse_w, eventName, sportName)
 							     "<input type='hidden' name='homeTeamOutcomeId' value='" + match.homeTeamOutcomeId + "' >" + 
 							     "<input type='hidden' name='awayTeamOutcomeId' value='" + match.awayTeamOutcomeId + "' >" + 
 							     "<input type='hidden' name='drawOutcomeId' value='" + match.drawOutcomeId + "' >" + 
+							     "<input type='hidden' name='matchId' value='" + match.id + "' >" + 
+							     "<input type='hidden' name='sportName' value='" + match.sportName + "' >" + 
 							     "<input type='hidden' name='bettingType' value='" + 'HomeDrawAway' + "' >" + 
 						       '</div>' +
 							'</th>';
@@ -361,7 +362,7 @@ function notificationButtonHandler()
 		success: function(response)
 		{
 			response = JSON.parse(response);
-			console.log(response);
+
 			
 			$.when($("#s_w").fadeOut('slow').empty()).done(function()
 			{
@@ -401,7 +402,6 @@ function mainPage()
 //how to implement this: will discuss later
 function start()
 {
-	console.log("So, we are in the push notification method");
 	
 	var source = null;
 	
@@ -418,7 +418,6 @@ function start()
 		var match = JSON.parse(data);
 		
 		
-		console.log(match);
 		var row = "<tr>" +"<td scope='row'>" + match['lastUpdateTime'] + "</td>"
 							+"<td scope='row'>" + match['leagueName'] + "</td>"
 							+"<td scope='row'>" + match['matchName'] + "</td>"
@@ -470,7 +469,6 @@ function trackedEventDeleteButtonHandler()
 	    	  },
 	    	  error: function(xhr)
 	    	  {
-	    		  console.log(xhr);
 	    		  var response = $.parseHTML(xhr.responseText);
 	    		  alert($(response).filter( 'h1' ).text());
 	    	  }
@@ -478,20 +476,6 @@ function trackedEventDeleteButtonHandler()
 	});
 }
 
-/*
-$("#refresh1").click(function()
-{
-	console.log("wait");
-	$.get("/app1/start", function(data)
-	{
-
-		var object = JSON.parse(data);
-		var url  = object.url;
-		
-		$("#app").load(url);
-	});	
-});
-*/
 
 
 //this function is responsible to show trackedEvent page
@@ -523,7 +507,6 @@ function trackedEventsDisplay()
 		  },
 		  error: function(xhr)
 		  {
-			  console.log(xhr);
 			  var response = $.parseHTML(xhr.responseText);
 			  alert($(response).filter( 'h1' ).text());
 		  }
@@ -842,11 +825,11 @@ function appendInOverUnder(header, table, object, teams)
 
 
 
-/*Handler on check boxes*/
+/*Handler on check boxes---------------------for subEvents---------------------------------------------*/
+/*-------------------------------------------tracked match too----------------------------------------------------*/
 
 function setHandlerOnCheckBox()
 {
-	console.log("setting check box handler");
 
 	$(".check303").change(function(event)
 	{
@@ -887,23 +870,12 @@ function setHandlerOnCheckBox()
         	    		  else
         	    			  notification = map.leagueName + " odds removed";
         	    			  
-        	    		  $("#flash_message").text(notification); 
-        	    			 
-        	    		  
-        	    		  $("#flash_message").show('slow', function()
-        	    		  {
-        	    			 setTimeout(function()
-        	    			 {
-        	    				$("#flash_message").hide('slow'); 
-        	    			 }, 1000);
-        	    		  });	
-    	    			  
+        	    		  flashMessage(notification);    	    			  
     	    		  }
     	    		  
     	    	  },
     	    	  error: function(xhr)
     	    	  {
-    	    		  console.log(xhr);
     	    		  var response = $.parseHTML(xhr.responseText);
     	    		  alert($(response).filter( 'h1' ).text());
     	    	  }
@@ -946,7 +918,6 @@ function onChangeOfAHOUCheckbox()
     	    	  {
     	    		  var notification;
     	    		  response = JSON.parse(response);
-    	    		  console.log(response);
     	    		  
     	    		  if(response[0].action == 'y')
     	    		  {
@@ -955,23 +926,12 @@ function onChangeOfAHOUCheckbox()
         	    		  else
         	    			  notification = map.leagueName + " odds removed";
         	    			  
-        	    		  $("#flash_message").text(notification); 
-        	    			 
-        	    		  
-        	    		  $("#flash_message").show('slow', function()
-        	    		  {
-        	    			 setTimeout(function()
-        	    			 {
-        	    				$("#flash_message").hide('slow'); 
-        	    			 }, 1000);
-        	    		  });	
-    	    			  
+        	    		  flashMessage(notification);
     	    		  }
     	    		  
     	    	  },
     	    	  error: function(xhr)
     	    	  {
-    	    		  console.log(xhr);
     	    		  var response = $.parseHTML(xhr.responseText);
     	    		  alert($(response).filter( 'h1' ).text());
     	    	  }
@@ -981,8 +941,53 @@ function onChangeOfAHOUCheckbox()
 	
 }
 
-/*------------------------------------------------------------------------------------*/
+/*-----------------------------------------------Flash Message Notification---------------------------*/
+function flashMessage(text)
+{
+	  $("#flash_message").text(text); 
+		 
+	  
+	  $("#flash_message").show('slow', function()
+	  {
+		 setTimeout(function()
+		 {
+			$("#flash_message").hide('slow'); 
+		 }, 1000);
+	  });	
+	
+}
 
+
+/*------------------------------------------------------------------------------------*/
+function deleteAllTrackedEvents()
+{
+	$.ajax(
+	{
+		url  : "/app1/AppRequestHandler",
+		type : "get",
+		data : {
+			className: "deleteAllTrackedEvent"
+		},
+		success: function(response)
+		{
+			response = JSON.parse(response);
+			
+			if(response[0].action == true)
+			{
+
+				$.when($("#trackedEvents tr").fadeOut('slow')).done(function()
+				{
+					flashMessage("All tracked Events Removed");					
+				});
+			}
+		},
+		error : function(xhr)
+		{
+			alert(xhr);
+		}
+		
+	});
+}
 
 
 

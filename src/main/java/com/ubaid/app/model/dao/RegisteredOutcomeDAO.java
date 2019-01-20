@@ -20,6 +20,7 @@ public class RegisteredOutcomeDAO extends AbstractDAO
 	private static final String query = "INSERT INTO registeredOutcome VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String query1 = "SELECT * FROM registeredOutcome";
 	private static final String delQuery = "DELETE FROM registeredOutcome WHERE id = ?";
+	private static final String delAllQuery = "DELETE FROM registeredOutcome";
 	
 	public RegisteredOutcomeDAO()
 	{
@@ -96,5 +97,25 @@ public class RegisteredOutcomeDAO extends AbstractDAO
 	{
 		return new RegisteredOutcomeFactory();
 	}
+
+	@Override
+	public boolean deleteAll()
+	{
+		try
+		{
+			Connection con = DataSource.getConnection();
+			PreparedStatement st = con.prepareStatement(delAllQuery);
+			st.executeUpdate();
+		}
+		catch(SQLException exp)
+		{
+			return false;
+		}
+		
+		return true;
+	}
+	
+	
+	
 
 }

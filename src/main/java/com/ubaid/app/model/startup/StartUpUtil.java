@@ -8,7 +8,7 @@ import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.RegisteredOutcomeLogic;
 import com.ubaid.app.model.objects.Entity;
 import com.ubaid.app.model.schedule1_1.Outcome;
-import com.ubaid.app.model.schedule1_1.Scheduler;
+import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
 
 
 /**
@@ -41,7 +41,7 @@ public class StartUpUtil
 				for(Entity entity : _outcomes)
 				{
 					Outcome outcome = (Outcome) entity;
-					Scheduler.putInTrackeEvents(outcome.getId(), outcome);
+					OddsDetection.putInTrackeEvents(outcome.getId(), outcome);
 				}
 			}
 		});

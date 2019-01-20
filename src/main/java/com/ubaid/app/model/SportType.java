@@ -1,5 +1,6 @@
 package com.ubaid.app.model;
 
+
 public enum SportType
 {
 	FootBall(1),
@@ -7,7 +8,9 @@ public enum SportType
 	BasketBall(8),
 	VolleyBall(20),
 	ESports(90),
-	IceHokey(6);
+	IceHokey(6),
+	Tennis(3),
+	Null(-1);
 	
 	private int id;
     SportType(int id) { this.id = id; }

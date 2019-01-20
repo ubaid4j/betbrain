@@ -15,7 +15,7 @@ import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.objects.Entity;
 import com.ubaid.app.model.objects.Match;
 import com.ubaid.app.model.schedule1_1.Outcome;
-import com.ubaid.app.model.schedule1_1.Scheduler;
+import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
 
 /**
  * this class called by a request, when a user view AssianHandicap odds 
@@ -60,7 +60,7 @@ public class AssianHandicapStrategy extends AbstractRequestHandler
 		JSONObject object;
 		
 		//this is hashtable, in which we track the registered match
-		Hashtable<Long, Outcome> hash = Scheduler.getTrackedNotification();
+		Hashtable<Long, Outcome> hash = OddsDetection.getTrackedOutcomes();
 		
 		//creating an array of JSON objects
 		for (Match match : events)

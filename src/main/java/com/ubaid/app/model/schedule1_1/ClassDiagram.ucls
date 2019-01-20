@@ -3,16 +3,17 @@
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="com.ubaid.app.model.schedule1_1.Outcome.Builder" project="app1" 
     file="/app1/src/main/java/com/ubaid/app/model/schedule1_1/Outcome.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="202" width="157" x="797" y="288"/>    
+    <position height="202" width="157" x="818" y="319"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="com.ubaid.app.model.schedule1_1.Scheduler" project="app1" 
-    file="/app1/src/main/java/com/ubaid/app/model/schedule1_1/Scheduler.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="168" y="373"/>    
+  <class id="2" language="java" name="com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection" project="app1" 
+    file="/app1/src/main/java/com/ubaid/app/model/schedule1_1/oddsDetection/OddsDetection.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="141" y="341"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -21,7 +22,7 @@
   </class>  
   <class id="3" language="java" name="com.ubaid.app.model.schedule1_1.Outcome" project="app1" 
     file="/app1/src/main/java/com/ubaid/app/model/schedule1_1/Outcome.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="202" width="163" x="786" y="13"/>    
+    <position height="202" width="163" x="811" y="39"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -30,7 +31,7 @@
   </class>  
   <enumeration id="4" language="java" name="com.ubaid.app.model.schedule1_1.Helper" project="app1" 
     file="/app1/src/main/java/com/ubaid/app/model/schedule1_1/Helper.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="658" y="427"/>    
+    <position height="-1" width="-1" x="676" y="630"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -39,7 +40,7 @@
   </enumeration>  
   <interface id="5" language="java" name="com.ubaid.app.model.schedule1_1.Schedule" project="app1" 
     file="/app1/src/main/java/com/ubaid/app/model/schedule1_1/Schedule.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="168" y="170"/>    
+    <position height="-1" width="-1" x="229" y="88"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -49,7 +50,7 @@
   <interface id="6" language="java" name="com.ubaid.app.model.schedule1_1.OutcomeNotification" project="app1" 
     file="/app1/src/main/java/com/ubaid/app/model/schedule1_1/OutcomeNotification.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="436" y="177"/>    
+    <position height="-1" width="-1" x="657" y="53"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -59,25 +60,95 @@
   <class id="7" language="java" name="com.ubaid.app.model.schedule1_1.OutcomeNotificationi" project="app1" 
     file="/app1/src/main/java/com/ubaid/app/model/schedule1_1/OutcomeNotificationi.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="440" y="344"/>    
+    <position height="-1" width="-1" x="661" y="292"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <nesting id="8">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="1"/>  
+  <class id="8" language="java" name="com.ubaid.app.model.schedule1_1.thresholdDetection.ThresholdDetection" 
+    project="app1" file="/app1/src/main/java/com/ubaid/app/model/schedule1_1/thresholdDetection/ThresholdDetection.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="406" y="305"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="com.ubaid.app.model.schedule1_1.thresholdDetection.TrackedMatches" project="app1" 
+    file="/app1/src/main/java/com/ubaid/app/model/schedule1_1/thresholdDetection/TrackedMatches.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="404" y="661"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="com.ubaid.app.model.schedule1_1.thresholdDetection.TrackedMatches.Builder" 
+    project="app1" file="/app1/src/main/java/com/ubaid/app/model/schedule1_1/thresholdDetection/TrackedMatches.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="403" y="1061"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <nesting id="11">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="10"/>  
   </nesting>  
-  <realization id="9">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="6"/>  
-  </realization>  
-  <realization id="10">    
+  <dependency id="12">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <association id="13">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="14" name="outcomes"/>      
+      <multiplicity id="15" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="16">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="17" name="outcomes"/>      
+      <multiplicity id="18" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="19">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="5"/>  
   </realization>  
+  <realization id="20">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="5"/>  
+  </realization>  
+  <dependency id="21">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="22">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <realization id="23">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <nesting id="24">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="1"/>  
+  </nesting>  
+  <dependency id="25">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

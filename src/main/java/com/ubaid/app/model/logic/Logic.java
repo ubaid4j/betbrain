@@ -10,6 +10,7 @@ import com.ubaid.app.model.objects.Entity;
 public interface Logic
 {
 	LinkedList<Entity> getAll();
+	boolean deleteAll();
 	LinkedList<Entity> getAll(SportType type);
 	LinkedList<Entity> getAll(long id);
 	LinkedList<Entity> getAll(long id, int eventPartId);

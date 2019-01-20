@@ -2,7 +2,8 @@ package com.ubaid.app.controller;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import com.ubaid.app.model.schedule1_1.Scheduler;
+
+import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
 
 /**
  * this controller is a singleton class, it contain a threadpool 
@@ -48,7 +49,7 @@ public class Controller
 			service = checkTermination(service);
 
 			//executing Scheduler
-			service.execute(new Scheduler());
+			service.execute(new OddsDetection());
 			service.shutdown();
 		}
 		catch(Exception exp)

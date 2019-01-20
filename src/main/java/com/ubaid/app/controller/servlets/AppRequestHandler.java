@@ -17,6 +17,7 @@ import com.ubaid.app.model.singleton.DataSource;
 import com.ubaid.app.model.startup.StartUpUtil;
 import com.ubaid.app.model.strategy.AssianHandicapStrategy;
 import com.ubaid.app.model.strategy.AssianOverUnderRegistrarStrategy;
+import com.ubaid.app.model.strategy.DeleteAllTrackedEvents;
 import com.ubaid.app.model.strategy.DeleteRegisteredEventsStrategy;
 import com.ubaid.app.model.strategy.EventsStrategy;
 import com.ubaid.app.model.strategy.HomeAwayDrawRegisterarStrategy;
@@ -64,10 +65,10 @@ public class AppRequestHandler extends HttpServlet
 	    }
 	    else
 	    {
-			StartUpUtil startUpUtil = new StartUpUtil();
-			startUpUtil.onStart();
-			Controller controller = Controller.getController();
-			controller.startSchedular();
+//			StartUpUtil startUpUtil = new StartUpUtil();
+//			startUpUtil.onStart();
+//			Controller controller = Controller.getController();
+//			controller.startSchedular();
 
 	    }
 
@@ -86,6 +87,7 @@ public class AppRequestHandler extends HttpServlet
 		classHash.put("AHOURegistrar", new AssianOverUnderRegistrarStrategy());
 		classHash.put("notification", new NotificationStrategy());
 		classHash.put("notificationPermission", new NotificationPermissionStrategy());
+		classHash.put("deleteAllTrackedEvent", new DeleteAllTrackedEvents());
 	}
 		
 	//when our container decides to eliminate the 
@@ -135,10 +137,13 @@ public class AppRequestHandler extends HttpServlet
 			{
 				//if className is null [in the case of notification SSE request] 
 				//then find the Notification Handler [SSE]
-				RequestHandler handler = classHash.get("notification");
+				if(className == null)
+				{
+					RequestHandler handler = classHash.get("notification");
+					//getting JSON array from the SSE handler
+					array = handler.get(response);											
+				}
 				
-				//getting JSON array from the SSE handler
-				array = handler.get(response);						
 			}
 			
 			//after that, writer writes the JSON array to response

@@ -1,4 +1,4 @@
-package com.ubaid.app.model.schedule1_1;
+package com.ubaid.app.model.schedule1_1.oddsDetection;
 
 import java.sql.Timestamp;
 import java.util.Hashtable;
@@ -13,13 +13,15 @@ import com.ubaid.app.model.logic.OutcomeLogici;
 import com.ubaid.app.model.logic.UpdateRegisteredOCLogic;
 import com.ubaid.app.model.logic.UpdateRegisteredOCLogici;
 import com.ubaid.app.model.objects.Entity;
+import com.ubaid.app.model.schedule1_1.Outcome;
+import com.ubaid.app.model.schedule1_1.Schedule;
 
-public class Scheduler implements Schedule
+public class OddsDetection implements Schedule
 {
 
 	int index = 0;
 	
-	public Scheduler()
+	public OddsDetection()
 	{
 		
 	}
@@ -76,10 +78,10 @@ public class Scheduler implements Schedule
 				{
 					Outcome oldOutcome = Schedule.trackedOutcomes.get(outcome.getId());
 					
-					if(Math.abs(outcome.getOdds() - oldOutcome.getOdds()) >  0.000001 || Math.abs(outcome.getThreshold() - oldOutcome.getThreshold()) >  0.000001)
+					if(Math.abs(outcome.getOdds() - oldOutcome.getOdds()) >  0.000001)
 					{
 						
-						//TODO eliminate the bug
+						//TODO Cloneable
 						System.out.println("outcome changed detected");
 						outcome.setAwayTeam(oldOutcome.getAwayTeam());
 						outcome.setHomeTeam(oldOutcome.getHomeTeam());
@@ -90,7 +92,7 @@ public class Scheduler implements Schedule
 						outcome.setOldOdds(oldOutcome.getOdds());
 						outcome.setOldThreshold(oldOutcome.getThreshold());
 						outcome.setMatchName(oldOutcome.getMatchName());
-						Scheduler.trackedOutcomes.put(outcome.getId(), outcome);
+						OddsDetection.trackedOutcomes.put(outcome.getId(), outcome);
 						list.add(outcome);
 						Schedule.notificationQueue.add(outcome);
 						
@@ -118,7 +120,7 @@ public class Scheduler implements Schedule
 					}
 				});
 				updateService.shutdown();
-				System.out.println("There are total tracked events: " + Scheduler.trackedOutcomes.size());
+				System.out.println("There are total tracked events: " + OddsDetection.trackedOutcomes.size());
 				Thread.sleep(30000);
 			}
 			catch(InterruptedException exp)
@@ -141,10 +143,10 @@ public class Scheduler implements Schedule
 	
 	public static void removeFromTrackedEvents(long key)
 	{
-		Scheduler.trackedOutcomes.remove(key);
+		OddsDetection.trackedOutcomes.remove(key);
 	}
 	
-	public static Hashtable<Long, Outcome> getTrackedNotification()
+	public static Hashtable<Long, Outcome> getTrackedOutcomes()
 	{
 		return Schedule.trackedOutcomes;
 	}

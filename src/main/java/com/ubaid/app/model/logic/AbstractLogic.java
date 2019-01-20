@@ -67,6 +67,11 @@ public abstract class AbstractLogic implements Logic
 	{
 		return null;
 	}
+
+	@Override
+	public boolean deleteAll() {
+		return false;
+	}
 	
 	
 	

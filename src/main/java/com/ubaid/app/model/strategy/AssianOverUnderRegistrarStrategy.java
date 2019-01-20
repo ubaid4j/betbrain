@@ -12,7 +12,7 @@ import com.ubaid.app.model.logic.RegisteredOutcomeLogic;
 import com.ubaid.app.model.schedule1_1.BettingType;
 import com.ubaid.app.model.schedule1_1.Helper;
 import com.ubaid.app.model.schedule1_1.Outcome;
-import com.ubaid.app.model.schedule1_1.Scheduler;
+import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
 
 /**
  * this class is responsible to register the 
@@ -67,7 +67,7 @@ public class AssianOverUnderRegistrarStrategy extends AbstractRequestHandler
 		try
 		{
 			if(logic.delete(outcome.getId()))
-				Scheduler.removeFromTrackedEvents(outcome.getId());			
+				OddsDetection.removeFromTrackedEvents(outcome.getId());			
 		}
 		catch(Exception exp)
 		{
@@ -83,7 +83,7 @@ public class AssianOverUnderRegistrarStrategy extends AbstractRequestHandler
 		try
 		{
 			if(logic.add(outcome));
-				Scheduler.putInTrackeEvents(outcome.getId(), outcome);
+				OddsDetection.putInTrackeEvents(outcome.getId(), outcome);
 		}
 		catch(Exception exp)
 		{

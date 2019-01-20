@@ -134,6 +134,13 @@ public abstract class AbstractDAO implements DAO
 	}
 
 	abstract AbstractFactory getFactory();
+
+	@Override
+	public boolean deleteAll()
+	{
+		return false;
+	}
+	
 	
 	
 

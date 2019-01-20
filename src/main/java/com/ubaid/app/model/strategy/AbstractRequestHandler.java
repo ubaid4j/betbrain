@@ -12,7 +12,7 @@ import org.json.JSONArray;
  * @author ubaid
  *
  */
-public class AbstractRequestHandler implements RequestHandler
+public abstract class AbstractRequestHandler implements RequestHandler
 {
 
 	public AbstractRequestHandler()

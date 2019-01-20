@@ -34,4 +34,10 @@ public class RegisteredOutcomeLogic extends AbstractLogic
 		dao = new RegisteredOutcomeDAO();
 	}
 
+	@Override
+	public boolean deleteAll()
+	{
+		return dao.deleteAll();
+	}
+
 }

@@ -29,6 +29,9 @@
 		<div style="float:right; margin-top:10px; margin-right:50px;" id="status_bar">
 		</div>
 
+		<div style="float:right; margin-top:10px; margin-right:50px;" id="">
+					<button type="button" class="btn  btn-danger btn-sm front_page_button" onclick="deleteAllTrackedEvents()" style="float:left">Delete All tracked Events</button>
+		</div>
 
 
  		<div style="clear:both"></div>

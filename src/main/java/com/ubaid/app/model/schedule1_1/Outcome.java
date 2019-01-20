@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 import com.ubaid.app.model.objects.Entity;
 
-public final class Outcome extends Entity {
+public final class Outcome extends Entity implements Cloneable {
 
 	private float threshold;
 	private float oldThreshold;
@@ -19,6 +19,8 @@ public final class Outcome extends Entity {
 	private Timestamp changedTime;
 	private Timestamp registerTime;
 	private BettingType bettingType;
+	private long matchId;
+	private String sportName;
 
 	public float getThreshold() {
 		return threshold;
@@ -124,6 +126,22 @@ public final class Outcome extends Entity {
 		this.bettingType = bettingType;
 	}
 
+	public long getMatchId() {
+		return matchId;
+	}
+
+	public void setMatchId(long matchId) {
+		this.matchId = matchId;
+	}
+
+	public String getSportName() {
+		return sportName;
+	}
+
+	public void setSportName(String sportName) {
+		this.sportName = sportName;
+	}
+
 	public static class Builder {
 		private float threshold;
 		private float oldThreshold;
@@ -138,6 +156,8 @@ public final class Outcome extends Entity {
 		private Timestamp changedTime;
 		private Timestamp registerTime;
 		private BettingType bettingType;
+		private long matchId;
+		private String sportName;
 
 		public Builder threshold(float threshold) {
 			this.threshold = threshold;
@@ -204,6 +224,16 @@ public final class Outcome extends Entity {
 			return this;
 		}
 
+		public Builder matchId(long matchId) {
+			this.matchId = matchId;
+			return this;
+		}
+
+		public Builder sportName(String sportName) {
+			this.sportName = sportName;
+			return this;
+		}
+
 		public Outcome build() {
 			return new Outcome(this);
 		}
@@ -223,19 +253,14 @@ public final class Outcome extends Entity {
 		this.changedTime = builder.changedTime;
 		this.registerTime = builder.registerTime;
 		this.bettingType = builder.bettingType;
+		this.matchId = builder.matchId;
+		this.sportName = builder.sportName;
 	}
 
 	@Override
-	public String toString() {
-		return "Outcome [threshold=" + threshold + ", oldThreshold=" + oldThreshold + ", odds=" + odds + ", oldOdds="
-				+ oldOdds + ", id=" + id + ", " + (leagueName != null ? "leagueName=" + leagueName + ", " : "")
-				+ (participant != null ? "participant=" + participant + ", " : "")
-				+ (homeTeam != null ? "homeTeam=" + homeTeam + ", " : "")
-				+ (awayTeam != null ? "awayTeam=" + awayTeam + ", " : "")
-				+ (matchName != null ? "matchName=" + matchName + ", " : "")
-				+ (changedTime != null ? "changedTime=" + changedTime + ", " : "")
-				+ (registerTime != null ? "registerTime=" + registerTime + ", " : "")
-				+ (bettingType != null ? "bettingType=" + bettingType : "") + "]";
+	public Object clone() throws CloneNotSupportedException
+	{
+		return super.clone();
 	}
 	
 	

@@ -15,7 +15,7 @@ import com.ubaid.app.model.objects.Entity;
 import com.ubaid.app.model.objects.Match;
 import com.ubaid.app.model.overunder.OverUnderConverter;
 import com.ubaid.app.model.schedule1_1.Outcome;
-import com.ubaid.app.model.schedule1_1.Scheduler;
+import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
 
 /**
  * this class is responsible to return an JSON array of OverUnder outcomes of a match
@@ -51,7 +51,7 @@ public class OverUnderStrategy extends AbstractRequestHandler
 		LinkedList<Entity> _eEntities = logic.getAll(id,SportUtilFactory.getSportUtil().getEventPartId(sportName, 47));
 		
 		//getting hash [which track the registered outcomes]
-		Hashtable<Long, Outcome> hash = Scheduler.getTrackedNotification();
+		Hashtable<Long, Outcome> hash = OddsDetection.getTrackedOutcomes();
 				
 		//converting these all odds to match [having over under odds]
 		LinkedList<Match> events =  converter.convert(id, homeTeam, awayTeam, _eEntities);
