@@ -4,7 +4,14 @@ import java.util.List;
 
 public interface Converter
 {
-	public List<Match> convert(List<SubEvents> events);	
+	/**
+	 * 
+	 * @param events
+	 * @param eventPartId
+	 * @param bettingTypeid
+	 * @return list of matches [having home away and draw odds]
+	 */
+	List<Match> convert(List<SubEvents> events, int eventPartId,  int bettingTypeid);	
 }
 
 

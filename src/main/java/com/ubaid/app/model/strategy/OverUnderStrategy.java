@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.ubaid.app.model.Converter;
+import com.ubaid.app.model.SportUtilFactory;
 import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.OverUnderLogic;
 import com.ubaid.app.model.objects.Entity;
@@ -16,6 +17,11 @@ import com.ubaid.app.model.overunder.OverUnderConverter;
 import com.ubaid.app.model.schedule1_1.Outcome;
 import com.ubaid.app.model.schedule1_1.Scheduler;
 
+/**
+ * this class is responsible to return an JSON array of OverUnder outcomes of a match
+ * @author ubaid
+ *
+ */
 public class OverUnderStrategy extends AbstractRequestHandler
 {
 
@@ -26,25 +32,34 @@ public class OverUnderStrategy extends AbstractRequestHandler
 	@Override
 	public JSONArray get(Map<String, String[]> map)
 	{
+		//creating logic
 		Logic logic = new OverUnderLogic();
+		
+		//getting OverUnder converter
 		Converter converter = new OverUnderConverter();
 		
+		//getting get request parameters
 		String _id = map.get("id")[0];
 		String homeTeam = map.get("homeTeam")[0];
 		String awayTeam = map.get("awayTeam")[0];
+		String sportName = map.get("sportName")[0];
 					
+		//getting id of match
 		long id = Long.parseLong(_id);
 		
-		LinkedList<Entity> _eEntities = logic.getAll(id);
+		//getting odds of the match passing id, and its eventPartId
+		LinkedList<Entity> _eEntities = logic.getAll(id,SportUtilFactory.getSportUtil().getEventPartId(sportName, 47));
 		
-		
+		//getting hash [which track the registered outcomes]
 		Hashtable<Long, Outcome> hash = Scheduler.getTrackedNotification();
 				
+		//converting these all odds to match [having over under odds]
 		LinkedList<Match> events =  converter.convert(id, homeTeam, awayTeam, _eEntities);
 		
 		JSONArray array = new JSONArray();
 		JSONObject object;
 		
+		//creating jSON array of json objects
 		for (Match match : events)
 		{
 			object = new JSONObject();

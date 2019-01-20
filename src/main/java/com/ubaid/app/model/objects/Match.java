@@ -166,13 +166,20 @@ public class Match {
 		return HashFunction.getHash2(Long.toString(id));
 	}
 
-	//only for home/draw/away <69> betting type
-	public void execute()
+	//only for home/draw/away <69 and 112> betting type
+	/**
+	 * 
+	 * @param eventPartId
+	 * @param bettingTypeId
+	 */
+	public void execute(int eventPartId, int bettingTypeId)
 	{
 		try
 		{
 			Logic oddsLogic = new OddsLogic();
-			LinkedList<Entity> odds_ = oddsLogic.getAll(id);
+			LinkedList<Entity> odds_ = oddsLogic.getAll(id, bettingTypeId, eventPartId);
+			if(odds_.size() == 0)
+				throw new NullPointerException();
 			int size = odds_.size();
 			LinkedList<Odds> odds = new LinkedList<>();
 			for (int i = 0; i < size; i++) {
@@ -180,12 +187,24 @@ public class Match {
 			}
 			Hashtable<String, Float> localHash = new Hashtable<>();
 			Hashtable<String, Long> outcomeHash = new Hashtable<>();
-			for (int i = 0; i < 3; i++) {
-				String key = odds.get(i).getName();
-				key = key == null ? "NULL" : key;
-				localHash.put(key, odds.get(i).getOdds());
-				outcomeHash.put(key, odds.get(i).getOutcomeId());
+
+			try
+			{
+				for (int i = 0; i < 3; i++) {
+					String key = odds.get(i).getName();
+					key = key == null ? "NULL" : key;
+					localHash.put(key, odds.get(i).getOdds());
+					outcomeHash.put(key, odds.get(i).getOutcomeId());
+				}
+				
 			}
+			catch(IndexOutOfBoundsException exp)
+			{
+				localHash.put("NULL", (float) 0);
+				outcomeHash.put("NULL", (long) 0);
+			}
+			
+			
 			setAwayTeamOdds(localHash.get(hash.get(2)));
 			setHomeTeamOdds(localHash.get(hash.get(1)));
 			setDrawOdds(localHash.get("NULL"));
@@ -194,6 +213,7 @@ public class Match {
 			setDrawOutcomeId(outcomeHash.get("NULL"));
 
 		} catch (NullPointerException exp) {
+			throw new NullPointerException("There are no home draw odds");
 
 		}
 	}

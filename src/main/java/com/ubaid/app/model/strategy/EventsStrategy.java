@@ -6,12 +6,17 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.ubaid.app.model.SportType;
+import com.ubaid.app.model.SportUtilFactory;
 import com.ubaid.app.model.logic.EventsLogic;
 import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.objects.Entity;
 import com.ubaid.app.model.objects.Events;
 
+/**
+ * this class is responsible to return an array of JSON consisting tournaments of a sport
+ * @author ubaid
+ *
+ */
 public class EventsStrategy extends AbstractRequestHandler
 {
 
@@ -23,40 +28,17 @@ public class EventsStrategy extends AbstractRequestHandler
 	@Override
 	public JSONArray get(Map<String, String[]> map)
 	{
+		//getting name of sport
 		String attribute = map.get("name")[0];
+		
+		//getting logic
 		Logic logic  = new EventsLogic();
 		
-		SportType type;
+		//getting all the tournaments by passing the name of support
+		LinkedList<Entity> events = logic.getAll(SportUtilFactory.getSportUtil().getSportId(attribute));
 		
-		switch (attribute)
-		{
-			case "FootBall":
-				type = SportType.FootBall;
-				break;
-			case "Handball":
-				type = SportType.HandBall;
-				break;
-			case "Basketball":
-				type = SportType.BasketBall;
-				break;
-			case "Volleyball":
-				type = SportType.VolleyBall;
-				break;
-			case "E-Sports":
-				type = SportType.ESports;
-				break;
-			case "IceHockey":
-				type = SportType.IceHokey;
-				break;
-			default:
-				type = SportType.FootBall;
-				break;
-		}
-		
-		LinkedList<Entity> events = logic.getAll(type);
-		
+		//creating an tournament list
 		LinkedList<Events> list = new LinkedList<>();
-		
 		for(int i = 0; i < events.size(); i++)
 		{
 			list.add((Events) events.get(i));
@@ -65,6 +47,7 @@ public class EventsStrategy extends AbstractRequestHandler
 		JSONArray array = new JSONArray();
 		JSONObject object;
 		
+		//creating an json array
 		for(Events event : list)
 		{
 			object = new JSONObject();

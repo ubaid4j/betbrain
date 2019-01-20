@@ -25,11 +25,9 @@ public class AsianHandicapDAO extends AbstractDAO
 										"EventPart ep on o.eventPartId = ep.id left join " +
 										"BettingType bt on bo.bettingTypeId = bt.id " +
 										"where " +
-										"spt.id in (1) " +
-										"and " +
 										"bo.bettingTypeId in (48) " +
 										"and " +
-										"o.eventPartId = 3 " +
+										"o.eventPartId = ? " +
 										"and " +
 										"date(e.startTime) between date(curdate()) and date(date_add(date(curdate()), interval 3 day)) " +
 										"and " +

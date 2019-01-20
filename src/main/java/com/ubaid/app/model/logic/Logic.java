@@ -13,6 +13,14 @@ public interface Logic
 	LinkedList<Entity> getAll(SportType type);
 	LinkedList<Entity> getAll(long id);
 	LinkedList<Entity> getAll(long id, int eventPartId);
+	/**
+	 * 
+	 * @param id
+	 * @param bettingType
+	 * @param eventPartId
+	 * @return
+	 */
+	LinkedList<Entity> getAll(long id, int bettingType, int eventPartId);
 	boolean add(Entity entity) throws ServletException;
 	boolean delete(long id);
 	Entity get(Entity entity);

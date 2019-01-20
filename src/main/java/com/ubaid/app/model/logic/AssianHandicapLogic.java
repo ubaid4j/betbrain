@@ -5,7 +5,9 @@ import java.util.LinkedList;
 import com.ubaid.app.model.dao.AsianHandicapDAO;
 import com.ubaid.app.model.objects.Entity;
 
-public class AssianHandicapLogic extends AbstractLogic {
+public class AssianHandicapLogic extends AbstractLogic 
+{
+
 
 	public AssianHandicapLogic()
 	{
@@ -17,5 +19,12 @@ public class AssianHandicapLogic extends AbstractLogic {
 	{
 		return super.getAll(id);
 	}
+	
+	@Override
+	public LinkedList<Entity> getAll(long id, int eventPartId)
+	{
+		return super.getAll(id, eventPartId);
+	}
+
 
 }

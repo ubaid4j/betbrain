@@ -8,13 +8,13 @@ import java.util.concurrent.Executors;
 public class Convert_ implements Converter
 {
 
-	public Convert_()
+	
+	Convert_()
 	{
-
 	}
 
 	@Override
-	public List<Match> convert(List<SubEvents> events_l)
+	public List<Match> convert(List<SubEvents> events_l, int eventPartId, int bettingTypeId)
 	{
 		int size = events_l.size();
 		List<Match> matchs = new Vector<Match>();
@@ -76,7 +76,7 @@ public class Convert_ implements Converter
 						
 						match.setId(event_1.getId());
 						match.setStartTime(event_1.getStartTime());
-						match.execute();
+						match.execute(eventPartId, bettingTypeId);
 						matchs.add(match);
 						
 						

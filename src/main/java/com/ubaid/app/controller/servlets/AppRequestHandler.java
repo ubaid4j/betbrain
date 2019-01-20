@@ -41,15 +41,38 @@ public class AppRequestHandler extends HttpServlet
         super();
     }
 
+	
+	
+	//after deployment, when we goto first time in website 
+	//then this init() method called
+	//this init method populate the trackedNotification from the server
+	//and then start the schedular
+	//after that, it make a hashClass table 
+	//in which instance of each class of RequestHandler will be stored
 	@Override
 	public void init() throws ServletException
 	{
 		super.init();
 
-		StartUpUtil startUpUtil = new StartUpUtil();
-		startUpUtil.onStart();
-		Controller controller = Controller.getController();
-		controller.startSchedular();
+	    if(!System.getProperty("os.name").toLowerCase().contains("window"))
+	    {
+			StartUpUtil startUpUtil = new StartUpUtil();
+			startUpUtil.onStart();
+			Controller controller = Controller.getController();
+			controller.startSchedular();
+
+	    }
+	    else
+	    {
+			StartUpUtil startUpUtil = new StartUpUtil();
+			startUpUtil.onStart();
+			Controller controller = Controller.getController();
+			controller.startSchedular();
+
+	    }
+
+		
+		
 		
 		classHash = new Hashtable<>();
 		classHash.put("sport", new SportStrategy());		
@@ -65,6 +88,9 @@ public class AppRequestHandler extends HttpServlet
 		classHash.put("notificationPermission", new NotificationPermissionStrategy());
 	}
 		
+	//when our container decides to eliminate the 
+	//the servlet, then this method called 
+	//and this method, simply stop the scheduler and close the connection
 	@Override
 	public void destroy()
 	{
@@ -83,25 +109,39 @@ public class AppRequestHandler extends HttpServlet
 	}
 
 
+	//on each get request
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException
 	{
 				
 		try
 		{
+			//first we find the className from the parameter of the request
 			String className = request.getParameter("className");
 			JSONArray array = null;
+			
 			try
 			{
+				//getting Map of parameters
 				Map<String, String[]> map = request.getParameterMap();
+				
+				//getting Request handler class according to className
 				RequestHandler handler = classHash.get(className);
+				
+				//getting JSON array from the request handler get method
 				array = handler.get(map);			
 			}
 			catch(NullPointerException exp)
 			{
+				//if className is null [in the case of notification SSE request] 
+				//then find the Notification Handler [SSE]
 				RequestHandler handler = classHash.get("notification");
+				
+				//getting JSON array from the SSE handler
 				array = handler.get(response);						
 			}
 			
+			//after that, writer writes the JSON array to response
 			Writer writer = response.getWriter();
 			writer.write(array.toString());
 			writer.flush();

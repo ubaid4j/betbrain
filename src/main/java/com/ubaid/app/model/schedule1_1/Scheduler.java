@@ -72,25 +72,34 @@ public class Scheduler implements Schedule
 			//comparing
 			for(Outcome outcome: outcomes)
 			{
-				Outcome oldOutcome = Schedule.trackedOutcomes.get(outcome.getId());
-				
-				if(outcome.getOdds() != oldOutcome.getOdds() || outcome.getThreshold() != oldOutcome.getThreshold())
+				try
 				{
+					Outcome oldOutcome = Schedule.trackedOutcomes.get(outcome.getId());
 					
-					System.out.println("outcome changed detected");
-					outcome.setAwayTeam(oldOutcome.getAwayTeam());
-					outcome.setHomeTeam(oldOutcome.getHomeTeam());
-					outcome.setLeagueName(oldOutcome.getLeagueName());
-					outcome.setParticipant(oldOutcome.getParticipant());
-					outcome.setRegisterTime(oldOutcome.getRegisterTime());
-					outcome.setChangedTime(new Timestamp(System.currentTimeMillis()));
-					outcome.setOldOdds(oldOutcome.getOdds());
-					outcome.setOldThreshold(oldOutcome.getThreshold());
-					outcome.setMatchName(oldOutcome.getMatchName());
-					Scheduler.trackedOutcomes.put(outcome.getId(), outcome);
-					list.add(outcome);
-					Schedule.notificationQueue.add(outcome);
+					if(Math.abs(outcome.getOdds() - oldOutcome.getOdds()) >  0.000001 || Math.abs(outcome.getThreshold() - oldOutcome.getThreshold()) >  0.000001)
+					{
+						
+						//TODO eliminate the bug
+						System.out.println("outcome changed detected");
+						outcome.setAwayTeam(oldOutcome.getAwayTeam());
+						outcome.setHomeTeam(oldOutcome.getHomeTeam());
+						outcome.setLeagueName(oldOutcome.getLeagueName());
+						outcome.setParticipant(oldOutcome.getParticipant());
+						outcome.setRegisterTime(oldOutcome.getRegisterTime());
+						outcome.setChangedTime(new Timestamp(System.currentTimeMillis()));
+						outcome.setOldOdds(oldOutcome.getOdds());
+						outcome.setOldThreshold(oldOutcome.getThreshold());
+						outcome.setMatchName(oldOutcome.getMatchName());
+						Scheduler.trackedOutcomes.put(outcome.getId(), outcome);
+						list.add(outcome);
+						Schedule.notificationQueue.add(outcome);
+						
+					}
 					
+				}
+				catch(NullPointerException exp)
+				{
+					System.out.println("NUll point exception at line 81 of Scheduler");
 				}
 			}
 			

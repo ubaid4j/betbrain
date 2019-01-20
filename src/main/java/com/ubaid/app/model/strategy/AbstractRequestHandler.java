@@ -6,6 +6,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 
+/**
+ * this class implement the RequestHandler 
+ * and its methods simply return the null
+ * @author ubaid
+ *
+ */
 public class AbstractRequestHandler implements RequestHandler
 {
 

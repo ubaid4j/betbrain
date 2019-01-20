@@ -107,9 +107,30 @@ public abstract class AbstractDAO implements DAO
 	
 	
 	@Override
-	public LinkedList<Entity> getAll(long id, int eventPartId) {
-		// TODO Auto-generated method stub
-		return null;
+	public LinkedList<Entity> getAll(long id, int bettingType, int eventPartId)
+	{
+		throw new IllegalAccessError("Method not supported");		
+	}
+
+	@Override
+	public LinkedList<Entity> getAll(long id, int eventPartId)
+	{
+		LinkedList<Entity> entities;
+		try
+		{
+			Connection connection = DataSource.getConnection();
+			PreparedStatement statement = connection.prepareStatement(getQuery(QT.GETALLBYID));
+			statement.setInt(1, eventPartId);
+			statement.setLong(2, id);
+			ResultSet resultSet = statement.executeQuery();
+			entities = builder.build(resultSet);
+		}
+		catch(Exception exp)
+		{
+			throw new IllegalArgumentException();
+		}
+		
+		return entities;	
 	}
 
 	abstract AbstractFactory getFactory();

@@ -54,11 +54,21 @@ public abstract class AbstractLogic implements Logic
 		throw new IllegalAccessError("Method not supported");
 	}
 
+	
+	
 	@Override
-	public LinkedList<Entity> getAll(long id, int eventPartId) {
-		// TODO Auto-generated method stub
+	public LinkedList<Entity> getAll(long id, int eventPartId)
+	{
+		return dao.getAll(id, eventPartId);
+	}
+
+	@Override
+	public LinkedList<Entity> getAll(long id, int bettingType, int eventPartId)
+	{
 		return null;
 	}
+	
+	
 	
 	
 	

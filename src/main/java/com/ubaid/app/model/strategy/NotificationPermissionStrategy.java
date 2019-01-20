@@ -4,9 +4,14 @@ import java.util.Map;
 
 import org.json.JSONArray;
 
+/**
+ * this class is responsible to permit SSE or not
+ * this class check if SSE loop is established, then it send false otherwise no
+ * @author ubaid
+ *
+ */
 public class NotificationPermissionStrategy extends AbstractRequestHandler
 {
-
 	public NotificationPermissionStrategy()
 	{
 		
@@ -24,6 +29,4 @@ public class NotificationPermissionStrategy extends AbstractRequestHandler
 			return new JSONArray("[{action: true}]");		
 		}
 	}
-	
-
 }

@@ -11,6 +11,11 @@ import org.json.JSONObject;
 import com.ubaid.app.model.schedule1_1.Notification;
 import com.ubaid.app.model.schedule1_1.OutcomeNotificationi;
 
+/**
+ * this class is responsisble to response SSE events
+ * @author ubaid
+ *
+ */
 public class NotificationStrategy extends AbstractRequestHandler
 {
 
@@ -21,13 +26,14 @@ public class NotificationStrategy extends AbstractRequestHandler
 
 	}
 
-	
 	@Override
 	public JSONArray get(HttpServletResponse response)
 	{
 		try
 		{
 			System.out.println("------------------Notifications------------------");
+
+			//getting notification service
 			final Notification notification = new OutcomeNotificationi();
 					
 	    	response.setContentType("text/event-stream");
@@ -35,13 +41,18 @@ public class NotificationStrategy extends AbstractRequestHandler
 	    	
 	    	PrintWriter writer = null;
 	    	
+	    	//in loop
 	    	while(true)
 	    	{
+	    		//setting loop to true
 	    		setLoopRunning(true);
+	    		
+	    		//getting new notification from the service
 				JSONObject object = notification.getNotification();
 
 	    		try
 	    		{
+					//writing down
 	    			writer = response.getWriter();
 	    			writer.print("data: "  + object.toString());
 	    			writer.print("\n\n");	    			
@@ -49,6 +60,7 @@ public class NotificationStrategy extends AbstractRequestHandler
 	    		}
 	    		catch(IOException exp)
 	    		{
+	    			//when SSE event removed, then exception arise, setting loop to false and closing the writer
 	    			setLoopRunning(false);
 	    			writer.close();
 	    			return new JSONArray("[{action: 'Notification Loop Ended'}]");

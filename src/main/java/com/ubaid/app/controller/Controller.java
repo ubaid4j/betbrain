@@ -4,15 +4,18 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import com.ubaid.app.model.schedule1_1.Scheduler;
 
+/**
+ * this controller is a singleton class, it contain a threadpool 
+ * which is responsible to run scheduler
+ * @author ubaid
+ *
+ */
 public class Controller
 {
+	//class level variables
 	private ExecutorService service = null;
 	private static Controller controller = null;
-	private boolean terminate = false;
-	
-	
-	
-	
+
 	private ExecutorService checkNullity(ExecutorService service)
 	{
 		if(service == null)
@@ -38,8 +41,13 @@ public class Controller
 	{
 		try
 		{
+			//first, we check if the schedular is null, if it is null, then creating a pool
 			service = checkNullity(service);
+			
+			//then we check, service is already referenced with a pool, if it is then we shut down it and then again create
 			service = checkTermination(service);
+
+			//executing Scheduler
 			service.execute(new Scheduler());
 			service.shutdown();
 		}
@@ -49,6 +57,7 @@ public class Controller
 		}
 	}
 	
+	//this method stop the schedular
 	public void stopSchedular()
 	{
 		try
@@ -62,37 +71,17 @@ public class Controller
 		
 	}
 	
-	
-	public void setSevice(ExecutorService service)
-	{
-		this.service = service;
-	}
-	
-	public ExecutorService getService()
-	{
-		return service;
-	}
-	
+		
 	private Controller()
 	{
 		service = Executors.newFixedThreadPool(1);
 	}
 	
+	//single ton
 	public static Controller getController()
 	{
 		if(controller == null)
 			controller = new Controller();
 		return controller;
-	}
-
-	
-	
-	
-	public boolean isTerminate() {
-		return terminate;
-	}
-
-	public void setTerminate(boolean terminate) {
-		this.terminate = terminate;
 	}
 }

@@ -23,16 +23,11 @@ public class StartUpUtil
 {
 	public static boolean isFirst = true;
 	
-	/**
-	 * this is the method which call on the first run of website by a user after deployment
-	 */
+	//onStart method is called from the init() method of the servlet
 	public void onStart()
 	{
-		//will implement the 69 type bit 
-		//an another thread which will 
-		//fill the outcome tracked list
-		//and we wait for this thread to complete and then 
-		//in the service we can execute outcome schedule
+
+		//this thread fill the hashtable with the outcomes [registered in the database]
 		ExecutorService innerThread1 = Executors.newFixedThreadPool(1);
 		innerThread1.execute(new Runnable()
 		{
@@ -53,6 +48,7 @@ public class StartUpUtil
 		
 		innerThread1.shutdown();
 		
+		//when the thread work completed then return back
 		while(true)
 		{
 			if(innerThread1.isTerminated())

@@ -1,11 +1,15 @@
 package com.ubaid.app.model.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.LinkedList;
 
 import com.ubaid.app.model.SportType;
 import com.ubaid.app.model.abstractFactory.AbstractFactory;
 import com.ubaid.app.model.abstractFactory.OddsFactory;
 import com.ubaid.app.model.objects.Entity;
+import com.ubaid.app.model.singleton.DataSource;
 
 public class OddsDAO extends AbstractDAO
 {
@@ -27,9 +31,9 @@ public class OddsDAO extends AbstractDAO
 											"Betting"
 											+ "Type bt on bo.bettingTypeId = bt.id " +
 											"where " +
-											"bo.bettingTypeId in (69) " +
+											"bo.bettingTypeId in (?) " +
 											"and " +
-											"o.eventPartId = 3 " +
+											"o.eventPartId = ? " +
 											"and " +
 											"date(e.startTime) between date(curdate()) and date(date_add(date(curdate()), interval 3 day)) " +
 											"and " +
@@ -53,6 +57,29 @@ public class OddsDAO extends AbstractDAO
 	public LinkedList<Entity> getAll(long id)
 	{
 		return super.getAll(id);
+	}
+
+	@Override
+	public LinkedList<Entity> getAll(long id,int bettingType, int eventPartId)
+	{
+		LinkedList<Entity> entities;
+		try
+		{
+			Connection connection = DataSource.getConnection();
+			PreparedStatement statement = connection.prepareStatement(getQuery(QT.GETALLBYID));
+			statement.setInt(1, bettingType);
+			statement.setInt(2, eventPartId);
+			statement.setLong(3, id);
+			ResultSet resultSet = statement.executeQuery();
+			entities = builder.build(resultSet);
+		}
+		catch(Exception exp)
+		{
+			throw new IllegalArgumentException();
+		}
+		
+		return entities;	
+
 	}
 
 	@Override

@@ -144,7 +144,7 @@ function showEvents(data, pane, sportName)
 				openRow = '<tr class="' + event.hash + '">';
 				td1 = '<th scope="row">'+ (index + 1) + '</th>';
 				td2 = '<td scope="row">' + 
-			      		'<button onclick="handlerForShowingSubEvents(' + event.id + ',\'' + event.name + '\')" class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="' +  "#" + event.hash + '" aria-expanded="false" aria-controls="' + event.id + '">' + event.name + '</button>' +
+			      		'<button onclick="handlerForShowingSubEvents(' + event.id + ',\'' + event.name + '\',\'' + sportName + '\')" class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="' +  "#" + event.hash + '" aria-expanded="false" aria-controls="' + event.id + '">' + event.name + '</button>' +
 			      	  '</td>';
 				td3 = '<td scope="row">' + event.location + '</td>';
 
@@ -208,7 +208,7 @@ function search()
 
 
 //getting match of the league
-function handlerForShowingSubEvents(id, eventName)
+function handlerForShowingSubEvents(id, eventName, sportName)
 {
 	//getting the button
 	var targetedButton = $("button[aria-controls='" + id + "']");
@@ -242,6 +242,7 @@ function handlerForShowingSubEvents(id, eventName)
 			  data:
 			  { 
 				className: 'subEvents',
+				sportName: sportName,
 			    id: id
 			  },
 			  success: function(response)
@@ -251,7 +252,7 @@ function handlerForShowingSubEvents(id, eventName)
 				    //and then set Handler on the check boxes
 					$.when(collapse_w.empty()).done(function()
 					{						
-						  showSubEvents(response, collapse_w, eventName);
+						  showSubEvents(response, collapse_w, eventName, sportName);
 					});				  
 			  },
 			  error: function(xhr)
@@ -270,7 +271,7 @@ function handlerForShowingSubEvents(id, eventName)
 }
 
 //this function is used to show the matches of leagues
-function showSubEvents(response, collapse_w, eventName)
+function showSubEvents(response, collapse_w, eventName, sportName)
 {
 	let openTable = '<table class="table table-dark bg-dark table-hover">',
 		thead = '<thead></thead>',
@@ -320,8 +321,8 @@ function showSubEvents(response, collapse_w, eventName)
 				td5 = '<td scope="row">' + match.drawOdds + '</td>';
 				td6 = '<td scope="row">' + match.awayTeamOdds + '</td>';
 
-				td7 = '<td scope="row"><button type="button" class="btn btn-secondary btn-sm" value="' + match.id + '"onclick="handleOdds(' + match.id + ', \'' + match.homeTeam + '\', \'' + match.awayTeam +  '\' , \'OU\', \'' + eventName + '\')">view</button></td>';
-				td8 = '<td scope="row"><button type="button" class="btn btn-secondary btn-sm" value="' + match.id + '"onclick="handleOdds(' + match.id + ', \'' + match.homeTeam + '\', \'' + match.awayTeam +  '\' , \'AH\', \'' + eventName + '\')">view</button></td>';
+				td7 = '<td scope="row"><button type="button" class="btn btn-secondary btn-sm" value="' + match.id + '"onclick="handleOdds(' + match.id + ', \'' + match.homeTeam + '\', \'' + match.awayTeam +  '\' , \'OU\', \'' + eventName + '\', \'' + sportName +'\')">view</button></td>';
+				td8 = '<td scope="row"><button type="button" class="btn btn-secondary btn-sm" value="' + match.id + '"onclick="handleOdds(' + match.id + ', \'' + match.homeTeam + '\', \'' + match.awayTeam +  '\' , \'AH\', \'' + eventName + '\', \'' + sportName +'\')">view</button></td>';
 							 
 				row = openRow + checkbox + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + closeRow;
 				
@@ -571,7 +572,7 @@ function appendTrackedEvents(array)
 
 /*--------------------------------------------------------handling odds-------------------------------------------------*/
 
-function handleOdds(eventId, homeTeam, awayTeam, bettingType, eventName)
+function handleOdds(eventId, homeTeam, awayTeam, bettingType, eventName, sportName)
 {
 	//secondary window = sw
 	var sw = $("#s_w");
@@ -590,6 +591,7 @@ function handleOdds(eventId, homeTeam, awayTeam, bettingType, eventName)
 			type: "get",
 			data: {
 				className: 'assianHandicap',
+				sportName: sportName,
 				id: eventId,
 				homeTeam: homeTeam,
 				awayTeam: awayTeam,
@@ -633,6 +635,7 @@ function handleOdds(eventId, homeTeam, awayTeam, bettingType, eventName)
 			type: "get",
 			data: {
 				className: 'overUnder',
+				sportName: sportName,
 				id: eventId,
 				homeTeam: homeTeam,
 				awayTeam: awayTeam,
@@ -693,9 +696,9 @@ function appendValues(object, teams)
 		$.when(appendInOverUnder(header, table, object, teams)).done(function()
 		{
 			header.append("<th scope='col'>#</th>");
-			header.append("<th scope='col' class='l432' data-defaultsign='_19'>Over</th>");
+			header.append("<th scope='col' class='l432' data-defaultsign='_19' data-defaultsort='desc'>Under</th>");
 			header.append("<th scope='col'>#</th>");
-			header.append("<th scope='col' class='l432' data-defaultsign='_19'>Under</th>");
+			header.append("<th scope='col' class='l432' data-defaultsign='_19' >Over</th>");
 
 			$.bootstrapSortable({ applyLast: true });
 		});
@@ -705,7 +708,7 @@ function appendValues(object, teams)
 		$.when(appendInAssianHandicapTable(header, table, object, teams)).done(function()
 		{
 			header.append("<th scope='col'>#</th>");
-			header.append("<th scope='col' class='l432' data-defaultsign='_19'>1 (" + teams[0] + ")</th>");
+			header.append("<th scope='col' class='l432' data-defaultsign='_19' data-defaultsort='desc'>1 (" + teams[0] + ")</th>");
 			header.append("<th scope='col'>#</th>");
 			header.append("<th scope='col' class='l432' data-defaultsign='_19'>2 (" + teams[1] + ")</th>");
 
