@@ -10,5 +10,11 @@ public interface OutcomeLogic
 {
 	OutcomeDAO dao = new DAOOutcome();
 	LinkedList<Entity> getAll(long[] ids);
-	
+	/**
+	 * 
+	 * @param ids
+	 * @param eventPartId
+	 * @return list of outcomes
+	 */
+	LinkedList<Entity> getAll(long[] ids, int eventPartId);
 }

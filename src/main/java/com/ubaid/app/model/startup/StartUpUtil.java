@@ -28,7 +28,7 @@ public class StartUpUtil
 	{
 
 		//this thread fill the hashtable with the outcomes [registered in the database]
-		ExecutorService innerThread1 = Executors.newFixedThreadPool(1);
+		ExecutorService innerThread1 = Executors.newFixedThreadPool(2);
 		innerThread1.execute(new Runnable()
 		{
 			@Override
@@ -43,6 +43,16 @@ public class StartUpUtil
 					Outcome outcome = (Outcome) entity;
 					OddsDetection.putInTrackeEvents(outcome.getId(), outcome);
 				}
+			}
+		});
+		
+		innerThread1.execute(new Runnable()
+		{
+			
+			@Override
+			public void run()
+			{
+				
 			}
 		});
 		

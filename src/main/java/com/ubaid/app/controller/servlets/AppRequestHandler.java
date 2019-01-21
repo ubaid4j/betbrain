@@ -65,10 +65,10 @@ public class AppRequestHandler extends HttpServlet
 	    }
 	    else
 	    {
-//			StartUpUtil startUpUtil = new StartUpUtil();
-//			startUpUtil.onStart();
-//			Controller controller = Controller.getController();
-//			controller.startSchedular();
+			StartUpUtil startUpUtil = new StartUpUtil();
+			startUpUtil.onStart();
+			Controller controller = Controller.getController();
+			controller.startSchedular();
 
 	    }
 

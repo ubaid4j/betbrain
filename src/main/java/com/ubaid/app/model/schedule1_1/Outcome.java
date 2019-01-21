@@ -21,6 +21,28 @@ public final class Outcome extends Entity implements Cloneable {
 	private BettingType bettingType;
 	private long matchId;
 	private String sportName;
+	private long typeId;
+	private String status;
+
+	/*-------------------------------Do not delete-----------------------------------------*/
+	public String getParticipant() {
+		if (participant == null) {
+			return getTypeId() == 14 ? "Under" : "Over";
+		}
+
+		return participant;
+	}
+	
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return super.clone();
+	}
+
+	/*-------------------------------Do not delete-----------------------------------------*/
+
+
 
 	public float getThreshold() {
 		return threshold;
@@ -68,14 +90,6 @@ public final class Outcome extends Entity implements Cloneable {
 
 	public void setLeagueName(String leagueName) {
 		this.leagueName = leagueName;
-	}
-
-	public String getParticipant() {
-		return participant;
-	}
-
-	public void setParticipant(String participant) {
-		this.participant = participant;
 	}
 
 	public String getHomeTeam() {
@@ -142,6 +156,26 @@ public final class Outcome extends Entity implements Cloneable {
 		this.sportName = sportName;
 	}
 
+	public long getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(long typeId) {
+		this.typeId = typeId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public void setParticipant(String participant) {
+		this.participant = participant;
+	}
+
 	public static class Builder {
 		private float threshold;
 		private float oldThreshold;
@@ -158,6 +192,8 @@ public final class Outcome extends Entity implements Cloneable {
 		private BettingType bettingType;
 		private long matchId;
 		private String sportName;
+		private long typeId;
+		private String status;
 
 		public Builder threshold(float threshold) {
 			this.threshold = threshold;
@@ -234,6 +270,16 @@ public final class Outcome extends Entity implements Cloneable {
 			return this;
 		}
 
+		public Builder typeId(long typeId) {
+			this.typeId = typeId;
+			return this;
+		}
+
+		public Builder status(String status) {
+			this.status = status;
+			return this;
+		}
+
 		public Outcome build() {
 			return new Outcome(this);
 		}
@@ -255,13 +301,7 @@ public final class Outcome extends Entity implements Cloneable {
 		this.bettingType = builder.bettingType;
 		this.matchId = builder.matchId;
 		this.sportName = builder.sportName;
+		this.typeId = builder.typeId;
+		this.status = builder.status;
 	}
-
-	@Override
-	public Object clone() throws CloneNotSupportedException
-	{
-		return super.clone();
-	}
-	
-	
 }

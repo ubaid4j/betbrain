@@ -1,10 +1,10 @@
 package com.ubaid.app.model.logic;
 
-import java.util.LinkedList;
 
-import com.ubaid.app.model.objects.Entity;
+import com.ubaid.app.model.dao.DAOOutcome;
+import com.ubaid.app.model.dao.OutcomeDAO;
 
-public class OutcomeLogici implements OutcomeLogic
+public class OutcomeLogici extends AbstractOutcomeLogic
 {
 
 	public OutcomeLogici()
@@ -13,9 +13,9 @@ public class OutcomeLogici implements OutcomeLogic
 	}
 
 	@Override
-	public LinkedList<Entity> getAll(long[] ids)
-	{		
-		return dao.getAll(ids);
+	OutcomeDAO getOutcomeDAO()
+	{
+		return new DAOOutcome();
 	}
 
 }

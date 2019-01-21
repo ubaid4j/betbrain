@@ -151,6 +151,16 @@ public class TrackedMatches extends Entity {
 		service.shutdown();
 	}
 	
+	public void addOutcome(Outcome outcome)
+	{
+		getOutcomes().add(outcome);
+	}
+	
+	public void removeOutcome(Outcome outcome)
+	{
+		getOutcomes().remove(outcome);
+	}
+	
 	private class _Populate implements Runnable
 	{
 
@@ -179,7 +189,9 @@ public class TrackedMatches extends Entity {
 					public void run()
 					{
 						//getting all assian handicap raw data of this match
-						assianHandicapRawData = ahLogic.getAll(matchId, su.getEventPartId(sportName, 48));						
+						int eventPartId = su.getEventPartId(sportName, 48);
+						if(eventPartId != -1)
+							assianHandicapRawData = ahLogic.getAll(matchId, eventPartId);						
 					}
 				});
 
@@ -190,7 +202,9 @@ public class TrackedMatches extends Entity {
 					public void run()
 					{
 						//getting all overUnder raw data
-						overUnderRawData = ouLogic.getAll(matchId, su.getEventPartId(sportName, 47));
+						int eventPartId = su.getEventPartId(sportName, 47);
+						if(eventPartId != -1)
+							overUnderRawData = ouLogic.getAll(matchId, eventPartId);
 						
 					}
 				});
@@ -245,7 +259,11 @@ public class TrackedMatches extends Entity {
 
 				setOutcomes(outcomes);
 			}
-			catch(Exception exp)
+			catch(NullPointerException exp)
+			{
+				System.out.println(sportName + " is not suport threshold detection");
+			}
+			catch(CloneNotSupportedException exp)
 			{
 				exp.printStackTrace();
 			}

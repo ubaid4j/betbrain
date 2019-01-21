@@ -4,10 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.LinkedList;
+
+import com.ubaid.app.model.abstractFactory.AbstractFactory;
+import com.ubaid.app.model.abstractFactory.OutcomeBuilderFactory;
+import com.ubaid.app.model.builder.resultSetBuilder.ResultSetBuilder;
 import com.ubaid.app.model.objects.Entity;
 import com.ubaid.app.model.singleton.DataSource;
 
-public class DAOOutcome implements OutcomeDAO
+public class DAOOutcome extends AbstractOutcomeDAO
 {
 	
 	public DAOOutcome()
@@ -41,6 +45,7 @@ public class DAOOutcome implements OutcomeDAO
 			}
 
 			//--------------------------logic------------------------
+			ResultSetBuilder builder = (ResultSetBuilder) getBuilder();
 			return builder.build(st.executeQuery());
 		}
 		catch(SQLException exp)
@@ -49,20 +54,11 @@ public class DAOOutcome implements OutcomeDAO
 		}
 		return null;
 	}
-	
-	private String queryBuilder(String query, int size)
+
+	@Override
+	public AbstractFactory getFactory()
 	{
-		String tempStr = "(";
-		for(int i = 0; i < size - 1; i++)
-		{
-			tempStr += "?, ";
-		}
-		
-		tempStr += "?);";
-		query += tempStr;
-		
-		return query;
-		
+		return new OutcomeBuilderFactory();
 	}
 
 }

@@ -8,7 +8,7 @@ public class EventsDAO extends AbstractDAO
 
 	private static final String query = "select " +
 										"distinct " +
-										"e2.name as `Tournament Name`, " +
+										"removeSpecialCharacter(e2.name) as `Tournament Name`, " +
 										"e2.id as `Tournament ID`, " +
 										"l.name as `Location Name` " +
 										"from " +

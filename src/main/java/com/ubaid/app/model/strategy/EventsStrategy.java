@@ -28,37 +28,46 @@ public class EventsStrategy extends AbstractRequestHandler
 	@Override
 	public JSONArray get(Map<String, String[]> map)
 	{
-		//getting name of sport
-		String attribute = map.get("name")[0];
-		
-		//getting logic
-		Logic logic  = new EventsLogic();
-		
-		//getting all the tournaments by passing the name of support
-		LinkedList<Entity> events = logic.getAll(SportUtilFactory.getSportUtil().getSportId(attribute));
-		
-		//creating an tournament list
-		LinkedList<Events> list = new LinkedList<>();
-		for(int i = 0; i < events.size(); i++)
+		try
 		{
-			list.add((Events) events.get(i));
-		}
-		
-		JSONArray array = new JSONArray();
-		JSONObject object;
-		
-		//creating an json array
-		for(Events event : list)
-		{
-			object = new JSONObject();
-			object.put("id", event.getId());
-			object.put("name", event.getEventName());
-			object.put("hash", event.getHash());
-			object.put("location", event.getLocationName());
-			array.put(object);
-		}
+			//getting name of sport
+			String attribute = map.get("name")[0];
+			
+			//getting logic
+			Logic logic  = new EventsLogic();
+			
+			//getting all the tournaments by passing the name of support
+			LinkedList<Entity> events = logic.getAll(SportUtilFactory.getSportUtil().getSportId(attribute));
+			
+			//creating an tournament list
+			LinkedList<Events> list = new LinkedList<>();
+			for(int i = 0; i < events.size(); i++)
+			{
+				list.add((Events) events.get(i));
+			}
+			
+			JSONArray array = new JSONArray();
+			JSONObject object;
+			
+			//creating an json array
+			for(Events event : list)
+			{
+				object = new JSONObject();
+				object.put("id", event.getId());
+				object.put("name", event.getEventName());
+				object.put("hash", event.getHash());
+				object.put("location", event.getLocationName());
+				array.put(object);
+			}
 
-		return array;
+			return array;
+			
+		}
+		catch(Exception exp)
+		{
+			exp.printStackTrace();
+			return null;
+		}
 	}
 
 }

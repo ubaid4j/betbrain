@@ -7,6 +7,8 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.ubaid.app.model.SportUtil;
+import com.ubaid.app.model.SportUtilFactory;
 import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.RegisteredOutcomeLogic;
 import com.ubaid.app.model.logic.TrackedMatchLogic;
@@ -42,87 +44,89 @@ public class HomeAwayDrawRegisterarStrategy extends AbstractRequestHandler
 		try
 		{
 			
-		//getting data from the request
-		String _map = map_r.get("data")[0];		
-		String _isAdd = map_r.get("checked")[0];
-		boolean isAdd = Boolean.parseBoolean(_isAdd);
-		JSONObject map = new JSONObject(_map);
-		
-		//creating logic
-		Logic logic = new RegisteredOutcomeLogic();
-		Logic trackedLogic = new TrackedMatchLogic();
+			//getting data from the request
+			String _map = map_r.get("data")[0];		
+			String _isAdd = map_r.get("checked")[0];
+			boolean isAdd = Boolean.parseBoolean(_isAdd);
+			JSONObject map = new JSONObject(_map);
 			
-		
-		//creating an array of outcome of size 3
-		Outcome[] outcomes = new Outcome[3];
-		
-		
-		
-		//creating three outcomes
-		outcomes[0] = new Outcome.Builder()
-								.id(map.getLong(Helper.HOMETEAMOUTCOMEID.toString()))
-								.homeTeam(map.getString(Helper.HOMETEAM.toString()))
-								.awayTeam(map.getString(Helper.AWAYTEAM.toString()))
-								.participant(map.getString(Helper.HOMETEAM.toString()))
-								.leagueName(map.getString(Helper.LEAGUENAME.toString()))
-								.matchName(map.getString(Helper.MATCHNAME.toString()))
-								.odds(map.getFloat(Helper.HOMETEAMODDS.toString()))
-								.registerTime(new Timestamp(System.currentTimeMillis()))
-								.changedTime(new Timestamp(System.currentTimeMillis()))
-								.threshold(-1)
-								.bettingType(BettingType.HomeDrawAway)
-								.build();
-		
-		outcomes[1] = new Outcome.Builder()
-								.id(map.getLong(Helper.AWAYTEAMOUTCOMEID.toString()))
-								.homeTeam(map.getString(Helper.HOMETEAM.toString()))
-								.awayTeam(map.getString(Helper.AWAYTEAM.toString()))
-								.participant(map.getString(Helper.AWAYTEAM.toString()))
-								.leagueName(map.getString(Helper.LEAGUENAME.toString()))
-								.matchName(map.getString(Helper.MATCHNAME.toString()))
-								.odds(map.getFloat(Helper.AWAYTEAMODDS.toString()))
-								.registerTime(new Timestamp(System.currentTimeMillis()))
-								.changedTime(new Timestamp(System.currentTimeMillis()))
-								.threshold(-1)
-								.bettingType(BettingType.HomeDrawAway)
-								.build();
-
-		outcomes[2] = new Outcome.Builder()
-								.id(map.getLong(Helper.DRAWOUTCOMEID.toString()))
-								.homeTeam(map.getString(Helper.HOMETEAM.toString()))
-								.awayTeam(map.getString(Helper.AWAYTEAM.toString()))
-								.leagueName(map.getString(Helper.LEAGUENAME.toString()))
-								.matchName(map.getString(Helper.MATCHNAME.toString()))
-								.odds(map.getFloat(Helper.DRAWODDS.toString()))
-								.registerTime(new Timestamp(System.currentTimeMillis()))
-								.changedTime(new Timestamp(System.currentTimeMillis()))
-								.threshold(-1)
-								.bettingType(BettingType.HomeDrawAway)
-								.build();
-
-		
-		TrackedMatches trackedMatch = new TrackedMatches.Builder()
-				.matchId(map.getLong("matchId"))
-				.homeTeam(map.getString(Helper.HOMETEAM.toString()))
-				.awayTeam(map.getString(Helper.AWAYTEAM.toString()))
-				.leagueName(map.getString(Helper.LEAGUENAME.toString()))
-				.matchName(map.getString(Helper.HOMETEAM.toString()) + " VS" + map.getString(Helper.AWAYTEAM.toString()))
-				.sportName(map.getString("sportName"))
-				.build();
-		
-		trackedMatch.populateOutcomes();
-		
-		//on detemining delete or add data, adding or removing accordingly
-		if(isAdd)
-		{
-			return add(logic, trackedLogic, outcomes, trackedMatch, map.getString("sportName"));			
+			//creating logic
+			Logic logic = new RegisteredOutcomeLogic();
+			Logic trackedLogic = new TrackedMatchLogic();
+				
+			
+			//creating an array of outcome of size 3
+			Outcome[] outcomes = new Outcome[3];
+			
+			
+			
+			//creating three outcomes
+			outcomes[0] = new Outcome.Builder()
+									.id(map.getLong(Helper.HOMETEAMOUTCOMEID.toString()))
+									.homeTeam(map.getString(Helper.HOMETEAM.toString()))
+									.awayTeam(map.getString(Helper.AWAYTEAM.toString()))
+									.participant(map.getString(Helper.HOMETEAM.toString()))
+									.leagueName(map.getString(Helper.LEAGUENAME.toString()))
+									.matchName(map.getString(Helper.MATCHNAME.toString()))
+									.odds(map.getFloat(Helper.HOMETEAMODDS.toString()))
+									.registerTime(new Timestamp(System.currentTimeMillis()))
+									.changedTime(new Timestamp(System.currentTimeMillis()))
+									.threshold(-1)
+									.bettingType(BettingType.HomeDrawAway)
+									.build();
+			
+			outcomes[1] = new Outcome.Builder()
+									.id(map.getLong(Helper.AWAYTEAMOUTCOMEID.toString()))
+									.homeTeam(map.getString(Helper.HOMETEAM.toString()))
+									.awayTeam(map.getString(Helper.AWAYTEAM.toString()))
+									.participant(map.getString(Helper.AWAYTEAM.toString()))
+									.leagueName(map.getString(Helper.LEAGUENAME.toString()))
+									.matchName(map.getString(Helper.MATCHNAME.toString()))
+									.odds(map.getFloat(Helper.AWAYTEAMODDS.toString()))
+									.registerTime(new Timestamp(System.currentTimeMillis()))
+									.changedTime(new Timestamp(System.currentTimeMillis()))
+									.threshold(-1)
+									.bettingType(BettingType.HomeDrawAway)
+									.build();
+	
+			outcomes[2] = new Outcome.Builder()
+									.id(map.getLong(Helper.DRAWOUTCOMEID.toString()))
+									.homeTeam(map.getString(Helper.HOMETEAM.toString()))
+									.awayTeam(map.getString(Helper.AWAYTEAM.toString()))
+									.leagueName(map.getString(Helper.LEAGUENAME.toString()))
+									.matchName(map.getString(Helper.MATCHNAME.toString()))
+									.odds(map.getFloat(Helper.DRAWODDS.toString()))
+									.registerTime(new Timestamp(System.currentTimeMillis()))
+									.changedTime(new Timestamp(System.currentTimeMillis()))
+									.threshold(-1)
+									.bettingType(BettingType.HomeDrawAway)
+									.build();
+	
+			//no worries for showing in front end that, it is registered
+			//or not, becuase, it will be handled by home draw away 
+			//odds
+			TrackedMatches trackedMatch = new TrackedMatches.Builder()
+					.matchId(map.getLong("matchId"))
+					.homeTeam(map.getString(Helper.HOMETEAM.toString()))
+					.awayTeam(map.getString(Helper.AWAYTEAM.toString()))
+					.leagueName(map.getString(Helper.LEAGUENAME.toString()))
+					.matchName(map.getString(Helper.HOMETEAM.toString()) + " VS" + map.getString(Helper.AWAYTEAM.toString()))
+					.sportName(map.getString("sportName"))
+					.build();
+			
+			trackedMatch.populateOutcomes();
+			
+			//on detemining delete or add data, adding or removing accordingly
+			if(isAdd)
+			{
+				return add(logic, trackedLogic, outcomes, trackedMatch, map.getString("sportName"));			
+			}
+			else
+			{
+				return remove(logic, trackedLogic, outcomes, trackedMatch, map.getString("sportName"));			
+			}
 		}
-		else
-		{
-			return remove(logic, trackedLogic, outcomes, trackedMatch, map.getString("sportName"));			
-		}
-		}
-		catch(NullPointerException e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 			return null;
@@ -140,9 +144,15 @@ public class HomeAwayDrawRegisterarStrategy extends AbstractRequestHandler
 				if(logic.delete(outcomes[i].getId()))
 					OddsDetection.removeFromTrackedEvents(outcomes[i].getId());			
 			}			
+
+			SportUtil su = SportUtilFactory.getSportUtil();
 			
-			if(trackedLogic.delete(trackedMatch.getMatchId()))
-				ThresholdDetection.removeFromTrackedEvents(sportName, trackedMatch.getMatchId());
+			//getting if this is valid for detecting threshold
+			int eventPartId = su.getEventPartId(sportName, 47);
+
+			if(eventPartId != -1)
+				if(trackedLogic.delete(trackedMatch.getMatchId()))
+					ThresholdDetection.removeFromTrackedEvents(sportName, trackedMatch.getMatchId());
 		}
 		catch(Exception exp)
 		{
@@ -164,8 +174,13 @@ public class HomeAwayDrawRegisterarStrategy extends AbstractRequestHandler
 					OddsDetection.putInTrackeEvents(outcomes[i].getId(), outcomes[i]);
 			}			
 			
-			if(trackedLogic.add(trackedMatch))
-				ThresholdDetection.putInTrackeEvents(trackedMatch.getMatchId(), sportName, trackedMatch);
+			SportUtil su = SportUtilFactory.getSportUtil();
+
+			//checking if it is valid for detecting threshold
+			int eventPartId = su.getEventPartId(sportName, 47);
+			if(eventPartId != -1)
+				if(trackedLogic.add(trackedMatch))
+					ThresholdDetection.putInTrackeEvents(trackedMatch.getMatchId(), sportName, trackedMatch);
 		}
 		catch(Exception exp)
 		{

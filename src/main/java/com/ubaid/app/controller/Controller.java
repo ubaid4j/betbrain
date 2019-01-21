@@ -4,6 +4,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
+import com.ubaid.app.model.schedule1_1.thresholdDetection.ThresholdDetection;
 
 /**
  * this controller is a singleton class, it contain a threadpool 
@@ -20,18 +21,18 @@ public class Controller
 	private ExecutorService checkNullity(ExecutorService service)
 	{
 		if(service == null)
-			service = Executors.newFixedThreadPool(1);
+			service = Executors.newFixedThreadPool(2);
 		return service;
 	}
 	
 	private ExecutorService checkTermination(ExecutorService service)
 	{
 		if(service.isTerminated())
-			service = Executors.newFixedThreadPool(1);
+			service = Executors.newFixedThreadPool(2);
 		else
 		{
 			service.shutdownNow();
-			service = Executors.newFixedThreadPool(1);			
+			service = Executors.newFixedThreadPool(2);			
 		}
 		return service;
 	}
@@ -48,8 +49,9 @@ public class Controller
 			//then we check, service is already referenced with a pool, if it is then we shut down it and then again create
 			service = checkTermination(service);
 
-			//executing Scheduler
-			service.execute(new OddsDetection());
+			//executing Scheduler //TODO uncommenting service.execute
+//			service.execute(new OddsDetection());
+			service.execute(new ThresholdDetection());
 			service.shutdown();
 		}
 		catch(Exception exp)
@@ -75,7 +77,7 @@ public class Controller
 		
 	private Controller()
 	{
-		service = Executors.newFixedThreadPool(1);
+		service = Executors.newFixedThreadPool(2);
 	}
 	
 	//single ton

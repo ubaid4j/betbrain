@@ -125,6 +125,8 @@ function showEvents(data, pane, sportName)
 	//parsing the data
 	data = JSON.parse(data);
 
+	console.log(data);
+	
 	//removing the previous table from the pane
 	$.when(pane.children().remove()).done(function()
 	{
