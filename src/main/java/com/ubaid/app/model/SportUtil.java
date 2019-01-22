@@ -24,8 +24,8 @@ public class SportUtil
 		football.put(69, 3); //home draw away
 		//2
 		Map<Integer, Integer> iceHockeyy = new HashMap<>(); //betting type id -> event part id
+		iceHockeyy.put(48, 40); //assian handicap
 		iceHockeyy.put(47, 40); //overUnder
-		iceHockeyy.put(48, 41); //assian handicap
 		iceHockeyy.put(69, 41); //home draw away
 		//3
 		Map<Integer, Integer> basketBall = new HashMap<>(); //betting type id -> event par id
@@ -36,7 +36,7 @@ public class SportUtil
 		Map<Integer, Integer> tennis = new HashMap<>(); //betting type id -> event part id
 		tennis.put(70, 20); //homw away of tennis map to event part id of whole match
 		tennis.put(47, -1); //TODO for now I am writing no eventPart id for tennis
-		tennis.put(48, -1); //TODO same as above
+		tennis.put(48, -1); 
 		//5
 		Map<Integer, Integer> esports = new HashMap<>(); //betting type id -> event part id
 		esports.put(112, 600);  //homw away
@@ -86,7 +86,7 @@ public class SportUtil
 		//event part id for assian handicap and over/under
 		ahoubetting_eventPart = new HashMap<>();
 		ahoubetting_eventPart.put(SportType.Football.getValue(), 3);
-		ahoubetting_eventPart.put(SportType.IceHockey.getValue(), 41);
+		ahoubetting_eventPart.put(SportType.IceHockey.getValue(), 40);
 		ahoubetting_eventPart.put(SportType.Basketball.getValue(), 60);
 		ahoubetting_eventPart.put(SportType.ESports.getValue(), -1);
 		ahoubetting_eventPart.put(SportType.LOL.getValue(), -1);

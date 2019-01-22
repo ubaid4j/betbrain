@@ -1,6 +1,12 @@
 package com.ubaid.app.model.schedule1_1.thresholdDetection;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -31,6 +37,26 @@ public class ThresholdDetection implements Schedule
 	{
 
 	}
+	
+	public static void main(String [] args)
+	{
+		LocalTime paktime = LocalTime.now(ZoneId.of("UTC+05:00"));
+		LocalTime lithwaniaTime = LocalTime.now(ZoneId.of("UTC+02:00"));
+		
+		
+		DateFormat inputFormat = new SimpleDateFormat("HH:mm:ss");
+		DateFormat outputFormat = new SimpleDateFormat("KK:mm:ss a");
+		
+		try {
+			System.out.println("Pak Time: " + outputFormat.format(inputFormat.parse(paktime.toString())));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Lithuania Time" + lithwaniaTime);
+		
+	}
+	
 
 	@Override
 	public void run()
@@ -39,7 +65,7 @@ public class ThresholdDetection implements Schedule
 		{
 			if(Schedule.trackedMatches.size() > 0)
 			{
-				schedule();
+				break;
 			}
 			
 			try
@@ -51,16 +77,26 @@ public class ThresholdDetection implements Schedule
 				exp.printStackTrace();
 			}
 		}
+		
+		schedule();
+
 	}
 
+	//testing on clicking the match, it check the match [running]
+	//testing on unregistering the match
+	//testing on start loading
+	
+	
 	@Override
 	public void schedule()
 	{
 		//here will be logic, how to detect threshold 
  		SportUtil su = SportUtilFactory.getSportUtil();
-		
+		int application_counter = 1;
+ 		
  		while(true)
  		{
+ 			System.out.println("Running Threshold detection for " + application_counter++);
  			//first we will check how many are sports in the TrackedMatch are not null
  			for(SportType sportType : SportType.values())
  			{
@@ -106,14 +142,52 @@ public class ThresholdDetection implements Schedule
  					//here we will make a map which represent matchId -> outcome
  					Map<Long, Outcome> matchId_outcome_map = new HashMap<>();
  					
+ 					int counter = 0;
  					while(matches.hasMoreElements())
  					{
- 						TrackedMatches match = matches.nextElement();
- 						matchId_outcome_map.put(match.getMatchId(), match.getOutcomes().get(0));
- 						oldOutcomes.addAll(match.getOutcomes());
+ 						try
+ 						{
+ 	 						TrackedMatches match = matches.nextElement();
+
+ 	 						//we are using loop to ensure that
+ 	 						//outcomes of the match will be not null
+ 	 						//if they are null, thread wait for 0.25 seconds 
+ 	 						//and then continue
+ 							while(true)
+ 							{
+ 								try
+ 								{
+ 	 	 	 						matchId_outcome_map.put(match.getMatchId(), match.getOutcomes().get(0)); 	 							
+ 	 	 	 						break; 									
+ 								}
+ 								catch(NullPointerException exp)
+ 								{
+ 									try
+ 									{
+ 	 									Thread.sleep(250); 										
+ 									}
+ 									catch(InterruptedException e)
+ 									{
+ 										
+ 									}
+ 								}
+ 							}
+
+ 							oldOutcomes.addAll(match.getOutcomes());
+ 	 						counter++;
+ 						}
+ 						catch (NullPointerException e)
+ 						{
+ 							counter--;
+ 						}
  					}
  					
+ 					System.out.println("Total matches: " + counter + "(" + sportType.toString() + ")");
  					//so here we have both oldOutcomes and newOutcomes of all matches of same sport
+ 					System.out.println("The size of old outcomes is: " + oldOutcomes.size() + "(" + sportType + ")");
+ 					System.out.println("The size of new outcomes is: " + newOutcomes.size() + "(" + sportType + ")");
+ 					System.out.println("\n");
+ 					
  					
  					//now we will convert them into Map
  					Map<Long, Outcome> oldOutcomeMap = new HashMap<Long, Outcome>();
@@ -169,6 +243,7 @@ public class ThresholdDetection implements Schedule
 
  					for(long newAddedOutcomeId : newlyAddedOutcome)
  					{ 				
+ 						System.out.println("Threshold detection: New outcomes added");
  						Outcome outcome = newOutcomeMap.get(newAddedOutcomeId);
  						long matchId = outcome.getMatchId();
  						Outcome prototype = matchId_outcome_map.get(matchId);
@@ -179,7 +254,7 @@ public class ThresholdDetection implements Schedule
  						outcome.setOldOdds(0);
  						outcome.setOldThreshold(0);
  						outcome.setChangedTime(new Timestamp(System.currentTimeMillis()));
- 						outcome.setStatus("New Added");
+ 						outcome.setStatus("newAdded");
  						trHashtable.get(matchId).addOutcome(outcome);
  						
  	 					Schedule.notificationQueue.add(outcome);
@@ -188,6 +263,7 @@ public class ThresholdDetection implements Schedule
  					
  					for(long deletedOutcomeId : deletedOutcome)
  					{
+ 						System.out.println("threshold: outcome removed");
  						Outcome outcome = oldOutcomeMap.get(deletedOutcomeId);
  						long matchId = outcome.getMatchId();
  						trHashtable.get(matchId).removeOutcome(outcome);
@@ -206,6 +282,16 @@ public class ThresholdDetection implements Schedule
  				}
  			}
  			
+			try
+			{
+				Thread.sleep(30000);
+				System.out.println("\n\n\n");
+			}
+			catch(InterruptedException exp)
+			{
+				System.out.println("Thread interrupted at 232 of Threshold detection");
+			}
+ 		
  		}
 		
 		
@@ -228,6 +314,7 @@ public class ThresholdDetection implements Schedule
 				trHashtable = new Hashtable<>();
 			trHashtable.put(key, trackedMatch);
 			Schedule.trackedMatches.put(id, trHashtable);
+			trackedMatch.populateOutcomes();
 		}
 	}
 	

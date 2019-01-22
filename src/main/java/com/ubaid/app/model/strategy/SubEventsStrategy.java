@@ -64,14 +64,13 @@ public class SubEventsStrategy extends AbstractRequestHandler
 		JSONArray array = new JSONArray();
 		JSONObject object;
 		
-		//TODO bug removed, observe the iteration of this list
-		try
+		//TODO observ the iteration
+		//creating JSON array of JSON objects
+		for(Match match : matchs)
 		{
-			//creating JSON array of JSON objects
-			for(Match match : matchs)
+			object = new JSONObject();
+			try
 			{
-				object = new JSONObject();
-				
 				object.put(Helper.ISCHECKED.toString(), OddsDetection.getTrackedOutcomes().get(match.getHomeTeamOutcomeId()) == null ? "" : "Checked");
 				object.put(Helper.HOMETEAM.toString(), match.getHomeTeam());
 				object.put(Helper.AWAYTEAM.toString(), match.getAwayTeam());
@@ -85,15 +84,16 @@ public class SubEventsStrategy extends AbstractRequestHandler
 				object.put("startTime", match.getStartTime());
 				object.put("id", match.getId());
 				object.put("sportName", sportName);
-	
 				array.put(object);
+				
 			}
-			
+			catch(NullPointerException exp)
+			{
+				
+			}
+
 		}
-		catch(NullPointerException exp)
-		{
 			
-		}
 
 		return array;
 	}

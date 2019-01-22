@@ -7,6 +7,7 @@
       <th scope="col">Affected Team</th>
       <th scope="col">Odds Changed</th>
       <th scope="col">Threshold Changed</th>
+      <th scope="col">Status</th>
     </tr>
   </thead>
   <tbody>

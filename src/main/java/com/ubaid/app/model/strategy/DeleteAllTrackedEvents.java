@@ -14,7 +14,7 @@ public class DeleteAllTrackedEvents extends AbstractRequestHandler
 	@Override
 	public JSONArray get(Map<String, String[]> map)
 	{
-		//TODO
+		//TODO commented allTracked events [due to security]
 		@SuppressWarnings("unused")
 		Logic logic = new RegisteredOutcomeLogic();
 //		boolean action = logic.deleteAll();

@@ -15,8 +15,9 @@ import com.ubaid.app.model.singleton.DataSource;
 public class TrackedMatchDAO extends AbstractDAO
 {
 
-	private static final String query = "INSERT INTO trackedMatch(id, homeTeam, awayTeam, leagueName) VALUES(?, ?, ?, ?)";
+	private static final String query = "INSERT INTO trackedMatch(id, homeTeam, awayTeam, leagueName, sportName) VALUES(?, ?, ?, ?, ?)";
 	private static final String delQuery = "DELETE FROM trackedMatch where id = ?";
+	private static final String getAllQuery = "SELECT * FROM trackedMatch";
 	
 	public TrackedMatchDAO()
 	{
@@ -25,7 +26,7 @@ public class TrackedMatchDAO extends AbstractDAO
 	@Override
 	String getQuery(QT type)
 	{
-		return null;
+		return getAllQuery;
 	}
 
 	@Override
@@ -46,6 +47,7 @@ public class TrackedMatchDAO extends AbstractDAO
 			st.setString(2, trackedMatch.getHomeTeam());
 			st.setString(3, trackedMatch.getAwayTeam());
 			st.setString(4, trackedMatch.getLeagueName());
+			st.setString(5, trackedMatch.getSportName());
 			st.executeUpdate();
 		
 		}

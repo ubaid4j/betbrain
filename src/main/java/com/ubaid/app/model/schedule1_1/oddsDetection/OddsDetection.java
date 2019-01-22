@@ -92,6 +92,7 @@ public class OddsDetection implements Schedule
 						outcome.setOldOdds(oldOutcome.getOdds());
 						outcome.setOldThreshold(oldOutcome.getThreshold());
 						outcome.setMatchName(oldOutcome.getMatchName());
+						outcome.setStatus("odds");
 						OddsDetection.trackedOutcomes.put(outcome.getId(), outcome);
 						list.add(outcome);
 						Schedule.notificationQueue.add(outcome);

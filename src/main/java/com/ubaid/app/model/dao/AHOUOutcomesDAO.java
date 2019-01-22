@@ -38,7 +38,7 @@ public class AHOUOutcomesDAO extends AbstractOutcomeDAO
 						"EventPart ep on o.eventPartId = ep.id left join " +
 						"BettingType bt on bo.bettingTypeId = bt.id " +
 						"where " +
-						"bo.bettingTypeId in (47, 48) " +
+						"bo.bettingTypeId in (48, 47) " +
 						"and " +
 						"o.eventPartId = ? " +
 						"and " +

@@ -426,6 +426,8 @@ function start()
 							+"<td scope='row'>" + match['participant'] + "</td>"
 							+"<td scope='row'>" + match['oldOdds'] + " -> " + match['odds']+ "</td>"
 							+"<td scope='row'>" + match['threshold'] + " -> " + match['oldThreshold'] + "</td>"
+							+"<td scope='row'>" + match['status'] + "</td>"
+
 				+ "</tr>";
 		
 		

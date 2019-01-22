@@ -1,6 +1,7 @@
 package com.ubaid.app.model.abstractFactory;
 
 import com.ubaid.app.model.builder.Builder;
+import com.ubaid.app.model.builder.resultSetBuilder.TrackedMatchBuilder;
 
 public class TrackedMatchFactory extends AbstractFactory {
 
@@ -11,7 +12,7 @@ public class TrackedMatchFactory extends AbstractFactory {
 	@Override
 	public Builder getBuilder()
 	{
-		return null;
+		return new TrackedMatchBuilder();
 	}
 
 }
