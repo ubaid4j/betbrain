@@ -1,7 +1,14 @@
 package com.ubaid.app.model;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
+
 
 
 public class SportUtil
@@ -10,10 +17,19 @@ public class SportUtil
 	private Map<Integer, Map<Integer, Integer>> map;
 	private Map<Integer, Integer> subEventBettingTypeMap;  //sportName -> bettingType | this map determine the betting type of subevents of a match
 	private Map<Integer, Integer> ahoubetting_eventPart;
-	
+	private DateFormat inputFormat = null;
+	private DateFormat outputFormat = null;
+	private DateFormat dateOutput = null;
+	private DateFormat dateInput = null;
 	
 	SportUtil()
 	{
+		
+		inputFormat = new SimpleDateFormat("HH:mm:ss");
+		outputFormat = new SimpleDateFormat("KK:mm:ss a");
+
+		dateOutput = new SimpleDateFormat("EEE, dd MMM yyyy");
+		dateInput = new SimpleDateFormat("yyyy-MM-dd");
 		
 		map = new HashMap<>();
 		
@@ -36,7 +52,14 @@ public class SportUtil
 		Map<Integer, Integer> tennis = new HashMap<>(); //betting type id -> event part id
 		tennis.put(70, 20); //homw away of tennis map to event part id of whole match
 		tennis.put(47, -1); //TODO for now I am writing no eventPart id for tennis
-		tennis.put(48, -1); 
+		tennis.put(48, -1);
+		
+		//9
+		Map<Integer, Integer> handball = new HashMap<>(); //bettingTypeId -> eventPartId
+		handball.put(69, 51);
+		handball.put(47, 51);
+		handball.put(48, 51);
+		
 		//5
 		Map<Integer, Integer> esports = new HashMap<>(); //betting type id -> event part id
 		esports.put(112, 600);  //homw away
@@ -70,6 +93,7 @@ public class SportUtil
 		map.put(SportType.LOL.getValue(), lol);
 		map.put(SportType.CSGO.getValue(), csgo);
 		map.put(SportType.DOTA.getValue(), dota);
+		map.put(SportType.Handball.getValue(), handball);
 		
 		//home away draw betting type of an sport
 		subEventBettingTypeMap = new HashMap<>();
@@ -81,6 +105,7 @@ public class SportUtil
 		subEventBettingTypeMap.put(SportType.LOL.getValue(), 70);
 		subEventBettingTypeMap.put(SportType.CSGO.getValue(), 70);
 		subEventBettingTypeMap.put(SportType.DOTA.getValue(), 70);
+		subEventBettingTypeMap.put(SportType.Handball.getValue(), 69);
 		
 
 		//event part id for assian handicap and over/under
@@ -92,7 +117,7 @@ public class SportUtil
 		ahoubetting_eventPart.put(SportType.LOL.getValue(), -1);
 		ahoubetting_eventPart.put(SportType.DOTA.getValue(), -1);
 		ahoubetting_eventPart.put(SportType.CSGO.getValue(), -1);
-		
+		ahoubetting_eventPart.put(SportType.Handball.getValue(), 51);
 	}
 	
 	
@@ -131,6 +156,9 @@ public class SportUtil
 			case "LOL":
 				type = SportType.LOL;
 				break;
+			case "Handball":
+				type = SportType.Handball;
+				break;
 			default:
 				type = SportType.Null;
 				break;
@@ -148,6 +176,34 @@ public class SportUtil
 	public int getAHOUEventPartId(String sportName)
 	{
 		return ahoubetting_eventPart.get(getSportId(sportName));
+	}
+	
+	public String getCurrentTime()
+	{
+		LocalTime _paktime = LocalTime.now(ZoneId.of("UTC+05:00"));
+		LocalTime _lithwaniaTime = LocalTime.now(ZoneId.of("UTC+02:00"));
+
+		LocalDate _lithwaniaDate = LocalDate.now(ZoneId.of("UTC+02:00"));
+		LocalDate _pakDate = LocalDate.now(ZoneId.of("UTC+05:00"));
+		
+		
+		
+		String time = null;
+		try
+		{
+			time = String.format("Pakistan : %s %s\nLithuania: %s %s\n",
+					dateOutput.format(dateInput.parse(_pakDate.toString())),
+					outputFormat.format(inputFormat.parse(_paktime.toString())),
+					dateOutput.format(dateInput.parse(_lithwaniaDate.toString())),
+					outputFormat.format(inputFormat.parse(_lithwaniaTime.toString())));
+			
+		}
+		catch(ParseException exp)
+		{
+			exp.printStackTrace();
+		}
+		
+		return time;
 	}
 
 }

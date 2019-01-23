@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.ubaid.app.model.SportUtil;
+import com.ubaid.app.model.SportUtilFactory;
 import com.ubaid.app.model.logic.OutcomeLogic;
 import com.ubaid.app.model.logic.OutcomeLogici;
 import com.ubaid.app.model.logic.UpdateRegisteredOCLogic;
@@ -32,9 +34,12 @@ public class OddsDetection implements Schedule
 		OutcomeLogic logic = new OutcomeLogici();
 		UpdateRegisteredOCLogic updateLogic = new UpdateRegisteredOCLogici();
 		
+		SportUtil su = SportUtilFactory.getSportUtil();
+		
 		while(true)
 		{
-			System.out.println("Running again: " + index++);
+			System.out.println(su.getCurrentTime());
+			System.out.println("Running Odds Detection : " + index++);
 			
 			//let retrieve the ids of outcomes
 			Set<Long> ids = Schedule.trackedOutcomes.keySet();
@@ -121,7 +126,7 @@ public class OddsDetection implements Schedule
 					}
 				});
 				updateService.shutdown();
-				System.out.println("There are total tracked events: " + OddsDetection.trackedOutcomes.size());
+//				System.out.println("There are total tracked events: " + OddsDetection.trackedOutcomes.size());
 				Thread.sleep(30000);
 			}
 			catch(InterruptedException exp)

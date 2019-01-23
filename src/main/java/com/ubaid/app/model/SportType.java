@@ -11,6 +11,7 @@ public enum SportType
 	LOL(100),
 	CSGO(98),
 	DOTA(99),
+	Handball(7),
 	Null(-1);
 	
 	private int id;

@@ -31,6 +31,31 @@ public class TrackedMatches extends Entity {
 	private String awayTeam;
 	private String sportName;
 	private List<Outcome> outcomes;
+	
+	/**********************Do not delete*******************************/
+	public Outcome getOutcome()
+	{
+		Outcome outcome = null;
+		
+		if(getOutcomes() != null)
+		{
+			int sizeOfOutcomes = getOutcomes().size();
+			if(sizeOfOutcomes > 0)
+				outcome = getOutcomes().get(0);
+		}
+		
+		return outcome;
+	}
+	
+	
+	public String getMatchName() {
+		if(matchName == null)
+			return getHomeTeam() + " VS " + getAwayTeam();
+		return matchName;
+	}
+
+	/******************************************************************/
+	
 
 	public long getMatchId() {
 		return matchId;
@@ -48,9 +73,6 @@ public class TrackedMatches extends Entity {
 		this.leagueName = leagueName;
 	}
 
-	public String getMatchName() {
-		return matchName;
-	}
 
 	public void setMatchName(String matchName) {
 		this.matchName = matchName;
@@ -80,11 +102,12 @@ public class TrackedMatches extends Entity {
 		this.sportName = sportName;
 	}
 
-	public List<Outcome> getOutcomes() {
+	public synchronized List<Outcome> getOutcomes()
+	{
 		return outcomes;
 	}
 
-	public void setOutcomes(List<Outcome> outcomes) {
+	public synchronized void setOutcomes(List<Outcome> outcomes) {
 		this.outcomes = outcomes;
 	}
 
@@ -149,6 +172,14 @@ public class TrackedMatches extends Entity {
 		ExecutorService service = Executors.newFixedThreadPool(1);
 		service.execute(new _Populate());
 		service.shutdown();
+		try
+		{
+			service.awaitTermination(10, TimeUnit.SECONDS);
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void addOutcome(Outcome outcome)
@@ -267,8 +298,9 @@ public class TrackedMatches extends Entity {
 			{
 				exp.printStackTrace();
 			}
+			finally {
+			}
 			
-		}
-		
+		}		
 	}
 }

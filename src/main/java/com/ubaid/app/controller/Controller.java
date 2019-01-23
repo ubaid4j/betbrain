@@ -50,7 +50,7 @@ public class Controller
 			service = checkTermination(service);
 
 			//executing Scheduler //TODO uncommenting service.execute
-//			service.execute(new OddsDetection());
+			service.execute(new OddsDetection());
 			service.execute(new ThresholdDetection());
 			service.shutdown();
 		}

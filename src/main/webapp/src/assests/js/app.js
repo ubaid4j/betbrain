@@ -419,6 +419,7 @@ function start()
 		var data = event.data;
 		var match = JSON.parse(data);
 		
+		console.log(match);
 		
 		var row = "<tr>" +"<td scope='row'>" + match['lastUpdateTime'] + "</td>"
 							+"<td scope='row'>" + match['leagueName'] + "</td>"
@@ -838,7 +839,7 @@ function setHandlerOnCheckBox()
 	$(".check303").change(function(event)
 	{
 		$this = $(this);	
-		
+		$(".check303").prop("disabled", true);
 		var checked = this.checked;
 		var id = $this.attr("value");
 		var form = $this.parent();
@@ -866,6 +867,7 @@ function setHandlerOnCheckBox()
     	    	  {
     	    		  var notification;
     	    		  response = JSON.parse(response);
+    	    			$(".check303").prop("disabled", false);
 
     	    		  if(response[0].action = 'y')
     	    		  {

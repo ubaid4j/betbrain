@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.RegisteredOutcomeLogic;
@@ -35,7 +36,7 @@ public class StartUpUtil
 		ExecutorService innerThread1 = Executors.newFixedThreadPool(2);
 
 		//TODO to test threshold detection, I commented out this code
-/*
+		
 		innerThread1.execute(new Runnable()
 		{
 			@Override
@@ -52,13 +53,15 @@ public class StartUpUtil
 				}
 			}
 		});
-*/		
+		
 		//this thread will fill the trackedMatch hashtable 
 		innerThread1.execute(new Runnable()
 		{
 			@Override
 			public void run()
 			{
+				
+				long startTime = System.nanoTime();
 				//getting Tracked Matches
 				Logic logic = new TrackedMatchLogic();
 				List<Entity> _trackedMatches = logic.getAll();
@@ -69,8 +72,11 @@ public class StartUpUtil
 					ThresholdDetection.putInTrackeEvents(trackedMatch.getMatchId(), trackedMatch.getSportName(), trackedMatch);	
 					tracked_matches.add(trackedMatch);
 				}
-
-				//ensuring outcomes populated in the tracked matches
+				long endTime = System.nanoTime();
+				long duration = (endTime - startTime);
+				System.out.println(duration/1000000 + "milli seconds");
+				//ensuring outcomes populated in the tracked matches TODO no need of this
+/*
 				while(true)
 				{
 					int total_size = tracked_matches.size();
@@ -94,20 +100,20 @@ public class StartUpUtil
 					}
 					if(counter == total_size)
 						break;
-				}
+				}*/
 			}
 		});
 		
 		innerThread1.shutdown();
 		
 		//when the thread work completed then return back
-		while(true)
+		try
 		{
-			if(innerThread1.isTerminated())
-				break;
+			innerThread1.awaitTermination(1, TimeUnit.HOURS);
 		}
-
-		
-		
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

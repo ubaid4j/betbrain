@@ -1,12 +1,6 @@
 package com.ubaid.app.model.schedule1_1.thresholdDetection;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -38,26 +32,7 @@ public class ThresholdDetection implements Schedule
 
 	}
 	
-	public static void main(String [] args)
-	{
-		LocalTime paktime = LocalTime.now(ZoneId.of("UTC+05:00"));
-		LocalTime lithwaniaTime = LocalTime.now(ZoneId.of("UTC+02:00"));
-		
-		
-		DateFormat inputFormat = new SimpleDateFormat("HH:mm:ss");
-		DateFormat outputFormat = new SimpleDateFormat("KK:mm:ss a");
-		
-		try {
-			System.out.println("Pak Time: " + outputFormat.format(inputFormat.parse(paktime.toString())));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Lithuania Time" + lithwaniaTime);
-		
-	}
 	
-
 	@Override
 	public void run()
 	{
@@ -96,6 +71,7 @@ public class ThresholdDetection implements Schedule
  		
  		while(true)
  		{
+ 			System.out.println(su.getCurrentTime());
  			System.out.println("Running Threshold detection for " + application_counter++);
  			//first we will check how many are sports in the TrackedMatch are not null
  			for(SportType sportType : SportType.values())
@@ -153,28 +129,24 @@ public class ThresholdDetection implements Schedule
  	 						//outcomes of the match will be not null
  	 						//if they are null, thread wait for 0.25 seconds 
  	 						//and then continue
- 							while(true)
- 							{
- 								try
- 								{
- 	 	 	 						matchId_outcome_map.put(match.getMatchId(), match.getOutcomes().get(0)); 	 							
- 	 	 	 						break; 									
- 								}
- 								catch(NullPointerException exp)
- 								{
- 									try
- 									{
- 	 									Thread.sleep(250); 										
- 									}
- 									catch(InterruptedException e)
- 									{
- 										
- 									}
- 								}
- 							}
+							try
+							{ 
+								//TODO Bug
+								//as populated of tracked match method executed, 
+								//if there are no 
+								Outcome outcome = match.getOutcome();
+								if(outcome == null)
+									throw new NullPointerException();
+ 	 	 						matchId_outcome_map.put(match.getMatchId(), outcome); 	 
+ 	 							oldOutcomes.addAll(match.getOutcomes());
 
- 							oldOutcomes.addAll(match.getOutcomes());
- 	 						counter++;
+							}
+							catch(NullPointerException exp)
+							{
+								
+							}
+	 	 					counter++;
+
  						}
  						catch (NullPointerException e)
  						{
@@ -216,6 +188,9 @@ public class ThresholdDetection implements Schedule
  					
  					List<Long> newlyAddedOutcome = new ArrayList<>(newOutcomeSet);
  					List<Long> deletedOutcome = new ArrayList<>(oldOutcomeSet);
+ 					
+ 					System.out.println("(" + sportType + ")Newly added outcomes: " + newlyAddedOutcome.size());
+ 					System.out.println("(" + sportType + ") Removed outcomes: " + deletedOutcome.size());
  					
  					//at here we have outcomes ids of newly added and deleted outcomes
 

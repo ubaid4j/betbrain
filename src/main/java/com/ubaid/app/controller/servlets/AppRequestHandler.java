@@ -58,7 +58,11 @@ public class AppRequestHandler extends HttpServlet
 	    if(!System.getProperty("os.name").toLowerCase().contains("window"))
 	    {
 			StartUpUtil startUpUtil = new StartUpUtil();
+			long startTime = System.nanoTime();
 			startUpUtil.onStart();
+			long endTime = System.nanoTime();
+			long duration = (endTime - startTime);
+			System.out.println("Final Time " + duration/1000000 + " milli seconds");
 			Controller controller = Controller.getController();
 			controller.startSchedular();
 
