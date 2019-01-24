@@ -1,10 +1,12 @@
 package com.ubaid.app.model.dao;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import com.ubaid.app.model.abstractFactory.AbstractFactory;
 import com.ubaid.app.model.builder.Builder;
 import com.ubaid.app.model.objects.Entity;
+import com.ubaid.app.model.schedule1_1.Outcome;
 
 public abstract class AbstractOutcomeDAO implements OutcomeDAO {
 
@@ -32,6 +34,22 @@ public abstract class AbstractOutcomeDAO implements OutcomeDAO {
 	
 	@Override
 	public LinkedList<Entity> getAll(long[] ids, int eventPartId)
+	{
+		return null;
+	}
+
+	
+	
+	@Override
+	public boolean addAll(List<Outcome> outcomes)
+	{
+		return false;
+	}
+	
+	
+
+	@Override
+	public LinkedList<Entity> getAll()
 	{
 		return null;
 	}

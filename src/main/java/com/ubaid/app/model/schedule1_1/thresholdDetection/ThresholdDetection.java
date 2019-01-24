@@ -16,6 +16,7 @@ import com.ubaid.app.model.SportUtil;
 import com.ubaid.app.model.SportUtilFactory;
 import com.ubaid.app.model.logic.AHOUOutcomeLogic;
 import com.ubaid.app.model.logic.OutcomeLogic;
+import com.ubaid.app.model.logic.RemovedOutComeLogic;
 import com.ubaid.app.model.objects.Entity;
 import com.ubaid.app.model.schedule1_1.Outcome;
 import com.ubaid.app.model.schedule1_1.Schedule;
@@ -68,6 +69,8 @@ public class ThresholdDetection implements Schedule
 		//here will be logic, how to detect threshold 
  		SportUtil su = SportUtilFactory.getSportUtil();
 		int application_counter = 1;
+		OutcomeLogic logic = new AHOUOutcomeLogic();
+		OutcomeLogic rLogic = new RemovedOutComeLogic();
  		
  		while(true)
  		{
@@ -85,7 +88,10 @@ public class ThresholdDetection implements Schedule
  					//the result will contain matchId, outcomeId,  odds, threshold, bettingType, participant, OUType
  					//stead we build an outcome which contain the above attributes
 
+ 					//getting all the ids of all matches of a sport
  					Set<Long> _ids = trHashtable.keySet();
+ 					
+ 					//converting to array
  					long[] ids = new long[_ids.size()];
  					int index = 0;
  					for(long id : _ids)
@@ -93,10 +99,11 @@ public class ThresholdDetection implements Schedule
  						ids[index++] = id;
  					}
 
- 					OutcomeLogic logic = new AHOUOutcomeLogic();
+ 					//getting all outcomes from the database [fresh outcomes]
  					List<Entity> _outcomes = logic.getAll(ids, su.getAHOUEventPartId(sportType.toString()));
- 					List<Outcome> newOutcomes = new LinkedList<>();
- 					 					
+
+ 					//converting to LinkedList 
+ 					List<Outcome> newOutcomes = new LinkedList<>(); 					
  					for(Entity entity: _outcomes)
  					{
  						newOutcomes.add((Outcome) entity);
@@ -110,9 +117,11 @@ public class ThresholdDetection implements Schedule
  					//if a any detection will be find from both side (added or removed) 
  					//then push notification
  					//and accordingly add or remove
- 					
- 					//we will do it using streams
+
+ 					//getting an enumeration os matches from hashtable of a sport
  					Enumeration<TrackedMatches> matches = trHashtable.elements();
+ 					
+ 					//creating an list to store the outcomes extracted from the matches
  					List<Outcome> oldOutcomes = new LinkedList<>();
 
  					//here we will make a map which represent matchId -> outcome
@@ -124,20 +133,23 @@ public class ThresholdDetection implements Schedule
  						try
  						{
  	 						TrackedMatches match = matches.nextElement();
-
- 	 						//we are using loop to ensure that
- 	 						//outcomes of the match will be not null
- 	 						//if they are null, thread wait for 0.25 seconds 
- 	 						//and then continue
-							try
+ 	 						
+ 	 						//if match is null then catching null pointer exception
+ 	 						try
 							{ 
-								//TODO Bug
-								//as populated of tracked match method executed, 
-								//if there are no 
+					
 								Outcome outcome = match.getOutcome();
+								
+								//if match is not null but the if its outcome list is empty
+								//mean a match has not 47, 48 types betting offer
+								//then throwing null pointer exception
 								if(outcome == null)
 									throw new NullPointerException();
- 	 	 						matchId_outcome_map.put(match.getMatchId(), outcome); 	 
+								
+								//if outcome is present then putting in the hash map
+ 	 	 						matchId_outcome_map.put(match.getMatchId(), outcome);
+ 	 	 						
+ 	 	 						//and adding all the outcomes of this match into the old outcomes list
  	 							oldOutcomes.addAll(match.getOutcomes());
 
 							}
@@ -154,6 +166,7 @@ public class ThresholdDetection implements Schedule
  						}
  					}
  					
+ 					//info
  					System.out.println("Total matches: " + counter + "(" + sportType.toString() + ")");
  					//so here we have both oldOutcomes and newOutcomes of all matches of same sport
  					System.out.println("The size of old outcomes is: " + oldOutcomes.size() + "(" + sportType + ")");
@@ -180,12 +193,17 @@ public class ThresholdDetection implements Schedule
  						oldOutcomeIds.add(outcome.getId());
  					}
  					
+ 					//getting ids of old and new outcomes 
  					HashSet<Long> oldOutcomeSet = new HashSet<>(oldOutcomeIds);
  					HashSet<Long> newOutcomeSet = new HashSet<>(newOutcomeIds);
  					
+ 					//now removing oldoutcomeids from the newOutcomeIds to detect new outcomes
  					newOutcomeSet.removeAll(oldOutcomeIds);
+ 					
+ 					//now removing all new outcomes from the old outcomes to detect removed outcomes
  					oldOutcomeSet.removeAll(newOutcomeIds);
  					
+ 					//creating array for new and old outcomes
  					List<Long> newlyAddedOutcome = new ArrayList<>(newOutcomeSet);
  					List<Long> deletedOutcome = new ArrayList<>(oldOutcomeSet);
  					
@@ -216,6 +234,7 @@ public class ThresholdDetection implements Schedule
  					//now we want to produce the fully fledged outcome
  					//update this newly and deleted outcome in the hashtable
 
+ 					//setting new outcomes in the list
  					for(long newAddedOutcomeId : newlyAddedOutcome)
  					{ 				
  						System.out.println("Threshold detection: New outcomes added");
@@ -236,15 +255,26 @@ public class ThresholdDetection implements Schedule
  						
  					}
  					
+ 					List<Outcome> deletedOutcomes = new LinkedList<>();
+ 					
+ 					//here we will add a method to upload this deleted outcome 
+ 					//to removedOutcomeTables in the database
  					for(long deletedOutcomeId : deletedOutcome)
  					{
  						System.out.println("threshold: outcome removed");
  						Outcome outcome = oldOutcomeMap.get(deletedOutcomeId);
+ 						outcome.setChangedTime(new Timestamp(System.currentTimeMillis()));
+ 						outcome.setOldOdds(outcome.getOdds());
+ 						outcome.setOldThreshold(outcome.getThreshold());
  						long matchId = outcome.getMatchId();
  						trHashtable.get(matchId).removeOutcome(outcome);
- 						outcome.setStatus("Removed"); 						
+ 						outcome.setStatus("Removed"); 					 						
  						Schedule.notificationQueue.add(outcome);
+ 						deletedOutcomes.add(outcome);
  					}
+ 					
+ 					
+ 					rLogic.addAll(deletedOutcomes);
  					
  					
  					//general info

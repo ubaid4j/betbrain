@@ -30,6 +30,8 @@ public class DAOOutcome extends AbstractOutcomeDAO
 					"from " +
 					"Outcome o left join BettingOffer bo on o.id = bo.outcomeId " +
 					"where " +
+					"bo.statusId = 1 " +
+					"and " +
 					"o.id " +
 					"in ";
 			

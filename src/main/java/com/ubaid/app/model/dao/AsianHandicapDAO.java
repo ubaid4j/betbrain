@@ -25,6 +25,7 @@ public class AsianHandicapDAO extends AbstractDAO
 										"EventPart ep on o.eventPartId = ep.id left join " +
 										"BettingType bt on bo.bettingTypeId = bt.id " +
 										"where " +
+										"bo.statusId = 1 and " + 
 										"bo.bettingTypeId in (48) " +
 										"and " +
 										"o.eventPartId = ? " +

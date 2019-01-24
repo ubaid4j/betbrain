@@ -426,7 +426,7 @@ function start()
 							+"<td scope='row'>" + match['matchName'] + "</td>"
 							+"<td scope='row'>" + match['participant'] + "</td>"
 							+"<td scope='row'>" + match['oldOdds'] + " -> " + match['odds']+ "</td>"
-							+"<td scope='row'>" + match['threshold'] + " -> " + match['oldThreshold'] + "</td>"
+							+"<td scope='row'>" + match['oldThreshold'] + " -> " + match['threshold'] + "</td>"
 							+"<td scope='row'>" + match['status'] + "</td>"
 
 				+ "</tr>";
@@ -995,7 +995,40 @@ function deleteAllTrackedEvents()
 	});
 }
 
-
+/*-----------------------------------Removed Outcomes--------------------------------*/
+function getRemovedItem()
+{
+	$.ajax(
+	{
+		url: "/app1/AppHandler",
+		type: "get",
+		data: {
+			className: "RemovedOutcomes"
+		},
+		success: function(response)
+		{
+			response = JSON.parse(response);
+			$.when($.each(object, function(index, event)
+			{
+				
+				var row = "<tr>" + 
+						
+							"<td scope='row'></td>" + 
+				
+						 "</tr>";
+							
+			})).done(function()
+			{
+				onChangeOfAHOUCheckbox();
+			});			
+		},
+		error: function(xhr)
+		{
+			
+		}
+		
+	});
+}
 
 
 

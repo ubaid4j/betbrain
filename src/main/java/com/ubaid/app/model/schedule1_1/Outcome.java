@@ -38,6 +38,14 @@ public final class Outcome extends Entity implements Cloneable {
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
+	
+	public String getMatchName()
+	{
+		if(matchName == null)
+			return getHomeTeam() + " vs " + getAwayTeam();
+		return matchName;
+	}
+
 
 	/*-------------------------------Do not delete-----------------------------------------*/
 
@@ -107,9 +115,6 @@ public final class Outcome extends Entity implements Cloneable {
 		this.awayTeam = awayTeam;
 	}
 
-	public String getMatchName() {
-		return matchName;
-	}
 
 	public void setMatchName(String matchName) {
 		this.matchName = matchName;
