@@ -1,5 +1,5 @@
 <jsp:include page="./views/partials/header.jsp"/>
-	<div class=".container-fluid ">		
+	<div class="container-fluid">		
 
 		<div>
 			<button type="button" class="btn btn-secondary front_page_button" id="notification_link" onClick="notificationButtonHandler()" style="float:left;">Notifications</button>			

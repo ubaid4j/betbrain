@@ -1,8 +1,31 @@
 
 $(function()
 {		
-	get();
+	if(!$(location).attr('href').includes('/app1/src/views/outcomes/removedOutcomes.jsp'))
+	{
+		console.log("get(sport)");
+		get();		
+	}
 });
+
+function homePage()
+{
+//	window.location = "/app1/src/index.jsp";
+	$.when($(location).attr('href', "/app1/src/index.jsp")).done(function()
+	{
+		get();		
+	});
+}
+
+function removedOutcomePage()
+{
+	$.when($(location).attr('href', "/app1/src/views/outcomes/removedOutcomes.jsp")).done(function()
+	{
+		getRemovedItem();
+	});
+}
+
+
 
 function get()
 {
@@ -998,9 +1021,11 @@ function deleteAllTrackedEvents()
 /*-----------------------------------Removed Outcomes--------------------------------*/
 function getRemovedItem()
 {
+	
+	
 	$.ajax(
 	{
-		url: "/app1/AppHandler",
+		url: "/app1/AppRequestHandler",
 		type: "get",
 		data: {
 			className: "RemovedOutcomes"
@@ -1008,23 +1033,32 @@ function getRemovedItem()
 		success: function(response)
 		{
 			response = JSON.parse(response);
-			$.when($.each(object, function(index, event)
+			console.log(response);
+			$.when($.each(response, function(index, event)
 			{
 				
 				var row = "<tr>" + 
 						
-							"<td scope='row'></td>" + 
-				
+							"<td scope='row'>" + event.lastUpdateTime + "</td>" + 
+							"<td scope='row'>" + event.leagueName + "</td>" + 
+							"<td scope='row'>" + event.matchName + "</td>" + 
+							"<td scope='row'>" + event.participant + "</td>" + 
+							"<td scope='row'>" + event.threshold + "</td>" + 
+							"<td scope='row'>" + event.odds + "</td>" + 
+							"<td scope='row'>" + event.bettingType + "</td>" + 
+							"<td scope='row'>" + event.sport + "</td>" + 
+							
 						 "</tr>";
 							
+				
 			})).done(function()
 			{
-				onChangeOfAHOUCheckbox();
+
 			});			
 		},
 		error: function(xhr)
 		{
-			
+			console.log(xhr);
 		}
 		
 	});

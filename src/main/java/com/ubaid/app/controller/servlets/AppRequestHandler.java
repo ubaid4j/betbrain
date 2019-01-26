@@ -24,6 +24,7 @@ import com.ubaid.app.model.strategy.HomeAwayDrawRegisterarStrategy;
 import com.ubaid.app.model.strategy.NotificationPermissionStrategy;
 import com.ubaid.app.model.strategy.NotificationStrategy;
 import com.ubaid.app.model.strategy.OverUnderStrategy;
+import com.ubaid.app.model.strategy.RemovedOutcomes;
 import com.ubaid.app.model.strategy.RequestHandler;
 import com.ubaid.app.model.strategy.SportStrategy;
 import com.ubaid.app.model.strategy.SubEventsStrategy;
@@ -69,10 +70,10 @@ public class AppRequestHandler extends HttpServlet
 	    }
 	    else
 	    {
-			StartUpUtil startUpUtil = new StartUpUtil();
-			startUpUtil.onStart();
-			Controller controller = Controller.getController();
-			controller.startSchedular();
+//			StartUpUtil startUpUtil = new StartUpUtil();
+//			startUpUtil.onStart();
+//			Controller controller = Controller.getController();
+//			controller.startSchedular();
 
 	    }
 
@@ -92,6 +93,7 @@ public class AppRequestHandler extends HttpServlet
 		classHash.put("notification", new NotificationStrategy());
 		classHash.put("notificationPermission", new NotificationPermissionStrategy());
 		classHash.put("deleteAllTrackedEvent", new DeleteAllTrackedEvents());
+		classHash.put("RemovedOutcomes", new RemovedOutcomes());
 	}
 		
 	//when our container decides to eliminate the 

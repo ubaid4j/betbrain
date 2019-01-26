@@ -49,7 +49,7 @@ public class RemovedOutcomes extends AbstractRequestHandler
 		}
 		catch(NullPointerException exp)
 		{
-			
+			exp.printStackTrace();
 			return null;
 		}
 	}

@@ -18,6 +18,21 @@
 	font-size: 11px;
 }
 
+#removedOutcomesApp{
+	border: solid 1px rgb(225, 207, 207);
+	margin-bottom: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 11px;
+	margin-top: 20px;	
+	height: 500px;
+	width: 850px;
+	background: #F5F5F5;
+	overflow-y: scroll;
+	margin-bottom: 25px;
+	
+}
+
 
 .slider200{
 	 background-color: black;	
@@ -234,4 +249,9 @@ a{
 /*-----------------------------------------------------------------------------------------------------*/
 
 
+/*-----------------------------------Navbar button -----------------------------------------------------*/
+#navbarSupportedContent > ul > li {
+	margin-left: 5px;
+	margin-right: 5px;
+}
 
