@@ -19,7 +19,8 @@ public class OddsDAO extends AbstractDAO
 											"odds, " +
 											"p.name as `Participant Name`, " +
 											"o.paramFloat1 `Thres Hold`, " +
-											"o.id `outcome id`" +
+											"o.id `outcome id`, " +
+											"s.providerId `Provider Id` " + 
 											"from " +
 											"BettingOffer bo inner join " +
 											"Source s on bo.sourceId = s.id inner join " +
@@ -38,6 +39,8 @@ public class OddsDAO extends AbstractDAO
 											"date(e.startTime) between date(curdate()) and date(date_add(date(curdate()), interval 3 day)) " +
 											"and " +
 											"e.id = ? " +
+											"and " +
+											"s.providerId = 3000107 " + 
 											"order by s.lastCollectedTime desc " +
 											"limit 3; ";
 	

@@ -73,6 +73,7 @@ public class HomeAwayDrawRegisterarStrategy extends AbstractRequestHandler
 									.changedTime(new Timestamp(System.currentTimeMillis()))
 									.threshold(-1)
 									.bettingType(BettingType.HomeDrawAway)
+									.providerId(map.getLong("providerId"))
 									.build();
 			
 			outcomes[1] = new Outcome.Builder()
@@ -87,6 +88,7 @@ public class HomeAwayDrawRegisterarStrategy extends AbstractRequestHandler
 									.changedTime(new Timestamp(System.currentTimeMillis()))
 									.threshold(-1)
 									.bettingType(BettingType.HomeDrawAway)
+									.providerId(map.getLong("providerId"))
 									.build();
 	
 			outcomes[2] = new Outcome.Builder()
@@ -100,11 +102,16 @@ public class HomeAwayDrawRegisterarStrategy extends AbstractRequestHandler
 									.changedTime(new Timestamp(System.currentTimeMillis()))
 									.threshold(-1)
 									.bettingType(BettingType.HomeDrawAway)
+									.providerId(map.getLong("providerId"))
 									.build();
+			
+			//TODO trackedMatch
 	
 			//no worries for showing in front end that, it is registered
 			//or not, becuase, it will be handled by home draw away 
 			//odds
+			//TrackedMatches for detecting threshold 
+			//same in database table, we store the matches to detect changes in threshold
 			TrackedMatches trackedMatch = new TrackedMatches.Builder()
 					.matchId(map.getLong("matchId"))
 					.homeTeam(map.getString(Helper.HOMETEAM.toString()))

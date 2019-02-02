@@ -20,8 +20,9 @@ public final class Outcome extends Entity implements Cloneable {
 	private Timestamp registerTime;
 	private BettingType bettingType;
 	private long matchId;
-	private String sportName;
 	private long typeId;
+	private long providerId;
+	private String sportName;
 	private String status;
 
 	/*-------------------------------Do not delete-----------------------------------------*/
@@ -32,24 +33,18 @@ public final class Outcome extends Entity implements Cloneable {
 
 		return participant;
 	}
-	
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-	
-	public String getMatchName()
-	{
-		if(matchName == null)
+
+	public String getMatchName() {
+		if (matchName == null)
 			return getHomeTeam() + " vs " + getAwayTeam();
 		return matchName;
 	}
-
-
 	/*-------------------------------Do not delete-----------------------------------------*/
-
-
 
 	public float getThreshold() {
 		return threshold;
@@ -115,11 +110,6 @@ public final class Outcome extends Entity implements Cloneable {
 		this.awayTeam = awayTeam;
 	}
 
-
-	public void setMatchName(String matchName) {
-		this.matchName = matchName;
-	}
-
 	public Timestamp getChangedTime() {
 		return changedTime;
 	}
@@ -152,20 +142,28 @@ public final class Outcome extends Entity implements Cloneable {
 		this.matchId = matchId;
 	}
 
-	public String getSportName() {
-		return sportName;
-	}
-
-	public void setSportName(String sportName) {
-		this.sportName = sportName;
-	}
-
 	public long getTypeId() {
 		return typeId;
 	}
 
 	public void setTypeId(long typeId) {
 		this.typeId = typeId;
+	}
+
+	public long getProviderId() {
+		return providerId;
+	}
+
+	public void setProviderId(long providerId) {
+		this.providerId = providerId;
+	}
+
+	public String getSportName() {
+		return sportName;
+	}
+
+	public void setSportName(String sportName) {
+		this.sportName = sportName;
 	}
 
 	public String getStatus() {
@@ -178,6 +176,10 @@ public final class Outcome extends Entity implements Cloneable {
 
 	public void setParticipant(String participant) {
 		this.participant = participant;
+	}
+
+	public void setMatchName(String matchName) {
+		this.matchName = matchName;
 	}
 
 	public static class Builder {
@@ -195,8 +197,9 @@ public final class Outcome extends Entity implements Cloneable {
 		private Timestamp registerTime;
 		private BettingType bettingType;
 		private long matchId;
-		private String sportName;
 		private long typeId;
+		private long providerId;
+		private String sportName;
 		private String status;
 
 		public Builder threshold(float threshold) {
@@ -269,13 +272,18 @@ public final class Outcome extends Entity implements Cloneable {
 			return this;
 		}
 
-		public Builder sportName(String sportName) {
-			this.sportName = sportName;
+		public Builder typeId(long typeId) {
+			this.typeId = typeId;
 			return this;
 		}
 
-		public Builder typeId(long typeId) {
-			this.typeId = typeId;
+		public Builder providerId(long providerId) {
+			this.providerId = providerId;
+			return this;
+		}
+
+		public Builder sportName(String sportName) {
+			this.sportName = sportName;
 			return this;
 		}
 
@@ -304,8 +312,9 @@ public final class Outcome extends Entity implements Cloneable {
 		this.registerTime = builder.registerTime;
 		this.bettingType = builder.bettingType;
 		this.matchId = builder.matchId;
-		this.sportName = builder.sportName;
 		this.typeId = builder.typeId;
+		this.providerId = builder.providerId;
+		this.sportName = builder.sportName;
 		this.status = builder.status;
 	}
 }

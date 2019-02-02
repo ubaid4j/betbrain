@@ -5,6 +5,7 @@ public class Odds extends Entity {
 	private float odds;
 	private float threshold;
 	private long outcomeId;
+	private long providerId;
 
 	public String getName() {
 		return name;
@@ -38,11 +39,20 @@ public class Odds extends Entity {
 		this.outcomeId = outcomeId;
 	}
 
+	public long getProviderId() {
+		return providerId;
+	}
+
+	public void setProviderId(long providerId) {
+		this.providerId = providerId;
+	}
+
 	public static class Builder {
 		private String name;
 		private float odds;
 		private float threshold;
 		private long outcomeId;
+		private long providerId;
 
 		public Builder name(String name) {
 			this.name = name;
@@ -64,6 +74,11 @@ public class Odds extends Entity {
 			return this;
 		}
 
+		public Builder providerId(long providerId) {
+			this.providerId = providerId;
+			return this;
+		}
+
 		public Odds build() {
 			return new Odds(this);
 		}
@@ -74,5 +89,6 @@ public class Odds extends Entity {
 		this.odds = builder.odds;
 		this.threshold = builder.threshold;
 		this.outcomeId = builder.outcomeId;
+		this.providerId = builder.providerId;
 	}
 }

@@ -38,7 +38,7 @@ public class Convert_ implements Converter
 				public void run()
 				{
 					try
-					{										
+					{								
 						SubEvents event_1 = events.get(0);
 						SubEvents event_2 = null;
 						events.remove(event_1);

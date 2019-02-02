@@ -7,6 +7,9 @@ import org.json.JSONArray;
 
 import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.RegisteredOutcomeLogic;
+import com.ubaid.app.model.logic.TrackedMatchLogic;
+import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
+import com.ubaid.app.model.schedule1_1.thresholdDetection.ThresholdDetection;
 
 public class DeleteAllTrackedEvents extends AbstractRequestHandler
 {
@@ -15,15 +18,25 @@ public class DeleteAllTrackedEvents extends AbstractRequestHandler
 	public JSONArray get(Map<String, String[]> map)
 	{
 		//TODO commented allTracked events [due to security]
-		@SuppressWarnings("unused")
 		Logic logic = new RegisteredOutcomeLogic();
-//		boolean action = logic.deleteAll();
-//		if(action)
+		Logic logic2 = new TrackedMatchLogic();
+		boolean action = logic.deleteAll();
+		
+		//TODO starting from here
+		boolean action2 = logic2.deleteAll();
 
-//		Scheduler.getTrackedNotification().clear();
+		
+		
+		if(action && action2)
+		{
+			OddsDetection.getTrackedOutcomes().clear();
+			ThresholdDetection.getTrackedOutcomes().clear();
+		}
 
-		boolean action = true;
-		return new JSONArray("[{action: " + action + "}]");
+		
+
+		
+		return new JSONArray("[{action: " + (action && action2) + "}]");
 	}
 
 	public DeleteAllTrackedEvents()

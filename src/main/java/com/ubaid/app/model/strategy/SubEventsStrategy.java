@@ -84,6 +84,7 @@ public class SubEventsStrategy extends AbstractRequestHandler
 				object.put("startTime", match.getStartTime());
 				object.put("id", match.getId());
 				object.put("sportName", sportName);
+				object.put("providerId", match.getProviderId());
 				array.put(object);
 				
 			}

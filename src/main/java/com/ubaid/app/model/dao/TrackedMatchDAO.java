@@ -18,6 +18,7 @@ public class TrackedMatchDAO extends AbstractDAO
 	private static final String query = "INSERT INTO trackedMatch(id, homeTeam, awayTeam, leagueName, sportName) VALUES(?, ?, ?, ?, ?)";
 	private static final String delQuery = "DELETE FROM trackedMatch where id = ?";
 	private static final String getAllQuery = "SELECT * FROM trackedMatch";
+	private static final String del_all = "DELETE FROM trackedMatch";
 	
 	public TrackedMatchDAO()
 	{
@@ -76,4 +77,23 @@ public class TrackedMatchDAO extends AbstractDAO
 		
 		return true;
 	}
+
+	@Override
+	public boolean deleteAll()
+	{
+		try
+		{
+			Connection con = DataSource.getConnection();
+			PreparedStatement st = con.prepareStatement(del_all);
+			st.executeUpdate();
+		}
+		catch(SQLException exp)
+		{
+			return false;
+		}
+		
+		return true;
+	}
+	
+	
 }

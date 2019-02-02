@@ -40,10 +40,10 @@
 			</div>
 		</div>
  		<div class="row">
-			<div class="col-lg-8">
+			<div class="col-lg-7">
 		     	<div class="force-overflow scrollbar style-1 app" id="app"></div>
 			</div>
-			<div class="col-lg-4">
+			<div class="col-lg-5">
 				<div class="force-overflow scrollbar style-1 app" id="s_w" style="margin-bottom:50px;">	
 			</div>
  		</div>		

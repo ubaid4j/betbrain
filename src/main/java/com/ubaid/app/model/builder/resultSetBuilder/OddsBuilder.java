@@ -23,6 +23,7 @@ public class OddsBuilder extends AbstractBuilder
 				.name(resultSet.getString(2))
 				.threshold(resultSet.getFloat(3))
 				.outcomeId(resultSet.getLong(4))
+				.providerId(resultSet.getLong(5))
 				.build();
 	}
 

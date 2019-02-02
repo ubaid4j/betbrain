@@ -296,13 +296,18 @@ function handlerForShowingSubEvents(id, eventName, sportName)
 //this function is used to show the matches of leagues
 function showSubEvents(response, collapse_w, eventName, sportName)
 {
+	
+	let providerMap = {
+		3000107 : "Pinnacle Sports"
+	};
+	
 	let openTable = '<table class="table table-dark bg-dark table-hover">',
 		thead = '<thead></thead>',
 		tbody = '<tbody></tbody>',
 		closeTable = '</table>'
 		table = openTable + thead + tbody + closeTable;
 	
-	let header = '<tr><th scope="col">#</th><th scope="col">Home Team</th><th scope="col">Away Team</th><th scope="col">Start Time</th><th scope="col">1</th><th scope="col">X</th><th scope="col">2</th><th scope="col">O/U</th><th scope="col">A/H</th></tr>';
+	let header = '<tr><th scope="col">#</th><th scope="col">Provider</th><th scope="col">Home Team</th><th scope="col">Away Team</th><th scope="col">Start Time</th><th scope="col">1</th><th scope="col">X</th><th scope="col">2</th><th scope="col">O/U</th><th scope="col">A/H</th></tr>';
 	
 	let data = JSON.parse(response);
 	
@@ -311,7 +316,7 @@ function showSubEvents(response, collapse_w, eventName, sportName)
 	//homeTeamOutcomeId, awayTeamOutcomeId, drawOutcomeId, bettingType}, {}, {}]
 	
 	let openRow = "<tr>", closeRow = "</tr>",
-		checkBox, td1, td2, td3, td4, td5, td6, td7, td8, td9;
+		checkBox, td0, td1, td2, td3, td4, td5, td6, td7, td8, td9;
 	
 	if(data.length > 0)
 	{
@@ -336,10 +341,12 @@ function showSubEvents(response, collapse_w, eventName, sportName)
 							     "<input type='hidden' name='drawOutcomeId' value='" + match.drawOutcomeId + "' >" + 
 							     "<input type='hidden' name='matchId' value='" + match.id + "' >" + 
 							     "<input type='hidden' name='sportName' value='" + match.sportName + "' >" + 
+							     "<input type='hidden' name='providerId' value='" + match.providerId + "' >" + 
 							     "<input type='hidden' name='bettingType' value='" + 'HomeDrawAway' + "' >" + 
 						       '</div>' +
 							'</th>';
 				
+				td0 = '<td scope="row">' + providerMap[match.providerId] + '</td>';
 				td1 = '<td scope="row">' + match.homeTeam + '</td>';
 				td2 = '<td scope="row">' + match.awayTeam + '</td>';
 				td3 = '<td scope="row">' + match.startTime + '</td>';
@@ -350,7 +357,7 @@ function showSubEvents(response, collapse_w, eventName, sportName)
 				td7 = '<td scope="row"><button type="button" class="btn btn-secondary btn-sm" value="' + match.id + '"onclick="handleOdds(' + match.id + ', \'' + match.homeTeam + '\', \'' + match.awayTeam +  '\' , \'OU\', \'' + eventName + '\', \'' + sportName +'\')">view</button></td>';
 				td8 = '<td scope="row"><button type="button" class="btn btn-secondary btn-sm" value="' + match.id + '"onclick="handleOdds(' + match.id + ', \'' + match.homeTeam + '\', \'' + match.awayTeam +  '\' , \'AH\', \'' + eventName + '\', \'' + sportName +'\')">view</button></td>';
 							 
-				row = openRow + checkbox + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + closeRow;
+				row = openRow + checkbox + td0 + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + closeRow;
 				
 				table.append(row).hide().fadeIn(index * 700);
 			})).done(function()
@@ -874,7 +881,6 @@ function setHandlerOnCheckBox()
 		{						
 
 			var data =JSON.stringify(map);
-			
 			
 			$.ajax(
     	    {

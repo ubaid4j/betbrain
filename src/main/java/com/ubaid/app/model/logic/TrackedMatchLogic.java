@@ -24,6 +24,13 @@ public class TrackedMatchLogic extends AbstractLogic
 	{
 		return dao.deleteById(id);
 	}
+
+	@Override
+	public boolean deleteAll()
+	{
+		return dao.deleteAll();
+	}
+	
 	
 	
 	
