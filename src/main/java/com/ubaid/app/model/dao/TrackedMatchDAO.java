@@ -15,8 +15,8 @@ import com.ubaid.app.model.singleton.DataSource;
 public class TrackedMatchDAO extends AbstractDAO
 {
 
-	private static final String query = "INSERT INTO trackedMatch(id, homeTeam, awayTeam, leagueName, sportName) VALUES(?, ?, ?, ?, ?)";
-	private static final String delQuery = "DELETE FROM trackedMatch where id = ?";
+	private static final String query = "INSERT INTO trackedMatch(id, homeTeam, awayTeam, leagueName, sportName, providerId) VALUES(?, ?, ?, ?, ?, ?)";
+	private static final String delQuery = "DELETE FROM trackedMatch where id = ? and providerId = ?";
 	private static final String getAllQuery = "SELECT * FROM trackedMatch";
 	private static final String del_all = "DELETE FROM trackedMatch";
 	
@@ -49,25 +49,25 @@ public class TrackedMatchDAO extends AbstractDAO
 			st.setString(3, trackedMatch.getAwayTeam());
 			st.setString(4, trackedMatch.getLeagueName());
 			st.setString(5, trackedMatch.getSportName());
+			st.setLong(6, trackedMatch.getProviderId());
 			st.executeUpdate();
-		
 		}
 		catch(SQLException exp)
 		{
 			return false;
 		}
-		
 		return true;
 	}
 
 	@Override
-	public boolean deleteById(long id)
+	public boolean deleteById(long id, long providerId)
 	{
 		try
 		{
 			Connection con = DataSource.getConnection();
 			PreparedStatement st = con.prepareStatement(delQuery);
 			st.setLong(1, id);
+			st.setLong(2, providerId);
 			st.executeUpdate();
 		}
 		catch(SQLException exp)

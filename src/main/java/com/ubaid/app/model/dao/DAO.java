@@ -25,6 +25,7 @@ public interface DAO
 	LinkedList<Entity> getAll(long id, int bettingType, int eventPartId);
 
 	boolean deleteById(long id);
+	boolean deleteById(long id, long providerId);
 	boolean deleteAll();
 	boolean add(Entity entity) throws ServletException;
 	Entity get(Entity entity);

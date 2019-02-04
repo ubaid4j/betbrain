@@ -72,6 +72,12 @@ public abstract class AbstractLogic implements Logic
 	public boolean deleteAll() {
 		return false;
 	}
+
+	@Override
+	public boolean delete(long id, long providerId)
+	{
+		throw new UnsupportedOperationException("This method is not impleted by " + this.getClass().getName());
+	}
 	
 	
 	

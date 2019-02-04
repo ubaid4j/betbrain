@@ -15,6 +15,7 @@ import com.ubaid.app.model.logic.OutcomeLogici;
 import com.ubaid.app.model.logic.UpdateRegisteredOCLogic;
 import com.ubaid.app.model.logic.UpdateRegisteredOCLogici;
 import com.ubaid.app.model.objects.Entity;
+import com.ubaid.app.model.schedule1_1.Key;
 import com.ubaid.app.model.schedule1_1.Outcome;
 import com.ubaid.app.model.schedule1_1.Schedule;
 
@@ -41,13 +42,13 @@ public class OddsDetection implements Schedule
 			System.out.println(su.getCurrentTime());
 			System.out.println("Running Odds Detection : " + index++);
 			
-			//let retrieve the ids of outcomes
-			Set<Long> ids = Schedule.trackedOutcomes.keySet();
+			//let retrieve the keys [id & provider id) of outcomes
+			Set<Key> ids = Schedule.trackedOutcomes.keySet();
 			long[] _ids = new long[ids.size()];
 			int index = 0;
-			for(long id : ids)
+			for(Key id : ids)
 			{
-				_ids[index++] = id;
+				_ids[index++] = id.getId();
 			}
 
 			
@@ -58,7 +59,8 @@ public class OddsDetection implements Schedule
 			{
 				try
 				{
-					Thread.sleep(200);
+					//TODO local testing 200->2000
+					Thread.sleep(5000);
 				}
 				catch(InterruptedException exp)
 				{
@@ -68,8 +70,11 @@ public class OddsDetection implements Schedule
 				continue;
 			}
 			
-			
+			//let all outcomes on ids [same as before]
+			//now in iteration 
 			LinkedList<Entity> _outcomes =  logic.getAll(_ids);
+			
+			
 			LinkedList<Outcome> outcomes = new LinkedList<>();
 			for(Entity outcome : _outcomes)
 			{
@@ -81,7 +86,9 @@ public class OddsDetection implements Schedule
 			{
 				try
 				{
-					Outcome oldOutcome = Schedule.trackedOutcomes.get(outcome.getId());
+					//we will get outcome on key from the trackedOutcomes
+					//now this outcome is the correct outcome to compare
+					Outcome oldOutcome = Schedule.trackedOutcomes.get(new Key(outcome.getId(), outcome.getProviderId()));
 					
 					if(Math.abs(outcome.getOdds() - oldOutcome.getOdds()) >  0.000001)
 					{
@@ -98,7 +105,7 @@ public class OddsDetection implements Schedule
 						outcome.setOldThreshold(oldOutcome.getThreshold());
 						outcome.setMatchName(oldOutcome.getMatchName());
 						outcome.setStatus("odds");
-						OddsDetection.trackedOutcomes.put(outcome.getId(), outcome);
+						OddsDetection.trackedOutcomes.put(new Key(outcome.getId(), outcome.getProviderId()), outcome);
 						list.add(outcome);
 						Schedule.notificationQueue.add(outcome);
 						
@@ -142,17 +149,17 @@ public class OddsDetection implements Schedule
 		schedule();
 	}
 
-	public static void putInTrackeEvents(long key, Outcome outcome)
+	public static void putInTrackeEvents(Key key, Outcome outcome)
 	{
 		Schedule.trackedOutcomes.put(key, outcome);
 	}
 	
-	public static void removeFromTrackedEvents(long key)
+	public static void removeFromTrackedEvents(Key key)
 	{
 		OddsDetection.trackedOutcomes.remove(key);
 	}
 	
-	public static Hashtable<Long, Outcome> getTrackedOutcomes()
+	public static Hashtable<Key, Outcome> getTrackedOutcomes()
 	{
 		return Schedule.trackedOutcomes;
 	}

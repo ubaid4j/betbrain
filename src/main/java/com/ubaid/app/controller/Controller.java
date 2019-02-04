@@ -49,9 +49,9 @@ public class Controller
 			//then we check, service is already referenced with a pool, if it is then we shut down it and then again create
 			service = checkTermination(service);
 
-			//executing Scheduler //TODO uncommenting service.execute
+			//executing Scheduler
 			service.execute(new OddsDetection());
-			service.execute(new ThresholdDetection());
+//			service.execute(new ThresholdDetection());
 			service.shutdown();
 		}
 		catch(Exception exp)

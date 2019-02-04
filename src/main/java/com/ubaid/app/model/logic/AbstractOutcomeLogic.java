@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ubaid.app.model.dao.OutcomeDAO;
 import com.ubaid.app.model.objects.Entity;
+import com.ubaid.app.model.schedule1_1.Key;
 import com.ubaid.app.model.schedule1_1.Outcome;
 
 public abstract class AbstractOutcomeLogic implements OutcomeLogic
@@ -33,14 +34,18 @@ public abstract class AbstractOutcomeLogic implements OutcomeLogic
 	
 	@Override
 	public LinkedList<Entity> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("getAll() is not implemented by " + this.getClass().getName());
 	}
 
 	@Override
 	public boolean addAll(List<Outcome> outcomes) {
-		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public LinkedList<Entity> getAll(Key[] ids)
+	{
+		throw new UnsupportedOperationException("Method is not implemented for class " + this.getClass().getName());
 	}
 
 	abstract OutcomeDAO getOutcomeDAO();

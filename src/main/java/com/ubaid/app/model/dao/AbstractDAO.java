@@ -140,6 +140,12 @@ public abstract class AbstractDAO implements DAO
 	{
 		return false;
 	}
+
+	@Override
+	public boolean deleteById(long id, long providerId) {
+		throw new UnsupportedOperationException("This method is not implemented yet for this " + this.getClass().getName());
+	}
+	
 	
 	
 	

@@ -11,6 +11,7 @@ import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.RegisteredOutcomeLogic;
 import com.ubaid.app.model.schedule1_1.BettingType;
 import com.ubaid.app.model.schedule1_1.Helper;
+import com.ubaid.app.model.schedule1_1.Key;
 import com.ubaid.app.model.schedule1_1.Outcome;
 import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
 
@@ -67,11 +68,11 @@ public class AssianOverUnderRegistrarStrategy extends AbstractRequestHandler
 		try
 		{
 			if(logic.delete(outcome.getId()))
-				OddsDetection.removeFromTrackedEvents(outcome.getId());			
+				OddsDetection.removeFromTrackedEvents(new Key(outcome.getId(), outcome.getProviderId()));			
 		}
 		catch(Exception exp)
 		{
-			return new JSONArray("[{action: 'y'}]");			
+			return new JSONArray("[{action: 'n'}]");			
 		}
 		
 		return new JSONArray("[{action: 'y'}]");
@@ -83,7 +84,7 @@ public class AssianOverUnderRegistrarStrategy extends AbstractRequestHandler
 		try
 		{
 			if(logic.add(outcome));
-				OddsDetection.putInTrackeEvents(outcome.getId(), outcome);
+				OddsDetection.putInTrackeEvents(new Key(outcome.getId(), outcome.getProviderId()), outcome);
 		}
 		catch(Exception exp)
 		{

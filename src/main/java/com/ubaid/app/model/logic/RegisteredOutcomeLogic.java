@@ -11,9 +11,9 @@ public class RegisteredOutcomeLogic extends AbstractLogic
 {
 
 	@Override
-	public boolean delete(long id)
+	public boolean delete(long id, long providerId)
 	{
-		return dao.deleteById(id);
+		return dao.deleteById(id, providerId);
 	}
 
 	@Override

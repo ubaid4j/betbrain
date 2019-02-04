@@ -17,12 +17,10 @@ public class DeleteAllTrackedEvents extends AbstractRequestHandler
 	@Override
 	public JSONArray get(Map<String, String[]> map)
 	{
-		//TODO commented allTracked events [due to security]
 		Logic logic = new RegisteredOutcomeLogic();
 		Logic logic2 = new TrackedMatchLogic();
 		boolean action = logic.deleteAll();
 		
-		//TODO starting from here
 		boolean action2 = logic2.deleteAll();
 
 		

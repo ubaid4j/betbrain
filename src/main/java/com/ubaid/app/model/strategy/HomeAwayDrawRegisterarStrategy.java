@@ -14,6 +14,7 @@ import com.ubaid.app.model.logic.RegisteredOutcomeLogic;
 import com.ubaid.app.model.logic.TrackedMatchLogic;
 import com.ubaid.app.model.schedule1_1.BettingType;
 import com.ubaid.app.model.schedule1_1.Helper;
+import com.ubaid.app.model.schedule1_1.Key;
 import com.ubaid.app.model.schedule1_1.Outcome;
 import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
 import com.ubaid.app.model.schedule1_1.thresholdDetection.ThresholdDetection;
@@ -105,7 +106,6 @@ public class HomeAwayDrawRegisterarStrategy extends AbstractRequestHandler
 									.providerId(map.getLong("providerId"))
 									.build();
 			
-			//TODO trackedMatch
 	
 			//no worries for showing in front end that, it is registered
 			//or not, becuase, it will be handled by home draw away 
@@ -119,6 +119,7 @@ public class HomeAwayDrawRegisterarStrategy extends AbstractRequestHandler
 					.leagueName(map.getString(Helper.LEAGUENAME.toString()))
 					.matchName(map.getString(Helper.HOMETEAM.toString()) + " VS" + map.getString(Helper.AWAYTEAM.toString()))
 					.sportName(map.getString("sportName"))
+					.providerId(map.getLong("providerId"))
 					.build();
 			
 			trackedMatch.populateOutcomes();
@@ -138,7 +139,6 @@ public class HomeAwayDrawRegisterarStrategy extends AbstractRequestHandler
 			e.printStackTrace();
 			return null;
 		}
-
 	}
 	
 	//this method remove the outcomes from the database as well as from program
@@ -148,8 +148,8 @@ public class HomeAwayDrawRegisterarStrategy extends AbstractRequestHandler
 		{
 			for(int i = 0; i < 3; i++)
 			{
-				if(logic.delete(outcomes[i].getId()))
-					OddsDetection.removeFromTrackedEvents(outcomes[i].getId());			
+				if(logic.delete(outcomes[i].getId(), outcomes[i].getProviderId()))
+					OddsDetection.removeFromTrackedEvents(new Key(outcomes[i].getId(), outcomes[i].getProviderId()));			
 			}			
 
 			SportUtil su = SportUtilFactory.getSportUtil();
@@ -158,7 +158,7 @@ public class HomeAwayDrawRegisterarStrategy extends AbstractRequestHandler
 			int eventPartId = su.getEventPartId(sportName, 47);
 
 			if(eventPartId != -1)
-				if(trackedLogic.delete(trackedMatch.getMatchId()))
+				if(trackedLogic.delete(trackedMatch.getMatchId(), trackedMatch.getProviderId()))
 					ThresholdDetection.removeFromTrackedEvents(sportName, trackedMatch.getMatchId());
 		}
 		catch(Exception exp)
@@ -178,7 +178,7 @@ public class HomeAwayDrawRegisterarStrategy extends AbstractRequestHandler
 			for(int i = 0; i < 3; i++)
 			{
 				if(logic.add(outcomes[i]));
-					OddsDetection.putInTrackeEvents(outcomes[i].getId(), outcomes[i]);
+					OddsDetection.putInTrackeEvents(new Key(outcomes[i].getId(), outcomes[i].getProviderId()), outcomes[i]);
 			}			
 			
 			SportUtil su = SportUtilFactory.getSportUtil();

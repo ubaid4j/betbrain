@@ -6,6 +6,7 @@ import java.util.List;
 import com.ubaid.app.model.abstractFactory.AbstractFactory;
 import com.ubaid.app.model.builder.Builder;
 import com.ubaid.app.model.objects.Entity;
+import com.ubaid.app.model.schedule1_1.Key;
 import com.ubaid.app.model.schedule1_1.Outcome;
 
 public abstract class AbstractOutcomeDAO implements OutcomeDAO {
@@ -19,6 +20,13 @@ public abstract class AbstractOutcomeDAO implements OutcomeDAO {
 	public LinkedList<Entity> getAll(long[] ids)
 	{
 		return null;
+	}
+	
+	
+	@Override
+	public LinkedList<Entity> getAll(Key[] ids)
+	{
+		throw new UnsupportedOperationException("Method is not implemented for this class " + this.getClass().getName());
 	}
 
 	@Override

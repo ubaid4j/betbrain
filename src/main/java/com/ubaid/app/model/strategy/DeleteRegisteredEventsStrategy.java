@@ -6,6 +6,7 @@ import org.json.JSONArray;
 
 import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.RegisteredOutcomeLogic;
+import com.ubaid.app.model.schedule1_1.Key;
 import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
 
 /**
@@ -24,6 +25,7 @@ public class DeleteRegisteredEventsStrategy extends AbstractRequestHandler
 	@Override
 	public JSONArray get(Map<String, String[]> map)
 	{
+		//TODO find provider id
 		try
 		{
 			//getting logic
@@ -34,7 +36,7 @@ public class DeleteRegisteredEventsStrategy extends AbstractRequestHandler
 			
 			//if from database, it deleted then it will delete from the hashtable
 			if(logic.delete(id))
-				OddsDetection.removeFromTrackedEvents(id);			
+				OddsDetection.removeFromTrackedEvents(new Key(id, -1));			
 		}
 		catch(Exception exp)
 		{

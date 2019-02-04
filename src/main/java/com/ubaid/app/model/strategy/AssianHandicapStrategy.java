@@ -14,6 +14,7 @@ import com.ubaid.app.model.logic.AssianHandicapLogic;
 import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.objects.Entity;
 import com.ubaid.app.model.objects.Match;
+import com.ubaid.app.model.schedule1_1.Key;
 import com.ubaid.app.model.schedule1_1.Outcome;
 import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
 
@@ -60,7 +61,7 @@ public class AssianHandicapStrategy extends AbstractRequestHandler
 		JSONObject object;
 		
 		//this is hashtable, in which we track the registered match
-		Hashtable<Long, Outcome> hash = OddsDetection.getTrackedOutcomes();
+		Hashtable<Key, Outcome> hash = OddsDetection.getTrackedOutcomes();
 		
 		//creating an array of JSON objects
 		for (Match match : events)
@@ -72,8 +73,8 @@ public class AssianHandicapStrategy extends AbstractRequestHandler
 			object.put("awayTeamOdds", match.getAwayTeamOdds());
 			object.put("outcome1", match.getOutcome1());
 			object.put("outcome2", match.getOutcome2());
-			object.put("outcome1Checked", hash.get(match.getOutcome1()) == null ? false : true);
-			object.put("outcome2Checked", hash.get(match.getOutcome2()) == null ? false : true);
+			object.put("outcome1Checked", hash.get(new Key(match.getOutcome1(), match.getProviderId())) == null ? false : true);
+			object.put("outcome2Checked", hash.get(new Key(match.getOutcome2(), match.getProviderId())) == null ? false : true);
 			
 			
 			array.put(object);

@@ -24,6 +24,145 @@ import com.ubaid.app.model.schedule1_1.Outcome;
  */
 public class TrackedMatches extends Entity {
 
+	/**********************Do not delete*******************************/
+	public Outcome getOutcome() {
+		Outcome outcome = null;
+
+		if (getOutcomes() != null) {
+			int sizeOfOutcomes = getOutcomes().size();
+			if (sizeOfOutcomes > 0)
+				outcome = getOutcomes().get(0);
+		}
+
+		return outcome;
+	}
+
+	public String getMatchName() {
+		if (matchName == null)
+			return getHomeTeam() + " VS " + getAwayTeam();
+		return matchName;
+	}
+
+	public synchronized List<Outcome> getOutcomes() {
+		return outcomes;
+	}
+
+	public synchronized void setOutcomes(List<Outcome> outcomes) {
+		this.outcomes = outcomes;
+	}
+
+	private class _Populate implements Runnable {
+
+		List<Entity> assianHandicapRawData;
+		List<Entity> overUnderRawData;
+
+		@Override
+		public void run() {
+			try {
+				//getting logic
+				Logic ahLogic = new AssianHandicapLogic();
+				Logic ouLogic = new OverUnderLogic();
+
+				//getting sport util
+				SportUtil su = SportUtilFactory.getSportUtil();
+
+				ExecutorService service = Executors.newFixedThreadPool(1);
+
+				service.execute(new Runnable() {
+
+					@Override
+					public void run() {
+						//getting all assian handicap raw data of this match
+						int eventPartId = su.getEventPartId(sportName, 48);
+						if (eventPartId != -1)
+							assianHandicapRawData = ahLogic.getAll(matchId, eventPartId);
+					}
+				});
+
+				service.execute(new Runnable() {
+
+					@Override
+					public void run() {
+						//getting all overUnder raw data
+						int eventPartId = su.getEventPartId(sportName, 47);
+						if (eventPartId != -1)
+							overUnderRawData = ouLogic.getAll(matchId, eventPartId);
+
+					}
+				});
+
+				service.shutdown();
+
+				try {
+					service.awaitTermination(1, TimeUnit.MINUTES);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+				//creating outcome
+				Outcome prototyep = new Outcome.Builder().matchId(matchId).homeTeam(homeTeam).awayTeam(awayTeam)
+						.matchName(matchName).leagueName(leagueName).sportName(sportName).build();
+
+				List<Outcome> outcomes = new LinkedList<Outcome>();
+
+				for (Entity entity : assianHandicapRawData) {
+					AssianHandicapRawData rawData = (AssianHandicapRawData) entity;
+					Outcome outcome = (Outcome) prototyep.clone();
+					outcome.setOdds(rawData.getOdds());
+					outcome.setThreshold(rawData.getThreshold());
+					outcome.setId(rawData.getOutcomeId());
+					outcome.setParticipant(rawData.getParticipant());
+					outcome.setBettingType(BettingType.AssianHandicap);
+					outcomes.add(outcome);
+				}
+
+				for (Entity entity : overUnderRawData) {
+					OverUnderRawData rawData = (OverUnderRawData) entity;
+					Outcome outcome = (Outcome) prototyep.clone();
+					outcome.setOdds(rawData.getOdds());
+					outcome.setThreshold(rawData.getThreshold());
+					outcome.setId(rawData.getOutcomeId());
+					outcome.setParticipant(rawData.getTypeId() == 14 ? "Under" : "Over");
+					outcome.setBettingType(BettingType.OverUnder);
+					outcomes.add(outcome);
+				}
+
+				setOutcomes(outcomes);
+			} catch (NullPointerException exp) {
+				System.out.println(sportName + " is not suport threshold detection");
+			} catch (CloneNotSupportedException exp) {
+				exp.printStackTrace();
+			} finally {
+			}
+
+		}
+	}
+
+	/**
+	 * this method retrieve the outcomes[47 and 48] from the 
+	 * database
+	 */
+	public void populateOutcomes() {
+		ExecutorService service = Executors.newFixedThreadPool(1);
+		service.execute(new _Populate());
+		service.shutdown();
+		try {
+			service.awaitTermination(10, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void addOutcome(Outcome outcome) {
+		getOutcomes().add(outcome);
+	}
+
+	public void removeOutcome(Outcome outcome) {
+		getOutcomes().remove(outcome);
+	}
+
+	/******************************************************************/
+
 	private long matchId;
 	private String leagueName;
 	private String matchName;
@@ -31,31 +170,7 @@ public class TrackedMatches extends Entity {
 	private String awayTeam;
 	private String sportName;
 	private List<Outcome> outcomes;
-	
-	/**********************Do not delete*******************************/
-	public Outcome getOutcome()
-	{
-		Outcome outcome = null;
-		
-		if(getOutcomes() != null)
-		{
-			int sizeOfOutcomes = getOutcomes().size();
-			if(sizeOfOutcomes > 0)
-				outcome = getOutcomes().get(0);
-		}
-		
-		return outcome;
-	}
-	
-	
-	public String getMatchName() {
-		if(matchName == null)
-			return getHomeTeam() + " VS " + getAwayTeam();
-		return matchName;
-	}
-
-	/******************************************************************/
-	
+	private long providerId;
 
 	public long getMatchId() {
 		return matchId;
@@ -71,11 +186,6 @@ public class TrackedMatches extends Entity {
 
 	public void setLeagueName(String leagueName) {
 		this.leagueName = leagueName;
-	}
-
-
-	public void setMatchName(String matchName) {
-		this.matchName = matchName;
 	}
 
 	public String getHomeTeam() {
@@ -102,13 +212,16 @@ public class TrackedMatches extends Entity {
 		this.sportName = sportName;
 	}
 
-	public synchronized List<Outcome> getOutcomes()
-	{
-		return outcomes;
+	public long getProviderId() {
+		return providerId;
 	}
 
-	public synchronized void setOutcomes(List<Outcome> outcomes) {
-		this.outcomes = outcomes;
+	public void setProviderId(long providerId) {
+		this.providerId = providerId;
+	}
+
+	public void setMatchName(String matchName) {
+		this.matchName = matchName;
 	}
 
 	public static class Builder {
@@ -118,6 +231,8 @@ public class TrackedMatches extends Entity {
 		private String homeTeam;
 		private String awayTeam;
 		private String sportName;
+		private List<Outcome> outcomes;
+		private long providerId;
 
 		public Builder matchId(long matchId) {
 			this.matchId = matchId;
@@ -149,6 +264,16 @@ public class TrackedMatches extends Entity {
 			return this;
 		}
 
+		public Builder outcomes(List<Outcome> outcomes) {
+			this.outcomes = outcomes;
+			return this;
+		}
+
+		public Builder providerId(long providerId) {
+			this.providerId = providerId;
+			return this;
+		}
+
 		public TrackedMatches build() {
 			return new TrackedMatches(this);
 		}
@@ -161,146 +286,7 @@ public class TrackedMatches extends Entity {
 		this.homeTeam = builder.homeTeam;
 		this.awayTeam = builder.awayTeam;
 		this.sportName = builder.sportName;
-	}
-	
-	/**
-	 * this method retrieve the outcomes[47 and 48] from the 
-	 * database
-	 */
-	public void populateOutcomes()
-	{
-		ExecutorService service = Executors.newFixedThreadPool(1);
-		service.execute(new _Populate());
-		service.shutdown();
-		try
-		{
-			service.awaitTermination(10, TimeUnit.SECONDS);
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	public void addOutcome(Outcome outcome)
-	{
-		getOutcomes().add(outcome);
-	}
-	
-	public void removeOutcome(Outcome outcome)
-	{
-		getOutcomes().remove(outcome);
-	}
-	
-	private class _Populate implements Runnable
-	{
-
-		List<Entity> assianHandicapRawData;
-		List<Entity> overUnderRawData;
-
-		@Override
-		public void run()
-		{
-			try
-			{
-				//getting logic
-				Logic ahLogic = new AssianHandicapLogic();
-				Logic ouLogic = new OverUnderLogic();
-				
-				//getting sport util
-				SportUtil su = SportUtilFactory.getSportUtil();
-				
-				ExecutorService service = Executors.newFixedThreadPool(1);
-				
-				
-				service.execute(new Runnable()
-				{
-					
-					@Override
-					public void run()
-					{
-						//getting all assian handicap raw data of this match
-						int eventPartId = su.getEventPartId(sportName, 48);
-						if(eventPartId != -1)
-							assianHandicapRawData = ahLogic.getAll(matchId, eventPartId);						
-					}
-				});
-
-				service.execute(new Runnable()
-				{
-					
-					@Override
-					public void run()
-					{
-						//getting all overUnder raw data
-						int eventPartId = su.getEventPartId(sportName, 47);
-						if(eventPartId != -1)
-							overUnderRawData = ouLogic.getAll(matchId, eventPartId);
-						
-					}
-				});
-
-				service.shutdown();
-				
-				try
-				{
-					service.awaitTermination(1, TimeUnit.MINUTES);
-				}
-				catch (InterruptedException e)
-				{
-					e.printStackTrace();
-				}
-				
-				//creating outcome
-				Outcome prototyep = new Outcome.Builder()
-									.matchId(matchId)
-									.homeTeam(homeTeam)
-									.awayTeam(awayTeam)
-									.matchName(matchName)
-									.leagueName(leagueName)
-									.sportName(sportName)
-									.build();
-				
-				List<Outcome> outcomes = new LinkedList<Outcome>();
-				
-				
-				for(Entity entity : assianHandicapRawData)
-				{
-					AssianHandicapRawData rawData = (AssianHandicapRawData) entity;
-					Outcome outcome = (Outcome) prototyep.clone();
-					outcome.setOdds(rawData.getOdds());
-					outcome.setThreshold(rawData.getThreshold());
-					outcome.setId(rawData.getOutcomeId());
-					outcome.setParticipant(rawData.getParticipant());
-					outcome.setBettingType(BettingType.AssianHandicap);
-					outcomes.add(outcome);
-				}
-				
-				for(Entity entity : overUnderRawData)
-				{
-					OverUnderRawData rawData = (OverUnderRawData) entity;
-					Outcome outcome = (Outcome) prototyep.clone();
-					outcome.setOdds(rawData.getOdds());
-					outcome.setThreshold(rawData.getThreshold());
-					outcome.setId(rawData.getOutcomeId());
-					outcome.setParticipant(rawData.getTypeId() == 14 ? "Under" : "Over");
-					outcome.setBettingType(BettingType.OverUnder);
-					outcomes.add(outcome);
-				}
-
-				setOutcomes(outcomes);
-			}
-			catch(NullPointerException exp)
-			{
-				System.out.println(sportName + " is not suport threshold detection");
-			}
-			catch(CloneNotSupportedException exp)
-			{
-				exp.printStackTrace();
-			}
-			finally {
-			}
-			
-		}		
+		this.outcomes = builder.outcomes;
+		this.providerId = builder.providerId;
 	}
 }

@@ -17,9 +17,9 @@ public class RegisteredOutcomeDAO extends AbstractDAO
 {
 
 
-	private static final String query = "INSERT INTO registeredOutcome VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String query = "INSERT INTO registeredOutcome VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String query1 = "SELECT * FROM registeredOutcome";
-	private static final String delQuery = "DELETE FROM registeredOutcome WHERE id = ?";
+	private static final String delQuery = "DELETE FROM registeredOutcome WHERE id = ? and providerId = ?";
 	private static final String delAllQuery = "DELETE FROM registeredOutcome";
 	
 	public RegisteredOutcomeDAO()
@@ -42,17 +42,18 @@ public class RegisteredOutcomeDAO extends AbstractDAO
 			Connection con = DataSource.getConnection();
 			PreparedStatement st = con.prepareStatement(query);
 			st.setLong(1, outcome.getId());
-			st.setLong(2, -1);
-			st.setFloat(3, outcome.getOdds());
-			st.setFloat(4, outcome.getThreshold());
-			st.setString(5, outcome.getLeagueName());
-			st.setString(6, outcome.getMatchName());
-			st.setString(7, outcome.getParticipant());
-			st.setString(8, outcome.getHomeTeam());
-			st.setString(9, outcome.getAwayTeam());
-			st.setTimestamp(10, outcome.getRegisterTime());
-			st.setTimestamp(11, outcome.getChangedTime());
-			st.setString(12, outcome.getBettingType().toString());
+			st.setLong(2, outcome.getProviderId());
+			st.setLong(3, -1);
+			st.setFloat(4, outcome.getOdds());
+			st.setFloat(5, outcome.getThreshold());
+			st.setString(6, outcome.getLeagueName());
+			st.setString(7, outcome.getMatchName());
+			st.setString(8, outcome.getParticipant());
+			st.setString(9, outcome.getHomeTeam());
+			st.setString(10, outcome.getAwayTeam());
+			st.setTimestamp(11, outcome.getRegisterTime());
+			st.setTimestamp(12, outcome.getChangedTime());
+			st.setString(13, outcome.getBettingType().toString());
 			st.executeUpdate();
 			
 			return true;
@@ -66,13 +67,14 @@ public class RegisteredOutcomeDAO extends AbstractDAO
 	}
 
 	@Override
-	public boolean deleteById(long id)
+	public boolean deleteById(long id, long providerId)
 	{
 		try
 		{
 			Connection con = DataSource.getConnection();
 			PreparedStatement st = con.prepareStatement(delQuery);
 			st.setLong(1, id);
+			st.setLong(2, providerId);
 			st.executeUpdate();
 			return true;
 		}

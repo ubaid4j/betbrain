@@ -10,6 +10,7 @@ import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.RegisteredOutcomeLogic;
 import com.ubaid.app.model.logic.TrackedMatchLogic;
 import com.ubaid.app.model.objects.Entity;
+import com.ubaid.app.model.schedule1_1.Key;
 import com.ubaid.app.model.schedule1_1.Outcome;
 import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
 import com.ubaid.app.model.schedule1_1.thresholdDetection.ThresholdDetection;
@@ -34,8 +35,6 @@ public class StartUpUtil
 
 		//this thread fill the hashtable with the outcomes [registered in the database]
 		ExecutorService innerThread1 = Executors.newFixedThreadPool(2);
-
-		//TODO to test threshold detection, I commented out this code
 		
 		innerThread1.execute(new Runnable()
 		{
@@ -49,7 +48,7 @@ public class StartUpUtil
 				for(Entity entity : _outcomes)
 				{
 					Outcome outcome = (Outcome) entity;
-					OddsDetection.putInTrackeEvents(outcome.getId(), outcome);
+					OddsDetection.putInTrackeEvents(new Key(outcome.getId(), outcome.getProviderId()), outcome);
 				}
 			}
 		});
@@ -75,32 +74,6 @@ public class StartUpUtil
 				long endTime = System.nanoTime();
 				long duration = (endTime - startTime);
 				System.out.println(duration/1000000 + "milli seconds");
-				//ensuring outcomes populated in the tracked matches TODO no need of this
-/*
-				while(true)
-				{
-					int total_size = tracked_matches.size();
-					int counter = 0;
-					try
-					{
-						Thread.sleep(1000);
-					}
-					catch(InterruptedException exp)
-					{
-						exp.printStackTrace();
-					}
-					
-					for(TrackedMatches match : tracked_matches)
-					{
-						if(match.getOutcomes() == null)
-						{
-							break;
-						}
-						counter++;
-					}
-					if(counter == total_size)
-						break;
-				}*/
 			}
 		});
 		

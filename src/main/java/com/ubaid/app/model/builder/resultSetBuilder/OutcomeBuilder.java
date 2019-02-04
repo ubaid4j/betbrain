@@ -21,6 +21,7 @@ public class OutcomeBuilder extends AbstractBuilder
 					.threshold(resultSet.getFloat(1))
 					.odds(resultSet.getFloat(2))
 					.id(resultSet.getLong(3))
+					.providerId(resultSet.getLong(4))
 					.build();
 	}
 

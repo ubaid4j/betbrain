@@ -26,7 +26,7 @@ public class DAOOutcome extends AbstractOutcomeDAO
 		{
 			
 			String query = 	"select " +
-					"paramFloat1 `threshold`, odds, o.id " +
+					"paramFloat1 `threshold`, odds, o.id, bo.providerId " +
 					"from " +
 					"Outcome o left join BettingOffer bo on o.id = bo.outcomeId " +
 					"where " +

@@ -24,5 +24,12 @@ public interface Logic
 	LinkedList<Entity> getAll(long id, int bettingType, int eventPartId);
 	boolean add(Entity entity) throws ServletException;
 	boolean delete(long id);
+	/**
+	 * 
+	 * @param id
+	 * @param providerId
+	 * @return if entity in the database deleted or not
+	 */
+	boolean delete(long id, long providerId);
 	Entity get(Entity entity);
 }
