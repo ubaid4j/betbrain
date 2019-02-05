@@ -22,8 +22,7 @@
 	</distributionManagement>
  
   <build>
-<!-- <finalName>VilliusBetbrainWebProject</finalName> -->    
-    <finalName>app1</finalName>
+	<finalName>VilliusBetbrainWebProject</finalName>
     <plugins>
 		<plugin>
             <groupId>org.apache.tomcat.maven</groupId>

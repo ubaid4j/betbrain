@@ -38,11 +38,12 @@ public class OddsDAO extends AbstractDAO
 											"and " +
 											"date(e.startTime) between date(curdate()) and date(date_add(date(curdate()), interval 3 day)) " +
 											"and " +
+											"o.statusId = 1 and " +
 											"e.id = ? " +
 											"and " +
 											"s.providerId = 3000107 " + 
 											"order by s.lastCollectedTime desc " +
-											"limit 3; ";
+											";";
 	
 	@Override
 	public LinkedList<Entity> getAll()
