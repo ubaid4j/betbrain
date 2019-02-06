@@ -17,16 +17,17 @@ public class RegisteredOutcomeBuilder extends AbstractBuilder {
 	{
 		return new Outcome.Builder()
 					.id(resultSet.getLong(1))
-					.odds(resultSet.getFloat(3))
-					.threshold(resultSet.getFloat(4))
-					.leagueName(resultSet.getString(5))
-					.matchName(resultSet.getString(6))
-					.participant(resultSet.getString(7))
-					.homeTeam(resultSet.getString(8))
-					.awayTeam(resultSet.getString(9))
-					.registerTime(resultSet.getTimestamp(10))
-					.changedTime(resultSet.getTimestamp(11))
-					.bettingType(BettingType.valueOf(resultSet.getString(12)))
+					.providerId(resultSet.getLong(2))
+					.odds(resultSet.getFloat(4))
+					.threshold(resultSet.getFloat(5))
+					.leagueName(resultSet.getString(6))
+					.matchName(resultSet.getString(7))
+					.participant(resultSet.getString(8))
+					.homeTeam(resultSet.getString(9))
+					.awayTeam(resultSet.getString(10))
+					.registerTime(resultSet.getTimestamp(11))
+					.changedTime(resultSet.getTimestamp(12))
+					.bettingType(BettingType.valueOf(resultSet.getString(13)))
 					.build();
 	}
 

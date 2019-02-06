@@ -12,6 +12,11 @@ public final class Key
 	private long id;
 	private long providerId;
 	
+	/**
+	 * 
+	 * @param id
+	 * @param providerId
+	 */
 	public Key(long id, long providerId)
 	{
 		setId(id);

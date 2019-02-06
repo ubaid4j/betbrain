@@ -1,5 +1,6 @@
 package com.ubaid.app.model.startup;
 
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -50,6 +51,7 @@ public class StartUpUtil
 					Outcome outcome = (Outcome) entity;
 					OddsDetection.putInTrackeEvents(new Key(outcome.getId(), outcome.getProviderId()), outcome);
 				}
+				
 			}
 		});
 		

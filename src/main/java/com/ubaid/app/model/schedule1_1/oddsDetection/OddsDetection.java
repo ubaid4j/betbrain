@@ -80,7 +80,9 @@ public class OddsDetection implements Schedule
 			{
 				outcomes.add((Outcome) outcome);
 			}
-			
+
+			Hashtable<Key, Outcome> table = Schedule.trackedOutcomes;
+
 			//comparing
 			for(Outcome outcome: outcomes)
 			{
@@ -88,7 +90,17 @@ public class OddsDetection implements Schedule
 				{
 					//we will get outcome on key from the trackedOutcomes
 					//now this outcome is the correct outcome to compare
-					Outcome oldOutcome = Schedule.trackedOutcomes.get(new Key(outcome.getId(), outcome.getProviderId()));
+					
+					//--------------
+					Key key = new Key(outcome.getId(), outcome.getProviderId());
+					Outcome oldOutcome = table.get(key);
+					//-----------------
+//					Outcome oldOutcome = Schedule.trackedOutcomes.get(new Key(outcome.getId(), outcome.getProviderId()));
+					if(oldOutcome == null)
+						continue;
+				
+					System.out.println(oldOutcome.toString());
+					System.out.println(outcome.toString());
 					
 					if(Math.abs(outcome.getOdds() - oldOutcome.getOdds()) >  0.000001)
 					{

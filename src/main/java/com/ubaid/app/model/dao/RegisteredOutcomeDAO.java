@@ -18,7 +18,7 @@ public class RegisteredOutcomeDAO extends AbstractDAO
 
 
 	private static final String query = "INSERT INTO registeredOutcome VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	private static final String query1 = "SELECT * FROM registeredOutcome";
+	private static final String query1 = "SELECT * FROM registeredOutcome limit 10"; //TODO remove limit
 	private static final String delQuery = "DELETE FROM registeredOutcome WHERE id = ? and providerId = ?";
 	private static final String delAllQuery = "DELETE FROM registeredOutcome";
 	

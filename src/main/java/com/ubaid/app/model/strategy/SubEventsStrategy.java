@@ -17,6 +17,7 @@ import com.ubaid.app.model.objects.Entity;
 import com.ubaid.app.model.objects.Match;
 import com.ubaid.app.model.objects.SubEvents;
 import com.ubaid.app.model.schedule1_1.Helper;
+import com.ubaid.app.model.schedule1_1.Key;
 import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
 
 /**
@@ -71,7 +72,7 @@ public class SubEventsStrategy extends AbstractRequestHandler
 			object = new JSONObject();
 			try
 			{
-				object.put(Helper.ISCHECKED.toString(), OddsDetection.getTrackedOutcomes().get(match.getHomeTeamOutcomeId()) == null ? "" : "Checked");
+				object.put(Helper.ISCHECKED.toString(), OddsDetection.getTrackedOutcomes().get(new Key(match.getHomeTeamOutcomeId(), match.getProviderId())) == null ? "" : "Checked");
 				object.put(Helper.HOMETEAM.toString(), match.getHomeTeam());
 				object.put(Helper.AWAYTEAM.toString(), match.getAwayTeam());
 				object.put(Helper.LEAGUENAME.toString(), match.getTournamentName());
