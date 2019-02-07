@@ -87,4 +87,11 @@ public class Controller
 			controller = new Controller();
 		return controller;
 	}
+	
+	public static boolean isDev()
+	{
+		if(System.getProperty("os.name").toLowerCase().contains("window"))
+			return true;
+		return false;
+	}
 }

@@ -9,6 +9,7 @@ public class OverUnderRawData extends Entity {
 	private float odds;
 	private float threshold;
 	private long outcomeId;
+	private long providerId;
 
 	public long getTypeId() {
 		return typeId;
@@ -42,11 +43,20 @@ public class OverUnderRawData extends Entity {
 		this.outcomeId = outcomeId;
 	}
 
+	public long getProviderId() {
+		return providerId;
+	}
+
+	public void setProviderId(long providerId) {
+		this.providerId = providerId;
+	}
+
 	public static class Builder {
 		private long typeId;
 		private float odds;
 		private float threshold;
 		private long outcomeId;
+		private long providerId;
 
 		public Builder typeId(long typeId) {
 			this.typeId = typeId;
@@ -68,6 +78,11 @@ public class OverUnderRawData extends Entity {
 			return this;
 		}
 
+		public Builder providerId(long providerId) {
+			this.providerId = providerId;
+			return this;
+		}
+
 		public OverUnderRawData build() {
 			return new OverUnderRawData(this);
 		}
@@ -78,5 +93,6 @@ public class OverUnderRawData extends Entity {
 		this.odds = builder.odds;
 		this.threshold = builder.threshold;
 		this.outcomeId = builder.outcomeId;
+		this.providerId = builder.providerId;
 	}
 }

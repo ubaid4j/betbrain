@@ -47,6 +47,7 @@ public class OverUnderConverter implements Converter
 							.id(eventId)
 							.homeTeam(homeTeam)
 							.awayTeam(awayTeam)
+							.providerId(rawData.getProviderId())
 							.build();
 					
 					//getting a threshold from the raw data
@@ -60,6 +61,7 @@ public class OverUnderConverter implements Converter
 						
 						//up casting to OverUnderRawData
 						OverUnderRawData rawData2 = (OverUnderRawData) entity2;
+						
 						
 						//finding two events of same threshold
 						//checking if threshold of first element is equal to the threshold of second element

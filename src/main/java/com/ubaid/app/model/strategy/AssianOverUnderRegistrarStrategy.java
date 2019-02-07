@@ -53,6 +53,7 @@ public class AssianOverUnderRegistrarStrategy extends AbstractRequestHandler
 								.registerTime(new Timestamp(System.currentTimeMillis()))
 								.changedTime(new Timestamp(System.currentTimeMillis()))
 								.bettingType(BettingType.valueOf(map.getString(Helper.BETTINGTYPE.toString())))
+								.providerId(map.getLong("providerId"))
 								.build();
 		
 		//from request data, adding or removing on accordingly

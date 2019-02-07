@@ -3,7 +3,6 @@ $(function()
 {		
 	if(!$(location).attr('href').includes('/app1/src/views/outcomes/removedOutcomes.jsp'))
 	{
-		console.log("get(sport)");
 		get();		
 	}
 });
@@ -148,7 +147,6 @@ function showEvents(data, pane, sportName)
 	//parsing the data
 	data = JSON.parse(data);
 
-	console.log(data);
 	
 	//removing the previous table from the pane
 	$.when(pane.children().remove()).done(function()
@@ -759,6 +757,7 @@ function appendInAssianHandicapTable(header, table, object, teams)
 								"<input type='hidden' name='matchName' value='" + teams[0] + " VS " + teams[1] + "' >"  +
 								"<input type='hidden' name='threshold' value='"+ event.homeTeamThreshold + "' >"  +
 								"<input type='hidden' name='odds' value='"+ event.homeTeamOdds + "' >"  +
+								"<input type='hidden' name='providerId' value='"+ event.providerId + "' >"  +
 								"<input type='hidden' name='bettingType' value='"+ "AssianHandicap" + "' >"  +
 
 							"</div>" +
@@ -779,6 +778,7 @@ function appendInAssianHandicapTable(header, table, object, teams)
 								"<input type='hidden' name='matchName' value='" + teams[0] + " VS " + teams[1] + "' >"  +
 								"<input type='hidden' name='threshold' value='"+ event.awayTeamThreshold + "' >"  +
 								"<input type='hidden' name='odds' value='"+ event.awayTeamOdds + "' >"  +
+								"<input type='hidden' name='providerId' value='"+ event.providerId + "' >"  +
 								"<input type='hidden' name='bettingType' value='"+ "AssianHandicap" + "' >"  +
 
 							"</div>" +
@@ -818,6 +818,7 @@ function appendInOverUnder(header, table, object, teams)
 								"<input type='hidden' name='matchName' value='" + teams[0] + " VS " + teams[1] + "' >"  +
 								"<input type='hidden' name='threshold' value='"+ event.threshold + "' >"  +
 								"<input type='hidden' name='odds' value='"+ event.underTeamOdds + "' >"  +
+								"<input type='hidden' name='providerId' value='"+ event.providerId + "' >"  +
 								"<input type='hidden' name='bettingType' value='"+ "OverUnder" + "' >"  +
 
 							"</div>" +
@@ -838,6 +839,7 @@ function appendInOverUnder(header, table, object, teams)
 								"<input type='hidden' name='matchName' value='" + teams[0] + " VS " + teams[1] + "' >"  +
 								"<input type='hidden' name='threshold' value='"+ event.threshold + "' >"  +
 								"<input type='hidden' name='odds' value='"+ event.overTeamOdds + "' >"  +
+								"<input type='hidden' name='providerId' value='"+ event.providerId + "' >"  +
 								"<input type='hidden' name='bettingType' value='"+ "OverUnder" + "' >"  +
 	
 							"</div>" +
@@ -1039,7 +1041,6 @@ function getRemovedItem()
 		success: function(response)
 		{
 			response = JSON.parse(response);
-			console.log(response);
 			$.when($.each(response, function(index, event)
 			{
 				

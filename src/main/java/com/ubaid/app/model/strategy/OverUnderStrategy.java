@@ -69,6 +69,7 @@ public class OverUnderStrategy extends AbstractRequestHandler
 			object.put("underTeamOdds", match.getUnderOdds());
 			object.put("outcome1", match.getOutcome1());
 			object.put("outcome2", match.getOutcome2());
+			object.put("providerId", match.getProviderId());
 			object.put("outcome1Checked", hash.get(new Key(match.getOutcome1(), match.getProviderId())) == null ? false : true);
 			object.put("outcome2Checked", hash.get(new Key(match.getOutcome2(), match.getProviderId())) == null ? false : true);
 			

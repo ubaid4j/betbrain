@@ -13,7 +13,8 @@ public class OverUnderDAO extends AbstractDAO
 										"odds, " +
 										"o.typeId `typeId`, " +
 										"o.paramFloat1 `Thres Hold`, " +
-										"o.id `oucomeId` " +
+										"o.id `oucomeId`, " +
+										"bo.providerId `providerId` " + 
 										"from " +
 										"BettingOffer bo left join " +
 										"Source s on bo.sourceId = s.id left join " +

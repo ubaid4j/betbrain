@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.ubaid.app.controller.Controller;
 import com.ubaid.app.model.SportUtil;
 import com.ubaid.app.model.SportUtilFactory;
 import com.ubaid.app.model.logic.OutcomeLogic;
@@ -98,9 +99,21 @@ public class OddsDetection implements Schedule
 //					Outcome oldOutcome = Schedule.trackedOutcomes.get(new Key(outcome.getId(), outcome.getProviderId()));
 					if(oldOutcome == null)
 						continue;
-				
-					System.out.println(oldOutcome.toString());
-					System.out.println(outcome.toString());
+
+					//TODO important remove this
+					if(Controller.isDev())
+					{
+						try
+						{
+							Thread.sleep(1000);						
+						}
+						catch(InterruptedException exp)
+						{
+							
+						}
+						
+					}
+
 					
 					if(Math.abs(outcome.getOdds() - oldOutcome.getOdds()) >  0.000001)
 					{

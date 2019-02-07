@@ -21,6 +21,7 @@ public class OverUnderBuilder extends AbstractBuilder
 					.typeId(resultSet.getLong(2))
 					.threshold(resultSet.getFloat(3))
 					.outcomeId(resultSet.getLong(4))
+					.providerId(resultSet.getLong(5))
 					.build();
 	}
 }
