@@ -123,6 +123,7 @@ public class HomeAwayDrawRegisterarStrategy extends AbstractRequestHandler
 					.build();
 			
 			trackedMatch.populateOutcomes();
+
 			
 			//on detemining delete or add data, adding or removing accordingly
 			if(isAdd)

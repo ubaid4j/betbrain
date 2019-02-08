@@ -161,7 +161,7 @@ public class TrackedMatches extends Entity {
 		getOutcomes().remove(outcome);
 	}
 
-	/******************************************************************/
+	/********************************************************************************/
 
 	private long matchId;
 	private String leagueName;

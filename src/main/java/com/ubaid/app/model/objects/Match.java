@@ -1,16 +1,27 @@
 package com.ubaid.app.model.objects;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import com.ubaid.app.model.logic.Logic;
 import com.ubaid.app.model.logic.OddsLogic;
 import com.ubaid.app.model.singleton.HashFunction;
 
-public class Match {
+public class Match implements Cloneable{
 	/*******************************Do not delete*************************/
 	private Hashtable<Integer, String> hash = new Hashtable<>();
+
+	
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return super.clone();
+	}
 
 	public String getHash() {
 		return HashFunction.getHash2(Long.toString(id));
@@ -37,22 +48,78 @@ public class Match {
 	 * 
 	 * @param eventPartId
 	 * @param bettingTypeId
+	 * 
+	 * this method assign the odds of each team in this match 
+	 * odds = home/draw/away only
 	 */
-	public void execute(int eventPartId, int bettingTypeId)
+	public List<Match> execute(int eventPartId, int bettingTypeId)
 	{
 		try
 		{
 			//TODO we will create a logic for this execute to create 
 			//but now we are dealing with one provider id
+			
+			//need some design 
+			//when execute calls
+			//actually its returns two matches stead of one 
+			//one match itself and second match cloned 
+			//but different provider id and odds.
+			//let draw some design 
 			Logic oddsLogic = new OddsLogic();
 			LinkedList<Entity> odds_ = oddsLogic.getAll(id, bettingTypeId, eventPartId);
+
 			if (odds_.size() == 0)
 				throw new NullPointerException();
+			//here we have odds having different provider ids
+			//now we have to divide the odds according to their provider ids
+			
+			//so we have two providers ids 3000107, 3000368
+
+			//getting list of odds
 			int size = odds_.size();
 			LinkedList<Odds> odds = new LinkedList<>();
 			for (int i = 0; i < size; i++) {
 				odds.add((Odds) odds_.get(i));
 			}
+			
+			//this method return a map which contain the provider id -> odds
+			Map<Long, List<Odds>> map = getDividedOddsList(odds);
+
+			//getting list of list of odds
+			List<List<Odds>> odds_list = new ArrayList<>(map.values());
+			
+			//creating a list of match
+			List<Match> matches = new LinkedList<>();
+		
+			//loop which 
+			for(int i = 0; i < odds_list.size(); i++)
+			{
+				matches.add(getMatch(odds_list.get(i)));
+			}
+			
+			return matches;
+			
+		} catch (NullPointerException exp) {
+			throw new NullPointerException("There are no home draw odds");
+
+		}
+	}
+	
+	/**
+	 * this method take 
+	 * @param list of odds and assign this odds to this match 
+	 * @return a match
+	 */
+	private Match getMatch(List<Odds> odds)
+	{
+		if(odds.size() < 1)
+			return null;
+		
+		try
+		{
+			Match match = (Match) clone();
+			
+			
 			Hashtable<String, Float> localHash = new Hashtable<>();
 			Hashtable<String, Long> outcomeHash = new Hashtable<>();
 
@@ -69,18 +136,46 @@ public class Match {
 				outcomeHash.put("NULL", (long) 0);
 			}
 
-			setProviderId(odds.get(0).getProviderId());
-			setAwayTeamOdds(localHash.get(hash.get(2)));
-			setHomeTeamOdds(localHash.get(hash.get(1)));
-			setDrawOdds(localHash.get("NULL"));
-			setAwayTeamOutcomeId(outcomeHash.get(hash.get(2)));
-			setHomeTeamOutcomeId(outcomeHash.get(hash.get(1)));
-			setDrawOutcomeId(outcomeHash.get("NULL"));
-
-		} catch (NullPointerException exp) {
-			throw new NullPointerException("There are no home draw odds");
-
+			match.setProviderId(odds.get(0).getProviderId());
+			match.setAwayTeamOdds(localHash.get(hash.get(2)));
+			match.setHomeTeamOdds(localHash.get(hash.get(1)));
+			match.setDrawOdds(localHash.get("NULL"));
+			match.setAwayTeamOutcomeId(outcomeHash.get(hash.get(2)));
+			match.setHomeTeamOutcomeId(outcomeHash.get(hash.get(1)));
+			match.setDrawOutcomeId(outcomeHash.get("NULL"));
+			return match;
+			
 		}
+		catch (CloneNotSupportedException e)
+		{
+			return null;
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * @param list
+	 * @return a map which separate the odds into two list of given providers
+	 */
+	private Map<Long, List<Odds>> getDividedOddsList(List<Odds> list)
+	{
+		//if we have more providers then we have to expand our map
+		Map<Long, List<Odds>> map = new Hashtable<>();
+		//creating two entities in the map
+		map.put(3000368l, new LinkedList<>());
+		map.put(3000107l, new LinkedList<>());
+		
+		//for loop which populate the map according to 
+		//provider ids
+		//provider id --> list[odds]
+		int size = list.size();
+		for(int i = 0; i < size; i++)
+		{
+			map.get(list.get(i).getProviderId()).add(list.get(i));
+		}
+		
+		return map;
 	}
 
 	public Match()

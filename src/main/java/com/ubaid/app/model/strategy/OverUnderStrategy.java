@@ -51,9 +51,14 @@ public class OverUnderStrategy extends AbstractRequestHandler
 		//getting odds of the match passing id, and its eventPartId
 		LinkedList<Entity> _eEntities = logic.getAll(id,SportUtilFactory.getSportUtil().getEventPartId(sportName, 47));
 		
+		//the above list have all over/under odds from both providers
+		
 		//getting hash [which track the registered outcomes]
 		Hashtable<Key, Outcome> hash = OddsDetection.getTrackedOutcomes();
-				
+
+		//TODO we have to change in converter 
+		//which create over/under odds with respect to 
+		//the providers
 		//converting these all odds to match [having over under odds]
 		LinkedList<Match> events =  converter.convert(id, homeTeam, awayTeam, _eEntities);
 		

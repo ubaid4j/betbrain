@@ -46,6 +46,7 @@ public class AssianHandicapConverter implements Converter
 							.id(eventId)
 							.homeTeam(homeTeam)
 							.awayTeam(awayTeam)
+							.providerId(rawData.getProviderId())
 							.build();
 					
 					//getting threshold from the rawData

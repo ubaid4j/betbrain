@@ -23,6 +23,20 @@ import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
 
 /**
  * this class is responsible to show matches of an tournament
+ * 
+ * we have two providers having id 3000107 and 3000866
+ * how to show subevents of an tournament?
+ * first we retrieve all matches of an tournaments
+ * then we find its home/draw/away odds against each match
+ * when we find the home/draw/away odds against this match 
+ * then we put this match in the return array (representing in the web)
+ * ---> here we have responsiblity 
+ * ---> we have to separate different provider's odds against each match 
+ * example:
+ * 			provider_1 team_x team_y odds
+ * 			provider_2 team_x team_y odds
+ *  
+ * 
  * @author ubaid
  *
  */
@@ -57,11 +71,22 @@ public class SubEventsStrategy extends AbstractRequestHandler
 		{
 			list.add((SubEvents) events.get(i));
 		}
+		
+		//---> list contain all the matches (partial)  of an tournament 
+		//---> partial means, that, there are two subevent having same event id 
+		//---> but contain only one team, 
+		//---> converter will merge these subevents (partial match) into complete match
+		//---> it will first go converter which assign each match its home/draw/away odds
 
 		//converting all subevents into matches on passing subEvents and eventPart id
 		//these matches will have [home draw away odds]
 		SportUtil su = SportUtilFactory.getSportUtil();
-		List<Match> matchs = converter.convert(list, su.getEventPartId(sportName, su.getSubEventBettingType(sportName)), su.getSubEventBettingType(sportName));
+		
+		//converter.convert(list<partial_matches, eventPartId, bettingTypeId) 
+		//getting all matches [2 providers]
+		List<Match> matchs = converter.convert(list,
+								su.getEventPartId(sportName, su.getSubEventBettingType(sportName)),
+								su.getSubEventBettingType(sportName));
 					
 		JSONArray array = new JSONArray();
 		JSONObject object;

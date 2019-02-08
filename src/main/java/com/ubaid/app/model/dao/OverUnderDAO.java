@@ -28,7 +28,7 @@ public class OverUnderDAO extends AbstractDAO
 										"where " +
 										"bo.statusId = 1 and " + 
 										"bo.bettingTypeId in (47) and " +
-										"s.providerId = 3000107 " + 
+										"s.providerId in (3000107, 3000368) " + 
 										"and " +
 										"o.eventPartId = ? " +
 										"and " +

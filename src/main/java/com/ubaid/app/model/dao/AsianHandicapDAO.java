@@ -13,7 +13,8 @@ public class AsianHandicapDAO extends AbstractDAO
 										"odds, " +
 										"p.name as `Participant Name`, " +
 										"o.paramFloat1 `Thres Hold`, " +
-										"o.id `outcomeId` " + 
+										"o.id `outcomeId`, " + 
+										"bo.providerId `providerId` " + 
 										"from " +
 										"BettingOffer bo left join " +
 										"Source s on bo.sourceId = s.id left join " +

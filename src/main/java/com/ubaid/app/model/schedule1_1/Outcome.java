@@ -6,6 +6,33 @@ import com.ubaid.app.model.objects.Entity;
 
 public final class Outcome extends Entity implements Cloneable {
 
+
+	/*-------------------------------Do not delete-----------------------------------------*/
+	public String getParticipant() {
+		if (participant == null) {
+			if(getTypeId() == 14)
+				return "Under";
+			else if(getTypeId() == 13)
+				return "Over";
+			else 
+				return "Draw";
+		}
+
+		return participant;
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
+	public String getMatchName() {
+		if (matchName == null)
+			return getHomeTeam() + " vs " + getAwayTeam();
+		return matchName;
+	}
+	/*-------------------------------Do not delete-----------------------------------------*/
+
 	private float threshold;
 	private float oldThreshold;
 	private float odds;
@@ -25,27 +52,8 @@ public final class Outcome extends Entity implements Cloneable {
 	private String sportName;
 	private String status;
 
-	/*-------------------------------Do not delete-----------------------------------------*/
-	public String getParticipant() {
-		if (participant == null) {
-			return getTypeId() == 14 ? "Under" : "Over";
-		}
-
-		return participant;
-	}
-
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-
-	public String getMatchName() {
-		if (matchName == null)
-			return getHomeTeam() + " vs " + getAwayTeam();
-		return matchName;
-	}
-	/*-------------------------------Do not delete-----------------------------------------*/
-
+	
+	
 	public float getThreshold() {
 		return threshold;
 	}

@@ -41,7 +41,7 @@ public class OddsDAO extends AbstractDAO
 											"o.statusId = 1 and " +
 											"e.id = ? " +
 											"and " +
-											"s.providerId = 3000107 " + 
+											"s.providerId in (3000107, 3000368) " + 
 											"order by s.lastCollectedTime desc " +
 											";";
 	

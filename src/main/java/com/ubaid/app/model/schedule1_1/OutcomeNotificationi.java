@@ -49,6 +49,7 @@ public class OutcomeNotificationi implements OutcomeNotification
 		notification.put(Helper.LASTUPDATETIME.toString(), outcome.getChangedTime());
 		notification.put(Helper.OLDODDS.toString(), outcome.getOldOdds());
 		notification.put(Helper.OLDThresHOLD.toString(), outcome.getOldThreshold());
+		notification.put("providerId", outcome.getProviderId());
 		notification.put("status", outcome.getStatus());
 
 		System.out.println(notification + "\n\n");

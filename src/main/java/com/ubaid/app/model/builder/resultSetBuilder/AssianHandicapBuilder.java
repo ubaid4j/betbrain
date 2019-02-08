@@ -21,6 +21,7 @@ public class AssianHandicapBuilder extends AbstractBuilder
 					.participant(resultSet.getString(2))
 					.threshold(resultSet.getFloat(3))
 					.outcomeId(resultSet.getLong(4))
+					.providerId(resultSet.getLong(5))
 					.build();
 	}
 
