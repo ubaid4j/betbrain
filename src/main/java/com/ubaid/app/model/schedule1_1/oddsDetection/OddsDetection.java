@@ -105,7 +105,7 @@ public class OddsDetection implements Schedule
 					{
 						try
 						{
-							Thread.sleep(1000);						
+							Thread.sleep(5000);						
 						}
 						catch(InterruptedException exp)
 						{

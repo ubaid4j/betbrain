@@ -2,6 +2,8 @@ package com.ubaid.app.model.asianhandicap;
 
 import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import com.ubaid.app.model.Converter;
 import com.ubaid.app.model.objects.Entity;
@@ -14,10 +16,8 @@ public class AssianHandicapConverter implements Converter
 	{
 	}
 
-	@Override
-	public LinkedList<Match> convert(long eventId, String homeTeam, String awayTeam, LinkedList<Entity> assianHandicapRawData)
+	private LinkedList<Match> _convert(long eventId, String homeTeam, String awayTeam, LinkedList<AssianHandicapRawData> assianHandicapRawData )
 	{
-		
 		try
 		{
 			//list of matches
@@ -122,6 +122,53 @@ public class AssianHandicapConverter implements Converter
 		
 		
 		return null;
+		
 	}
+	
+	
+	@Override
+	public LinkedList<Match> convert(long eventId, String homeTeam, String awayTeam, LinkedList<Entity> assianHandicapRawData)
+	{
+		//getting Map
+		Map<Long, List<AssianHandicapRawData>> map = getMap();
+		//for loop which populate the map according to 
+		//provider ids
+		//provider id --> list[Assian Handicap RawData]
+		int size = assianHandicapRawData.size();
+		for(int i = 0; i < size; i++)
+		{
+			AssianHandicapRawData rawData = (AssianHandicapRawData) assianHandicapRawData.get(i);
+			map.get(rawData.getProviderId()).add(rawData);
+		}
+		
+		
+		//getting list of list of rawdata
+		List<List<AssianHandicapRawData>> rawdata_list = new LinkedList<>(map.values());
+		
+		//creating a list of match 
+		LinkedList<Match> matches = new LinkedList<>();
+	
+		//loop which which collect the matches (assian handicap) of particular provider
+		//and add them in the list of match
+		for(int i = 0; i < rawdata_list.size(); i++)
+		{
+			matches.addAll(_convert(eventId, homeTeam, awayTeam, (LinkedList<AssianHandicapRawData>) rawdata_list.get(i)));
+		}
+
+		
+		return matches;
+		
+	}
+	
+	private Map<Long, List<AssianHandicapRawData>> getMap()
+	{
+		//if we have more providers then we have to expand our map
+		Map<Long, List<AssianHandicapRawData>> map = new Hashtable<>();
+		//creating two entities in the map
+		map.put(3000368l, new LinkedList<>());
+		map.put(3000107l, new LinkedList<>());		
+		return map;
+	}
+
 
 }

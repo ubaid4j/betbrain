@@ -28,7 +28,7 @@ public class AsianHandicapDAO extends AbstractDAO
 										"where " +
 										"bo.statusId = 1 and " + 
 										"bo.bettingTypeId in (48) and " +
-										"s.providerId = 3000107 " + 
+										"s.providerId in (3000368, 3000107) " + 
 										"and " +
 										"o.eventPartId = ? " +
 										"and " +
