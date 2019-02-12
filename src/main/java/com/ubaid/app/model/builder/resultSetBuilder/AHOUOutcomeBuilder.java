@@ -27,6 +27,7 @@ public class AHOUOutcomeBuilder extends AbstractBuilder
 					.matchId(resultSet.getLong(6))
 					.threshold(resultSet.getFloat(7))
 					.sportName(SportType.getSport(resultSet.getLong(8)).toString())
+					.providerId(resultSet.getLong(9))
 					.build();
 	}
 

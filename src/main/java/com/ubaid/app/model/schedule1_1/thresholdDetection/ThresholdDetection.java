@@ -319,7 +319,6 @@ public class ThresholdDetection implements Schedule
 				trHashtable = new Hashtable<>();
 			trHashtable.put(key, trackedMatch);
 			Schedule.trackedMatches.put(id, trHashtable);
-			trackedMatch.populateOutcomes();
 		}
 	}
 	

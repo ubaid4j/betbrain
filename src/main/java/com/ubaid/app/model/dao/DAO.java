@@ -23,6 +23,15 @@ public interface DAO
 	 * @return
 	 */
 	LinkedList<Entity> getAll(long id, int bettingType, int eventPartId);
+	
+	/**
+	 * 
+	 * @param id
+	 * @param eventPartId
+	 * @param providerId
+	 * @return all over/under odds from the given provider id
+	 */
+	LinkedList<Entity> getAll(long id, int eventPartId, long providerId);
 
 	boolean deleteById(long id);
 	boolean deleteById(long id, long providerId);

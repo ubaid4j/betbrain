@@ -22,6 +22,15 @@ public interface Logic
 	 * @return
 	 */
 	LinkedList<Entity> getAll(long id, int bettingType, int eventPartId);
+	
+	/**
+	 * 
+	 * @param id
+	 * @param eventPartId
+	 * @param providerId
+	 * @return
+	 */
+	LinkedList<Entity> getAll(long id, int eventPartId, long providerId);
 	boolean add(Entity entity) throws ServletException;
 	boolean delete(long id);
 	/**

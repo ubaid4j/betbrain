@@ -47,6 +47,14 @@ public abstract class AbstractOutcomeLogic implements OutcomeLogic
 	{
 		throw new UnsupportedOperationException("Method is not implemented for class " + this.getClass().getName());
 	}
+	
+	
+
+	@Override
+	public LinkedList<Entity> getAll(long[] id, int eventPartId, long providerId)
+	{
+		throw new UnsupportedOperationException("Method is not implemented for class " + this.getClass().getName());
+	}
 
 	abstract OutcomeDAO getOutcomeDAO();
 }

@@ -78,6 +78,12 @@ public abstract class AbstractLogic implements Logic
 	{
 		throw new UnsupportedOperationException("This method is not impleted by " + this.getClass().getName());
 	}
+
+	@Override
+	public LinkedList<Entity> getAll(long id, int eventPartId, long providerId)
+	{
+		throw new UnsupportedOperationException("This method is not impleted by " + this.getClass().getName());
+	}
 	
 	
 	

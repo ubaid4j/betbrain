@@ -35,6 +35,17 @@ public interface OutcomeLogic
 	 */
 	LinkedList<Entity> getAll(long[] ids, int eventPartId);
 	
+	
+	/**
+	 * 
+	 * @param id
+	 * @param eventPartId
+	 * @param providerId
+	 * @return
+	 */
+	LinkedList<Entity> getAll(long[] id, int eventPartId, long providerId);
+	
+	
 	/**
 	 * 
 	 * @return all the list of outcomes

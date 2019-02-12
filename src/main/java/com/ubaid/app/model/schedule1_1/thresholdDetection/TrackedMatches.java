@@ -9,9 +9,9 @@ import java.util.concurrent.TimeUnit;
 import com.ubaid.app.model.SportUtil;
 import com.ubaid.app.model.SportUtilFactory;
 import com.ubaid.app.model.asianhandicap.AssianHandicapRawData;
-import com.ubaid.app.model.logic.AssianHandicapLogic;
+import com.ubaid.app.model.logic.AssianHandicapForThresholdLogic;
 import com.ubaid.app.model.logic.Logic;
-import com.ubaid.app.model.logic.OverUnderLogic;
+import com.ubaid.app.model.logic.OverUnderForThresholdLogic;
 import com.ubaid.app.model.objects.Entity;
 import com.ubaid.app.model.overunder.OverUnderRawData;
 import com.ubaid.app.model.schedule1_1.BettingType;
@@ -60,13 +60,13 @@ public class TrackedMatches extends Entity {
 		public void run() {
 			try {
 				//getting logic
-				Logic ahLogic = new AssianHandicapLogic();
-				Logic ouLogic = new OverUnderLogic();
+				Logic ahLogic = new AssianHandicapForThresholdLogic();
+				Logic ouLogic = new OverUnderForThresholdLogic();
 
 				//getting sport util
 				SportUtil su = SportUtilFactory.getSportUtil();
 
-				ExecutorService service = Executors.newFixedThreadPool(1);
+				ExecutorService service = Executors.newFixedThreadPool(2);
 
 				service.execute(new Runnable() {
 
@@ -75,7 +75,7 @@ public class TrackedMatches extends Entity {
 						//getting all assian handicap raw data of this match
 						int eventPartId = su.getEventPartId(sportName, 48);
 						if (eventPartId != -1)
-							assianHandicapRawData = ahLogic.getAll(matchId, eventPartId);
+							assianHandicapRawData = ahLogic.getAll(matchId, eventPartId, getProviderId());
 					}
 				});
 
@@ -86,7 +86,7 @@ public class TrackedMatches extends Entity {
 						//getting all overUnder raw data
 						int eventPartId = su.getEventPartId(sportName, 47);
 						if (eventPartId != -1)
-							overUnderRawData = ouLogic.getAll(matchId, eventPartId);
+							overUnderRawData = ouLogic.getAll(matchId, eventPartId, getProviderId());
 
 					}
 				});
@@ -100,11 +100,21 @@ public class TrackedMatches extends Entity {
 				}
 
 				//creating outcome
-				Outcome prototyep = new Outcome.Builder().matchId(matchId).homeTeam(homeTeam).awayTeam(awayTeam)
-						.matchName(matchName).leagueName(leagueName).sportName(sportName).build();
+				Outcome prototyep = new Outcome.Builder()
+										.matchId(matchId)
+										.homeTeam(homeTeam)
+										.awayTeam(awayTeam)
+										.matchName(matchName)
+										.leagueName(leagueName)
+										.sportName(sportName)
+										.providerId(getProviderId())
+										.build();
 
 				List<Outcome> outcomes = new LinkedList<Outcome>();
 
+				assert(assianHandicapRawData != null);
+				assert(overUnderRawData != null);
+				
 				for (Entity entity : assianHandicapRawData) {
 					AssianHandicapRawData rawData = (AssianHandicapRawData) entity;
 					Outcome outcome = (Outcome) prototyep.clone();
@@ -128,6 +138,7 @@ public class TrackedMatches extends Entity {
 				}
 
 				setOutcomes(outcomes);
+				System.out.println("Hello_TrackedMatches");
 			} catch (NullPointerException exp) {
 				System.out.println(sportName + " is not suport threshold detection");
 			} catch (CloneNotSupportedException exp) {

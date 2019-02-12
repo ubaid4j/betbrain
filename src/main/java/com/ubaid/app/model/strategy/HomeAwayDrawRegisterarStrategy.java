@@ -28,6 +28,9 @@ import com.ubaid.app.model.schedule1_1.thresholdDetection.TrackedMatches;
  * 
  * 
  * this class also register trackedMatches [which contain all outcomes of 47, 48]
+ * the tracked match is for threshold detection
+ * when we register track match, its mean that, we are registering all outcomes of (47, and 48)
+ * of this match 
  * @author ubaid
  *
  */
@@ -122,12 +125,12 @@ public class HomeAwayDrawRegisterarStrategy extends AbstractRequestHandler
 					.providerId(map.getLong("providerId"))
 					.build();
 			
-			trackedMatch.populateOutcomes();
 
 			
 			//on detemining delete or add data, adding or removing accordingly
 			if(isAdd)
 			{
+				trackedMatch.populateOutcomes();
 				return add(logic, trackedLogic, outcomes, trackedMatch, map.getString("sportName"));			
 			}
 			else

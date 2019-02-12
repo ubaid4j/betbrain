@@ -112,6 +112,7 @@ public abstract class AbstractDAO implements DAO
 		throw new IllegalAccessError("Method not supported");		
 	}
 
+
 	@Override
 	public LinkedList<Entity> getAll(long id, int eventPartId)
 	{
@@ -142,12 +143,17 @@ public abstract class AbstractDAO implements DAO
 	}
 
 	@Override
-	public boolean deleteById(long id, long providerId) {
+	public boolean deleteById(long id, long providerId)
+	{
 		throw new UnsupportedOperationException("This method is not implemented yet for this " + this.getClass().getName());
 	}
-	
-	
-	
-	
 
+	@Override
+	public LinkedList<Entity> getAll(long id, int eventPartId, long providerId)
+	{
+		throw new UnsupportedOperationException("This method is not implemented yet for " + this.getClass());
+	}
+
+	
+	
 }

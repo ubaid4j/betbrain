@@ -26,7 +26,8 @@ public class AHOUOutcomesDAO extends AbstractOutcomeDAO
 						"p.name as `Participant Name`, " +
 						"e.id as `Match ID`, " +
 						"o.paramFloat1 `Thres Hold`, " +
-						"spt.id as `Sport id` " +
+						"spt.id as `Sport id`, " +
+						"bo.providerId `providerId` " + 
 						"from " +
 						"BettingOffer bo left join " +
 						"Source s on bo.sourceId = s.id left join " +
@@ -42,6 +43,7 @@ public class AHOUOutcomesDAO extends AbstractOutcomeDAO
 						"bo.bettingTypeId in (48, 47) " +
 						"and " +
 						"o.eventPartId = ? " +
+						"s.providerId in (?) " + 
 						"and " +
 						"date(e.startTime) between date(curdate()) and date(date_add(date(curdate()), interval 3 day)) " +
 						"and " +
@@ -55,8 +57,8 @@ public class AHOUOutcomesDAO extends AbstractOutcomeDAO
 			Connection con = DataSource.getConnection();
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, eventPartId);
-			
-			int index = 2;
+		
+			int index = 3;
 			for(long id : ids)
 			{
 				st.setLong(index++, id);
