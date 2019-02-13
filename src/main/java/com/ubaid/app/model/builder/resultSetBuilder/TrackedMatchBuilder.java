@@ -19,10 +19,11 @@ public class TrackedMatchBuilder extends AbstractBuilder
 	{
 		return new TrackedMatches.Builder()
 				.matchId(resultSet.getLong(1))
-				.homeTeam(resultSet.getString(3))
-				.awayTeam(resultSet.getString(4))
-				.leagueName(resultSet.getString(5))
-				.sportName(resultSet.getString(6))
+				.providerId(resultSet.getLong(2))
+				.homeTeam(resultSet.getString(4))
+				.awayTeam(resultSet.getString(5))
+				.leagueName(resultSet.getString(6))
+				.sportName(resultSet.getString(7))
 				.build();
 	}
 

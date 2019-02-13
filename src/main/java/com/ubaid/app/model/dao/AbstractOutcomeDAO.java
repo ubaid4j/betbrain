@@ -75,4 +75,11 @@ public abstract class AbstractOutcomeDAO implements OutcomeDAO {
 		
 		return query;
 	}
+
+	@Override
+	public LinkedList<Entity> getAll(long[] ids, int eventPartId, long providerId) {
+		throw new UnsupportedOperationException("Method is not implemented for this " + this.getClass().getName());
+	}
+	
+	
 }

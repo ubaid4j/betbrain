@@ -46,6 +46,7 @@ public class TrackedEventsDisplayStrategy extends AbstractRequestHandler
 			object.put(Helper.BETTINGTYPE.toString(), outcome.getBettingType());
 			object.put(Helper.PARTICIPANT.toString(), outcome.getParticipant());
 			object.put(Helper.OUTCOMEID.toString(), outcome.getId());
+			object.put("providerId", outcome.getProviderId());
 			array.put(object);
 		}
 		return array;

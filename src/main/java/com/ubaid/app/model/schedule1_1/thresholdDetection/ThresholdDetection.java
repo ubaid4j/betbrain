@@ -2,10 +2,12 @@ package com.ubaid.app.model.schedule1_1.thresholdDetection;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +28,7 @@ public class ThresholdDetection implements Schedule
 {
 	
 	//detect threshold changing and put in the push notificaiton as an outcome
-
+	Hashtable<Integer, Hashtable<Long, TrackedMatches>> map = getTrackedOutcomes();
 
 	public ThresholdDetection()
 	{
@@ -100,7 +102,7 @@ public class ThresholdDetection implements Schedule
  					}
 
  					//getting all outcomes from the database [fresh outcomes]
- 					List<Entity> _outcomes = logic.getAll(ids, su.getAHOUEventPartId(sportType.toString()));
+ 					List<Entity> _outcomes = logic.getAll(ids, su.getAHOUEventPartId(sportType.toString()), trHashtable.get(ids[0]).getProviderId());
 
  					//converting to LinkedList 
  					List<Outcome> newOutcomes = new LinkedList<>(); 					
@@ -127,7 +129,17 @@ public class ThresholdDetection implements Schedule
  					//here we will make a map which represent matchId -> outcome
  					Map<Long, Outcome> matchId_outcome_map = new HashMap<>();
  					
- 					int counter = 0;
+ 					
+ 					/***********************************Testing************************************/
+ 					
+ 					Collection<TrackedMatches> trackedMatches = trHashtable.values();
+ 					
+ 					/******************************************************************************/
+ 					
+ 					
+ 					
+ 					//Bug in enumeration
+ 					int counter = 0; 					
  					while(matches.hasMoreElements())
  					{
  						try

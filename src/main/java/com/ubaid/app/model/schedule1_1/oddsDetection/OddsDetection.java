@@ -60,7 +60,6 @@ public class OddsDetection implements Schedule
 			{
 				try
 				{
-					//TODO local testing 200->2000
 					Thread.sleep(5000);
 				}
 				catch(InterruptedException exp)
@@ -100,7 +99,6 @@ public class OddsDetection implements Schedule
 					if(oldOutcome == null)
 						continue;
 
-					//TODO important remove this
 					if(Controller.isDev())
 					{
 						try
@@ -153,12 +151,13 @@ public class OddsDetection implements Schedule
 					@Override
 					public void run()
 					{
-						if(list.size() > 0)
-							updateLogic.updateOC(list);
+						//TODO checking this
+//						if(list.size() > 0)
+//							updateLogic.updateOC(list);
 					}
 				});
 				updateService.shutdown();
-//				System.out.println("There are total tracked events: " + OddsDetection.trackedOutcomes.size());
+				System.out.println("There are total tracked events: " + OddsDetection.trackedOutcomes.size());
 				Thread.sleep(30000);
 			}
 			catch(InterruptedException exp)

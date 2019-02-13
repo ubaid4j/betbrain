@@ -38,6 +38,15 @@ public interface OutcomeDAO
 	
 	/**
 	 * 
+	 * @param ids
+	 * @param eventPartId
+	 * @param providerId
+	 * @return
+	 */
+	LinkedList<Entity> getAll(long[] ids, int eventPartId, long providerId);
+	
+	/**
+	 * 
 	 * @param outcomes
 	 * @return
 	 */
@@ -48,5 +57,7 @@ public interface OutcomeDAO
 	 * @return all outcomes
 	 */
 	LinkedList<Entity> getAll();
+	
+	
 }
 

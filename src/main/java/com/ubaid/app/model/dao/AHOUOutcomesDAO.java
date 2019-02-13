@@ -14,9 +14,11 @@ import com.ubaid.app.model.singleton.DataSource;
 public class AHOUOutcomesDAO extends AbstractOutcomeDAO
 {
 
-
+	//TODO starting from here
+	//changing method according to provider id
+	//
 	@Override
-	public LinkedList<Entity> getAll(long[] ids, int eventPartId)
+	public LinkedList<Entity> getAll(long[] ids, int eventPartId, long providerId)
 	{
 		String query = "select " +
 						"bettingTypeId as `Betting Type ID`, " +
@@ -42,7 +44,7 @@ public class AHOUOutcomesDAO extends AbstractOutcomeDAO
 						"bo.statusId = 1 and " + 
 						"bo.bettingTypeId in (48, 47) " +
 						"and " +
-						"o.eventPartId = ? " +
+						"o.eventPartId = ? and " +
 						"s.providerId in (?) " + 
 						"and " +
 						"date(e.startTime) between date(curdate()) and date(date_add(date(curdate()), interval 3 day)) " +
@@ -57,7 +59,7 @@ public class AHOUOutcomesDAO extends AbstractOutcomeDAO
 			Connection con = DataSource.getConnection();
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, eventPartId);
-		
+			st.setLong(2, providerId);
 			int index = 3;
 			for(long id : ids)
 			{
@@ -74,6 +76,7 @@ public class AHOUOutcomesDAO extends AbstractOutcomeDAO
 		}
 		
 	}
+	
 	
 	@Override
 	public AbstractFactory getFactory()

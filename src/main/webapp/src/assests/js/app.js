@@ -487,11 +487,11 @@ function trackedEventDeleteButtonHandler()
 	$(".del_tracked_event").click(function()
 	{
 		var $this = $(this);
-		var id = $this.val();
-		
-		
+		var id = $this.val();		
 		var targetRow = $this.closest('tr');
-
+		inputs = this.getElementsByTagName("input");
+		providerId = inputs[0].value;
+		
 
 		$.ajax(
 	    {
@@ -500,7 +500,8 @@ function trackedEventDeleteButtonHandler()
 	    	  data:
 	    	  { 
 	    		className: 'deleteRegisteredEvents',
-	    	    id: id
+	    	    id: id,
+	    	    providerId : providerId
 	    	  },
 	    	  success: function(response)
 	    	  {
@@ -541,6 +542,7 @@ function trackedEventsDisplay()
 			 {
 				var head = $("#trackedEvents thead tr");
 				head.append("<th scope='col'>Del</th>");
+				head.append("<th scope='col' data-defaultsign='az'>Provider</th>");
 				head.append("<th scope='col' data-defaultsign='az' data-sortcolumn='true'>League</th>");
 				head.append("<th scope='col' data-defaultsign='az'>Match</th>");
 				head.append("<th scope='col' data-defaultsign='az'>BettingType</th>");
@@ -567,6 +569,12 @@ function appendTrackedEvents(array)
 	 					"</tbody>" +
 	 			  "</table>"
 	 var ss = $("#s_w");
+	 
+	let providerMap = {
+			3000107 : "Pinnacle Sports",
+			3000368 : "SBOBET"
+		};
+
 
 	 $.when(ss.fadeIn('slow').empty()).done(function()
 	 {
@@ -578,8 +586,11 @@ function appendTrackedEvents(array)
 		     {
 				 var row = "<tr>" +
 								"<td scope='row'>" + 
-									"<button type='button' class='btn btn-secondary btn-sm del_tracked_event' value=" + event.outcomeId + ">del</button>" +
+									"<button type='button' class='btn btn-secondary btn-sm del_tracked_event' value=" + event.outcomeId + ">" +
+										"<input type='hidden' name='providerId' value='" + event.providerId + "' >"  +
+									"del</button>" + 
 								"</td>" +
+								"<td scope='row'>" + providerMap[event.providerId] + "</td>" +
 								"<td scope='row'>" + event.leagueName + "</td>" +
 								"<td scope='row'>" + event.matchName + "</td>" +
 								"<td scope='row'>" + event.bettingType + "</td>" +

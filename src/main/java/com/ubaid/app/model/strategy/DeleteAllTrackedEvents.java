@@ -30,9 +30,6 @@ public class DeleteAllTrackedEvents extends AbstractRequestHandler
 			OddsDetection.getTrackedOutcomes().clear();
 			ThresholdDetection.getTrackedOutcomes().clear();
 		}
-
-		
-
 		
 		return new JSONArray("[{action: " + (action && action2) + "}]");
 	}

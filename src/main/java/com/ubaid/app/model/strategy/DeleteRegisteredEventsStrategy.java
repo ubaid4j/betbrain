@@ -2,6 +2,7 @@ package com.ubaid.app.model.strategy;
 
 import java.util.Map;
 
+
 import org.json.JSONArray;
 
 import com.ubaid.app.model.logic.Logic;
@@ -25,18 +26,20 @@ public class DeleteRegisteredEventsStrategy extends AbstractRequestHandler
 	@Override
 	public JSONArray get(Map<String, String[]> map)
 	{
-		//TODO find provider id
 		try
 		{
+
 			//getting logic
 			Logic logic = new RegisteredOutcomeLogic();
 		
 			//getting id of registered outcome which is suppose to delete
 			long id = Long.parseLong(map.get("id")[0]);
+			long providerId = Long.parseLong(map.get("providerId")[0]);
 			
 			//if from database, it deleted then it will delete from the hashtable
-			if(logic.delete(id))
-				OddsDetection.removeFromTrackedEvents(new Key(id, -1));			
+			if(logic.delete(id, providerId))
+				OddsDetection.removeFromTrackedEvents(new Key(id, providerId));
+			
 		}
 		catch(Exception exp)
 		{

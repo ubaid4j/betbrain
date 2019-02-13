@@ -11,7 +11,7 @@ import com.ubaid.app.model.singleton.DataSource;
 public class UpdateOutcome implements UpdateRegisterOCDAO
 {
 
-	private static final String query = "UPDATE registeredOutcome SET odds = ?, threshold = ?, lastUpdatedTime = ? where id = ?";
+	private static final String query = "UPDATE registeredOutcome SET odds = ?, threshold = ?, lastUpdatedTime = ? where id = ? and providerId = ?";
 	
 	public UpdateOutcome()
 	{
@@ -33,6 +33,7 @@ public class UpdateOutcome implements UpdateRegisterOCDAO
 					st.setFloat(2, outcome.getThreshold());
 					st.setTimestamp(3, outcome.getChangedTime());
 					st.setLong(4, outcome.getId());
+					st.setLong(5, outcome.getProviderId());
 					st.addBatch();
 				}
 				catch(SQLException exp)

@@ -4,6 +4,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.ubaid.app.model.schedule1_1.oddsDetection.OddsDetection;
+import com.ubaid.app.model.schedule1_1.thresholdDetection.ThresholdDetection;
 
 /**
  * this controller is a singleton class, it contain a threadpool 

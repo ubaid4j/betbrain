@@ -1,6 +1,5 @@
 package com.ubaid.app.model.startup;
 
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -76,6 +75,8 @@ public class StartUpUtil
 				long endTime = System.nanoTime();
 				long duration = (endTime - startTime);
 				System.out.println(duration/1000000 + "milli seconds");
+				
+				ThresholdDetection.getTrackedOutcomes();
 			}
 		});
 		

@@ -18,7 +18,7 @@ public class AHOUOutcomeLogic extends AbstractOutcomeLogic
 	@Override
 	public LinkedList<Entity> getAll(long[] id, int eventPartId, long providerId)
 	{
-		return super.getAll(id, eventPartId, providerId);
+		return getOutcomeDAO().getAll(id, eventPartId, providerId);
 	}
 	
 	
