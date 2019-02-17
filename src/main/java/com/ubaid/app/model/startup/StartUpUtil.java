@@ -71,6 +71,7 @@ public class StartUpUtil
 					TrackedMatches trackedMatch = (TrackedMatches) entity;
 					ThresholdDetection.putInTrackeEvents(trackedMatch.getMatchId(), trackedMatch.getSportName(), trackedMatch);	
 					tracked_matches.add(trackedMatch);
+					trackedMatch.populateOutcomes();
 				}
 				long endTime = System.nanoTime();
 				long duration = (endTime - startTime);

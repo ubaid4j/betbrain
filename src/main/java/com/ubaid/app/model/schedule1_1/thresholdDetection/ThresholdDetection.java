@@ -136,8 +136,32 @@ public class ThresholdDetection implements Schedule
  					
  					/******************************************************************************/
  					
+ 					for(TrackedMatches match : trackedMatches)
+ 					{
+ 						try
+ 						{
+ 							Outcome outcome = match.getOutcome();
+ 							
+ 							//if match is not null but the if its outcome list is empty
+ 							//mean a match has not 47, 48 types betting offer
+ 							//then throwing null pointer exception
+ 							if(outcome == null)
+ 								throw new NullPointerException();
+ 							
+ 							//if outcome is present then putting in the hash map
+ 	 						matchId_outcome_map.put(match.getMatchId(), outcome);
+ 	 						
+ 	 						//and adding all the outcomes of this match into the old outcomes list
+ 							oldOutcomes.addAll(match.getOutcomes());
+ 							
+ 						}
+ 						catch(NullPointerException exp)
+ 						{
+ 							exp.printStackTrace();
+ 						}
+ 					}
  					
- 					
+/* 					
  					//Bug in enumeration
  					int counter = 0; 					
  					while(matches.hasMoreElements())
@@ -177,9 +201,10 @@ public class ThresholdDetection implements Schedule
  							counter--;
  						}
  					}
+*/
  					
  					//info
- 					System.out.println("Total matches: " + counter + "(" + sportType.toString() + ")");
+ 					System.out.println("Total matches: " + trackedMatches.size() + "(" + sportType.toString() + ")");
  					//so here we have both oldOutcomes and newOutcomes of all matches of same sport
  					System.out.println("The size of old outcomes is: " + oldOutcomes.size() + "(" + sportType + ")");
  					System.out.println("The size of new outcomes is: " + newOutcomes.size() + "(" + sportType + ")");

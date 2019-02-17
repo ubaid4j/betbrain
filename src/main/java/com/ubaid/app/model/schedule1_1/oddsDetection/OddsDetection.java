@@ -99,18 +99,18 @@ public class OddsDetection implements Schedule
 					if(oldOutcome == null)
 						continue;
 
-					if(Controller.isDev())
-					{
-						try
-						{
-							Thread.sleep(5000);						
-						}
-						catch(InterruptedException exp)
-						{
-							
-						}
-						
-					}
+//					if(Controller.isDev())
+//					{
+//						try
+//						{
+//							Thread.sleep(5000);						
+//						}
+//						catch(InterruptedException exp)
+//						{
+//							
+//						}
+//						
+//					}
 
 					
 					if(Math.abs(outcome.getOdds() - oldOutcome.getOdds()) >  0.000001)
