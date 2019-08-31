@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.ubaid.app.controller.Controller;
 import com.ubaid.app.model.SportUtil;
 import com.ubaid.app.model.SportUtilFactory;
 import com.ubaid.app.model.logic.OutcomeLogic;
@@ -34,6 +33,7 @@ public class OddsDetection implements Schedule
 	public void schedule()
 	{
 		OutcomeLogic logic = new OutcomeLogici();
+		@SuppressWarnings("unused")
 		UpdateRegisteredOCLogic updateLogic = new UpdateRegisteredOCLogici();
 		
 		SportUtil su = SportUtilFactory.getSportUtil();

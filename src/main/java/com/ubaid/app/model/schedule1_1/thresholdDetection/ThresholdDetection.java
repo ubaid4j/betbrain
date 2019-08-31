@@ -7,7 +7,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -121,7 +120,8 @@ public class ThresholdDetection implements Schedule
  					//and accordingly add or remove
 
  					//getting an enumeration os matches from hashtable of a sport
- 					Enumeration<TrackedMatches> matches = trHashtable.elements();
+ 					@SuppressWarnings("unused")
+					Enumeration<TrackedMatches> matches = trHashtable.elements();
  					
  					//creating an list to store the outcomes extracted from the matches
  					List<Outcome> oldOutcomes = new LinkedList<>();
